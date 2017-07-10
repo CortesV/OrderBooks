@@ -53,12 +53,13 @@ public class CallBackHandler {
 	 *                    Webhook}
 	 * @param sendClient
 	 *            the initialized {@code MessengerSendClient}
-	 * @throws IOException 
-	 * @throws MessengerIOException 
+	 * @throws IOException
+	 * @throws MessengerIOException
 	 */
 	@Autowired
 	public CallBackHandler(@Value("${messenger4j.appSecret}") final String appSecret,
-			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient) throws MessengerIOException, IOException {
+			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient)
+			throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
@@ -125,30 +126,34 @@ public class CallBackHandler {
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
 
-			switch (messageText.toLowerCase()) {
+			try {
+				switch (messageText.toLowerCase()) {
 
-			case "yo":
-				sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
-				break;
+				case "yo":
+					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
+					break;
 
-			case "great":
-				sendTextMessage(senderId, "You're welcome :) keep rocking");
-				break;
-				
-			case "java":
-				sendTextMessage(senderId, "It's cool language");
-				sendTextMessage(senderId, "Respect you");
-				sendTextMessage(senderId, "Can you teach me it");
-				break;
+				case "great":
+					sendTextMessage(senderId, "You're welcome :) keep rocking");
+					break;
 
-			default:
-				String message = new StringBuilder(messageText).reverse().toString();
-				sendTextMessage(senderId, message);
-				//sendReadReceipt(senderId);
-				//sendTypingOn(senderId);
-				//sendSpringDoc(senderId, messageText);
-				//sendQuickReply(senderId);
-				//sendTypingOff(senderId);
+				case "java":
+					sendTextMessage(senderId, "It's cool language");
+					sendTextMessage(senderId, "Respect you");
+					sendTextMessage(senderId, "Can you teach me it");
+					break;
+
+				default:
+					String message = new StringBuilder(messageText).reverse().toString();
+					sendTextMessage(senderId, message);
+					sendReadReceipt(senderId);
+					sendTypingOn(senderId);
+					// sendSpringDoc(senderId, messageText);
+					sendQuickReply(senderId);
+					sendTypingOff(senderId);
+				}
+			} catch (MessengerApiException | MessengerIOException e) {
+				handleSendException(e);
 			}
 		};
 	}
