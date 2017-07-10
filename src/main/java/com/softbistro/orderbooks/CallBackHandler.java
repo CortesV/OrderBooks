@@ -262,6 +262,16 @@ public class CallBackHandler {
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
