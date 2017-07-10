@@ -166,6 +166,23 @@ public class CallBackHandler {
 			throws MessengerApiException, MessengerIOException, IOException {
 
 		List<SearchResult> searchResults = new ArrayList<>();
+		SearchResult searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResults.stream().limit(4).collect(Collectors.toList());
 
 		final List<Button> firstLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
@@ -174,17 +191,18 @@ public class CallBackHandler {
 		final List<Button> thirdLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
 
-		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements().addElement("Biology")
-				.subtitle("Authors Sylvia Mader, Michael Windelspecht").subtitle("ISBN 0078024269")
-				.subtitle("Rent $19.49")
+		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
+				.addElement(searchResults.get(0).getTitle()).subtitle("Authors Sylvia Mader, Michael Windelspecht")
+				.subtitle("ISBN 0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
+				.itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
-				.toList().addElement("Biology")
-				.subtitle("Authors Sylvia Mader, Michael Windelspecht").subtitle("ISBN 0078024269")
-				.subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(secondLink)
-				.toList().addElement("Biology")
-				.subtitle("Authors Sylvia Mader, Michael Windelspecht").subtitle("ISBN 0078024269")
-				.subtitle("Rent $19.49")
+				.toList().addElement(searchResults.get(0).getTitle()).subtitle("Authors Sylvia Mader, Michael Windelspecht")
+				.subtitle("ISBN 0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
+				.itemUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.buttons(secondLink).toList().addElement("Authors Sylvia Mader, Michael Windelspecht")
+				.subtitle(searchResults.get(0).getSubtitle()).subtitle("ISBN 0078024269")
+				.subtitle("Rent " + searchResults.get(0).getSummary()).itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
