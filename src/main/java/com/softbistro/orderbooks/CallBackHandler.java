@@ -166,13 +166,22 @@ public class CallBackHandler {
 
 		Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
 		String countResult = doc.select("div.search-results--count").first().ownText();
-		Elements searchResult = doc.select("section.search-result");
-		List<SearchResult> searchResults = searchResult.stream()
+		//Elements searchResult = doc.select("section.search-result");
+		/*List<SearchResult> searchResults = searchResult.stream()
 				.map(element -> new SearchResult(element.select("a").first().ownText(),
 						element.select("a").first().absUrl("href"),
 						element.select("div.search-result--subtitle").first().ownText(),
 						element.select("div.search-result--summary").first().ownText()))
-				.limit(3).collect(Collectors.toList());
+				.limit(3).collect(Collectors.toList());*/
+		List<SearchResult> searchResults = new ArrayList<>();
+		SearchResult searchResult = new SearchResult("Title1", "Link1", "Subtitle1", "Summary");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Title3", "Link3", "Subtitle3", "Summary3");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
+		searchResults.add(searchResult);
 
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
