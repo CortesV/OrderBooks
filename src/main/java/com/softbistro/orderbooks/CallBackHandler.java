@@ -174,7 +174,7 @@ public class CallBackHandler {
 						element.select("div.search-result--summary").first().ownText()))
 				.limit(3).collect(Collectors.toList());*/
 		List<SearchResult> searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Title1", "Link1", "Subtitle1", "Summary");
+		SearchResult searchResult = new SearchResult("Title1", "google.com", "Subtitle1", "Summary");
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
 		searchResults.add(searchResult);
@@ -182,6 +182,7 @@ public class CallBackHandler {
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
 		searchResults.add(searchResult);
+		searchResults.stream().limit(3).collect(Collectors.toList());
 		sendTextMessage(recipientId, searchResults.toString());
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
