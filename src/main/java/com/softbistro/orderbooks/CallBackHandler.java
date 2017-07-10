@@ -164,8 +164,8 @@ public class CallBackHandler {
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
-		String countResult = doc.select("div.search-results--count").first().ownText();
+		//Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
+		//String countResult = doc.select("div.search-results--count").first().ownText();
 		//Elements searchResult = doc.select("section.search-result");
 		/*List<SearchResult> searchResults = searchResult.stream()
 				.map(element -> new SearchResult(element.select("a").first().ownText(),
@@ -202,7 +202,7 @@ public class CallBackHandler {
 				.buttons(secondLink).toList().addElement(searchResults.get(2).getTitle())
 				.subtitle(searchResults.get(2).getSubtitle()).itemUrl(searchResults.get(2).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(thirdtLink).toList().addElement("All results " + countResult).subtitle("Spring Search Result")
+				.buttons(thirdtLink).toList().addElement("All results " + 2000).subtitle("Spring Search Result")
 				.itemUrl(("https://spring.io/search?q=").concat(keyword))
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
 				.buttons(searchLink).toList().done().build();
