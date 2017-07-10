@@ -182,63 +182,16 @@ public class CallBackHandler {
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
 		searchResults.add(searchResult);
-
+		sendTextMessage(recipientId, searchResults.toString());
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
-		final List<Button> secondLink = Button.newListBuilder()
-				.addUrlButton("Open Link", searchResults.get(1).getLink()).toList().build();
-		final List<Button> thirdtLink = Button.newListBuilder()
-				.addUrlButton("Open Link", searchResults.get(2).getLink()).toList().build();
-		final List<Button> searchLink = Button.newListBuilder()
-				.addUrlButton("Open Link", ("https://spring.io/search?q=").concat(keyword)).toList().build();
-
+		sendTextMessage(recipientId, firstLink.toString());
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
 				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
 				.itemUrl(searchResults.get(0).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(firstLink).toList().addElement(searchResults.get(1).getTitle())
-				.subtitle(searchResults.get(1).getSubtitle()).itemUrl(searchResults.get(1).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(secondLink).toList().addElement(searchResults.get(2).getTitle())
-				.subtitle(searchResults.get(2).getSubtitle()).itemUrl(searchResults.get(2).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(thirdtLink).toList().addElement("All results " + 2000).subtitle("Spring Search Result")
-				.itemUrl(("https://spring.io/search?q=").concat(keyword))
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(searchLink).toList().done().build();
-		//String frame = "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>";
-		/*List<SearchResult> searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Title1", "Link1", "Subtitle1", "Summary");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title3", "Link3", "Subtitle3", "Summary3");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
-		searchResults.add(searchResult);
-		
-		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
-				.toList().build();
-		final List<Button> secondLink = Button.newListBuilder()
-				.addUrlButton("Open Link", searchResults.get(1).getLink()).toList().build();
-		final List<Button> thirdtLink = Button.newListBuilder()
-				.addUrlButton("Open Link", searchResults.get(2).getLink()).toList().build();
-		final List<Button> fourthLink = Button.newListBuilder()
-				.addUrlButton("Open Link", searchResults.get(3).getLink()).toList().build();
-		
-		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
-				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(firstLink).toList().addElement(searchResults.get(1).getTitle())
-				.subtitle(searchResults.get(1).getSubtitle()).itemUrl(searchResults.get(1).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(secondLink).toList().addElement(searchResults.get(2).getTitle())
-				.subtitle(searchResults.get(2).getSubtitle()).itemUrl(searchResults.get(2).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(thirdtLink).toList().addElement(searchResults.get(3).getTitle())
-				.subtitle(searchResults.get(3).getSubtitle()).itemUrl(searchResults.get(3).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png").toList().done().build();*/
-		
+				.buttons(firstLink).toList().done().build();
+		sendTextMessage(recipientId, genericTemplate.toString());
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
 
