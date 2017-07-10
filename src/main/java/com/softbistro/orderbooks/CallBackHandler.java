@@ -147,7 +147,6 @@ public class CallBackHandler {
 				default:
 					
 					sendReadReceipt(senderId);
-					sendTextMessage(senderId, "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>");
 					sendTypingOn(senderId);
 					String message = new StringBuilder(messageText).reverse().toString();
 					sendTextMessage(senderId, message);
@@ -221,7 +220,6 @@ public class CallBackHandler {
 		
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
 				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
-				.itemUrl(searchResults.get(0).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
 				.buttons(firstLink).toList().addElement(searchResults.get(1).getTitle())
 				.subtitle(searchResults.get(1).getSubtitle()).itemUrl(searchResults.get(1).getLink())
@@ -229,7 +227,7 @@ public class CallBackHandler {
 				.buttons(secondLink).toList().addElement(searchResults.get(2).getTitle())
 				.subtitle(searchResults.get(2).getSubtitle()).itemUrl(searchResults.get(2).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(secondLink).toList().addElement(searchResults.get(3).getTitle())
+				.buttons(thirdtLink).toList().addElement(searchResults.get(3).getTitle())
 				.subtitle(searchResults.get(3).getSubtitle()).itemUrl(searchResults.get(3).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png").toList().done().build();
 		
