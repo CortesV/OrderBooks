@@ -192,17 +192,13 @@ public class CallBackHandler {
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
 
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
-				.addElement(searchResults.get(0).getTitle()).subtitle("Authors Sylvia Mader, Michael Windelspecht")
-				.subtitle("ISBN 0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
-				.itemUrl("http://www.chegg.com/books")
+				.addElement("Biology 12th edition").subtitle("Rent $19.49").itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
-				.toList().addElement(searchResults.get(0).getTitle()).subtitle("Authors Sylvia Mader, Michael Windelspecht")
-				.subtitle("ISBN 0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.buttons(secondLink).toList().addElement("Authors Sylvia Mader, Michael Windelspecht")
-				.subtitle(searchResults.get(0).getSubtitle()).subtitle("ISBN 0078024269")
-				.subtitle("Rent " + searchResults.get(0).getSummary()).itemUrl("http://www.chegg.com/books")
+				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
