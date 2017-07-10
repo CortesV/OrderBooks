@@ -157,16 +157,16 @@ public class CallBackHandler {
 					// String message = new
 					// StringBuilder(messageText).reverse().toString();
 					// sendTextMessage(senderId, message);
-					// sendSpringDoc(senderId, messageText);
-					this.sendClient.sendTemplate(senderId, readAll("http://192.168.128.242:19098/template"));
+					sendSpringDoc(senderId, messageText);
+					//this.sendClient.sendTemplate(senderId, readAll("http://192.168.128.242:19098/template"));
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
-			} /*catch (IOException e) {
+			} catch (IOException e) {
 				handleIOException(e);
-			}*/
+			}
 		};
 	}
 
