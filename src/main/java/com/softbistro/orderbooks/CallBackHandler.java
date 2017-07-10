@@ -195,11 +195,11 @@ public class CallBackHandler {
 		searchResults.add(searchResult);
 		searchResults.stream().limit(4).collect(Collectors.toList());
 
-		final List<Button> firstLink = Button.newListBuilder()
+		List<Button> firstLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		final List<Button> secondLink = Button.newListBuilder()
+		List<Button> secondLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		final List<Button> thirdLink = Button.newListBuilder()
+		List<Button> thirdLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
 
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
