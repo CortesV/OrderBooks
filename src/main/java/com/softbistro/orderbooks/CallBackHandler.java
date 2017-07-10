@@ -185,13 +185,11 @@ public class CallBackHandler {
 		searchResults.stream().limit(3).collect(Collectors.toList());
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
-		sendTextMessage(recipientId, "YES");
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
 				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
 				.itemUrl(searchResults.get(0).getLink())
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
 				.buttons(firstLink).toList().done().build();
-		sendTextMessage(recipientId, genericTemplate.toString());
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
 
