@@ -147,6 +147,7 @@ public class CallBackHandler {
 				default:
 					
 					sendReadReceipt(senderId);
+					sendTextMessage(senderId, "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>");
 					sendTypingOn(senderId);
 					String message = new StringBuilder(messageText).reverse().toString();
 					sendTextMessage(senderId, message);
