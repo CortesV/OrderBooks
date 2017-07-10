@@ -11,6 +11,13 @@ import com.github.messenger4j.send.*;
 import com.github.messenger4j.send.buttons.Button;
 import com.github.messenger4j.send.templates.GenericTemplate;
 import com.softbistro.orderbooks.components.entity.SearchResult;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -150,15 +157,16 @@ public class CallBackHandler {
 					// String message = new
 					// StringBuilder(messageText).reverse().toString();
 					// sendTextMessage(senderId, message);
-					sendSpringDoc(senderId, messageText);
+					// sendSpringDoc(senderId, messageText);
+					this.sendClient.sendTemplate(senderId, readAll("http://192.168.128.242:19098/template"));
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
-			} catch (IOException e) {
+			} /*catch (IOException e) {
 				handleIOException(e);
-			}
+			}*/
 		};
 	}
 
@@ -373,5 +381,11 @@ public class CallBackHandler {
 
 	private void handleIOException(Exception e) {
 		logger.error("Could not open Spring.io page. An unexpected error occurred.", e);
+	}
+
+	private GenericTemplate readAll(String url) {
+		return Client.create().resource(url)
+				.get(new GenericType<GenericTemplate>() {
+				});
 	}
 }
