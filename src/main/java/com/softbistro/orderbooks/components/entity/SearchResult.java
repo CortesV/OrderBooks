@@ -13,6 +13,10 @@ public class SearchResult {
         this.subtitle = subtitle;
         this.summary = summary;
     }
+    
+    public SearchResult(String frame) {
+        this.title = frame;
+    }
 
     public String getTitle() {
         return title;

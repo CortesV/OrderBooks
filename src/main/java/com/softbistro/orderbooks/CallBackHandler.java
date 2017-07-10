@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -162,7 +163,7 @@ public class CallBackHandler {
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
+		/*Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
 		String countResult = doc.select("div.search-results--count").first().ownText();
 		Elements searchResult = doc.select("section.search-result");
 		List<SearchResult> searchResults = searchResult.stream()
@@ -194,7 +195,14 @@ public class CallBackHandler {
 				.buttons(thirdtLink).toList().addElement("All results " + countResult).subtitle("Spring Search Result")
 				.itemUrl(("https://spring.io/search?q=").concat(keyword))
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(searchLink).toList().done().build();
+				.buttons(searchLink).toList().done().build();*/
+		//Elements searchResult = doc.select("section.search-result");
+		String frame = "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>";
+		SearchResult searchResult = new SearchResult(frame);
+		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements().addElement(frame).toList().done().build();
+		
+		List<SearchResult> s  = new ArrayList<>();
+		s.add(searchResult);
 
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
