@@ -150,13 +150,15 @@ public class CallBackHandler {
 					sendTypingOn(senderId);
 					String message = new StringBuilder(messageText).reverse().toString();
 					sendTextMessage(senderId, message);
-					// sendSpringDoc(senderId, messageText);
+					sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
-			}
+			} catch (IOException e) {
+                handleIOException(e);
+            }
 		};
 	}
 
