@@ -127,7 +127,7 @@ public class CallBackHandler {
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
 
-			//try {
+			try {
 				switch (messageText.toLowerCase()) {
 
 				case "yo":
@@ -145,19 +145,19 @@ public class CallBackHandler {
 					break;
 
 				default:					
-					/*sendReadReceipt(senderId);
+					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					//String message = new StringBuilder(messageText).reverse().toString();
 					//sendTextMessage(senderId, message);
 					sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
-					sendTypingOff(senderId);*/
+					sendTypingOff(senderId);
 				}
-			/*} catch (MessengerApiException | MessengerIOException e) {
+			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
                 handleIOException(e);
-            }*/
+            }
 		};
 	}
 
@@ -185,7 +185,7 @@ public class CallBackHandler {
 		searchResults.stream().limit(3).collect(Collectors.toList());
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
-		sendTextMessage(recipientId, firstLink.toString());
+		sendTextMessage(recipientId, "YES");
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
 				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
 				.itemUrl(searchResults.get(0).getLink())
