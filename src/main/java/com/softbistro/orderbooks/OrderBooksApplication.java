@@ -1,5 +1,7 @@
 package com.softbistro.orderbooks;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +28,7 @@ public class OrderBooksApplication {
 		return MessengerPlatform.newSendClientBuilder(pageAccessToken).build();
 	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(OrderBooksApplication.class, args);
+	public static void main(String[] args) throws IOException {
+		SpringApplication.run(OrderBooksApplication.class, args);		
 	}
 }
