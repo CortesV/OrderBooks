@@ -176,7 +176,7 @@ public class CallBackHandler {
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		/*List<SearchResult> searchResults = new ArrayList<>();
+		List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Biology",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
 				"12th edition", "$19.49");
@@ -211,11 +211,11 @@ public class CallBackHandler {
 				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().done().build();*/
+				.toList().done().build();
 		
 		
-		/*List<SearchResult> searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Biology",
+		searchResults = new ArrayList<>();
+		searchResult = new SearchResult("Biology",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
 				"12th edition", "$19.49");
 		searchResults.add(searchResult);
@@ -248,15 +248,15 @@ public class CallBackHandler {
 				"12th edition", "$19.49");
 		searchResults.add(searchResult);
 
-		final List<Button> firstLink = Button.newListBuilder()
+		firstLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		final List<Button> secondLink = Button.newListBuilder()
+		secondLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		final List<Button> thirdLink = Button.newListBuilder()
+		thirdLink = Button.newListBuilder()
 				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
 
 		
-		final ListTemplate genericTemplate = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
+		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
 				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
@@ -265,11 +265,13 @@ public class CallBackHandler {
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().done().build();*/
+				.toList().done().build();
 		
 		
-		final ReceiptTemplate genericTemplate = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345").orderUrl("http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1").timestamp(1428444852L).addElements()
+		final ReceiptTemplate genericTemplate3 = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345").orderUrl("http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1").timestamp(1428444852L).addElements()
 				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
@@ -287,9 +289,9 @@ public class CallBackHandler {
 	        .done()
 	        .build();
 			
-		
-		
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
+		this.sendClient.sendTemplate(recipientId, genericTemplate2);
+		this.sendClient.sendTemplate(recipientId, genericTemplate3);
 	}
 
 	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
