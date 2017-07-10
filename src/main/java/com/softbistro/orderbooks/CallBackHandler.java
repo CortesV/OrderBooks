@@ -144,8 +144,7 @@ public class CallBackHandler {
 					sendTextMessage(senderId, "Can you teach me it?");
 					break;
 
-				default:
-					
+				default:					
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					String message = new StringBuilder(messageText).reverse().toString();
@@ -165,7 +164,7 @@ public class CallBackHandler {
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		/*Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
+		Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
 		String countResult = doc.select("div.search-results--count").first().ownText();
 		Elements searchResult = doc.select("section.search-result");
 		List<SearchResult> searchResults = searchResult.stream()
@@ -199,7 +198,7 @@ public class CallBackHandler {
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
 				.buttons(searchLink).toList().done().build();*/
 		//String frame = "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>";
-		List<SearchResult> searchResults = new ArrayList<>();
+		/*List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Title1", "Link1", "Subtitle1", "Summary");
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
@@ -229,7 +228,7 @@ public class CallBackHandler {
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
 				.buttons(thirdtLink).toList().addElement(searchResults.get(3).getTitle())
 				.subtitle(searchResults.get(3).getSubtitle()).itemUrl(searchResults.get(3).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png").toList().done().build();
+				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png").toList().done().build();*/
 		
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
