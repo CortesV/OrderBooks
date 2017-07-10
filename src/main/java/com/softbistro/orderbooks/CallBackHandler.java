@@ -12,6 +12,7 @@ import com.github.messenger4j.send.buttons.Button;
 import com.github.messenger4j.send.templates.GenericTemplate;
 import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
+import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -213,7 +214,7 @@ public class CallBackHandler {
 				.toList().done().build();*/
 		
 		
-		List<SearchResult> searchResults = new ArrayList<>();
+		/*List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Biology",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
 				"12th edition", "$19.49");
@@ -264,7 +265,19 @@ public class CallBackHandler {
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().done().build();*/
+		
+		
+		final ReceiptTemplate genericTemplate = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345").orderUrl("http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1").timestamp(1428444852L).addElements()
+				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.toList().done().build();
+		
+		
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
 
