@@ -134,6 +134,12 @@ public class CallBackHandler {
 			case "great":
 				sendTextMessage(senderId, "You're welcome :) keep rocking");
 				break;
+				
+			case "java":
+				sendTextMessage(senderId, "It's cool language");
+				sendTextMessage(senderId, "Respect you");
+				sendTextMessage(senderId, "Can you teach me it");
+				break;
 
 			default:
 				String message = new StringBuilder(messageText).reverse().toString();
@@ -147,7 +153,7 @@ public class CallBackHandler {
 		};
 	}
 
-	/*private void sendSpringDoc(String recipientId, String keyword)
+	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
 		Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
@@ -185,7 +191,7 @@ public class CallBackHandler {
 				.buttons(searchLink).toList().done().build();
 
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
-	}*/
+	}
 
 	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendImageAttachment(recipientId, gif);
