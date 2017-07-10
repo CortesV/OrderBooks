@@ -53,10 +53,12 @@ public class CallBackHandler {
 	 *                    Webhook}
 	 * @param sendClient
 	 *            the initialized {@code MessengerSendClient}
+	 * @throws IOException 
+	 * @throws MessengerIOException 
 	 */
 	@Autowired
 	public CallBackHandler(@Value("${messenger4j.appSecret}") final String appSecret,
-			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient) {
+			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient) throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
