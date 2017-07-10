@@ -196,7 +196,7 @@ public class CallBackHandler {
 				.buttons(thirdtLink).toList().addElement("All results " + countResult).subtitle("Spring Search Result")
 				.itemUrl(("https://spring.io/search?q=").concat(keyword))
 				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(searchLink).toList().done().build();*/
+				.buttons(searchLink).toList().done().build();
 		//String frame = "<frameset cols=\"25%,*,25%\"><frame src=\"https://www.google.com.ua/\"></frameset>";
 		/*List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Title1", "Link1", "Subtitle1", "Summary");
