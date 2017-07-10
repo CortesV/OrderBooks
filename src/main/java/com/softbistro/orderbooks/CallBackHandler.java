@@ -144,11 +144,12 @@ public class CallBackHandler {
 					sendTextMessage(senderId, "Can you teach me it?");
 					break;
 
-				default:					
+				default:
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
-					//String message = new StringBuilder(messageText).reverse().toString();
-					//sendTextMessage(senderId, message);
+					// String message = new
+					// StringBuilder(messageText).reverse().toString();
+					// sendTextMessage(senderId, message);
 					sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
@@ -156,40 +157,54 @@ public class CallBackHandler {
 			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
-                handleIOException(e);
-            }
+				handleIOException(e);
+			}
 		};
 	}
 
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		//Document doc = Jsoup.connect(("https://spring.io/search?q=").concat(keyword)).get();
-		//String countResult = doc.select("div.search-results--count").first().ownText();
-		//Elements searchResult = doc.select("section.search-result");
-		/*List<SearchResult> searchResults = searchResult.stream()
-				.map(element -> new SearchResult(element.select("a").first().ownText(),
-						element.select("a").first().absUrl("href"),
-						element.select("div.search-result--subtitle").first().ownText(),
-						element.select("div.search-result--summary").first().ownText()))
-				.limit(3).collect(Collectors.toList());*/
 		List<SearchResult> searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Title1", "google.com", "Subtitle1", "Summary");
+		SearchResult searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
 		searchResults.add(searchResult);
-		/*searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title3", "Link3", "Subtitle3", "Summary3");
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
-		searchResults.add(searchResult);*/
-		searchResults.stream().limit(3).collect(Collectors.toList());
-		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
-				.toList().build();
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResults.stream().limit(4).collect(Collectors.toList());
+
+		final List<Button> firstLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+		final List<Button> secondLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+		final List<Button> thirdLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+
 		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
 				.addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
-				.itemUrl(searchResults.get(0).getLink())
-				.imageUrl("https://upload.wikimedia.org/wikipedia/en/2/20/Pivotal_Java_Spring_Logo.png")
-				.buttons(firstLink).toList().done().build();
+				.subtitle("ISBN " + "0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
+				.itemUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
+				.toList().addElement(searchResults.get(0).getTitle()).subtitle(searchResults.get(0).getSubtitle())
+				.subtitle("ISBN " + "0078024269").subtitle("Rent " + searchResults.get(0).getSummary())
+				.itemUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.buttons(secondLink).toList().addElement(searchResults.get(0).getTitle())
+				.subtitle(searchResults.get(0).getSubtitle()).subtitle("ISBN " + "0078024269")
+				.subtitle("Rent " + searchResults.get(0).getSummary()).itemUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().done().build();
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 	}
 
