@@ -10,6 +10,8 @@ import com.github.messenger4j.receive.handlers.*;
 import com.github.messenger4j.send.*;
 import com.github.messenger4j.send.buttons.Button;
 import com.github.messenger4j.send.templates.GenericTemplate;
+import com.github.messenger4j.send.templates.ListTemplate;
+import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -173,7 +175,7 @@ public class CallBackHandler {
 	private void sendSpringDoc(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		List<SearchResult> searchResults = new ArrayList<>();
+		/*List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Biology",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
 				"12th edition", "$19.49");
@@ -207,6 +209,45 @@ public class CallBackHandler {
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.itemUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
+				.toList().done().build();*/
+		
+		
+		List<SearchResult> searchResults = new ArrayList<>();
+		SearchResult searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResults.stream().limit(4).collect(Collectors.toList());
+
+		final List<Button> firstLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+		final List<Button> secondLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+		final List<Button> thirdLink = Button.newListBuilder()
+				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+
+		
+		final ListTemplate genericTemplate = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
+				.addElement("Biology 12th edition").subtitle("Rent $19.49").imageUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://www.chegg.com/books")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
