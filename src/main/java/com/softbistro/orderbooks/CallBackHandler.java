@@ -140,14 +140,15 @@ public class CallBackHandler {
 				case "java":
 					sendTextMessage(senderId, "It's cool language");
 					sendTextMessage(senderId, "Respect you");
-					sendTextMessage(senderId, "Can you teach me it");
+					sendTextMessage(senderId, "Can you teach me it?");
 					break;
 
 				default:
-					String message = new StringBuilder(messageText).reverse().toString();
-					sendTextMessage(senderId, message);
+					
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
+					String message = new StringBuilder(messageText).reverse().toString();
+					sendTextMessage(senderId, message);
 					// sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
