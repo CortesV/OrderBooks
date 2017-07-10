@@ -273,9 +273,20 @@ public class CallBackHandler {
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.toList().done().build();
+				.toList().done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
+				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done()
+				.addAdjustments()
+	            .addAdjustment()
+	                .name("New Customer Discount")
+	                .amount(20.00F)
+	                .toList()
+	            .addAdjustment()
+	                .name("$10 Off Coupon")
+	                .amount(10.00F)
+	            .toList()
+	        .done()
+	        .build();
+			
 		
 		
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
