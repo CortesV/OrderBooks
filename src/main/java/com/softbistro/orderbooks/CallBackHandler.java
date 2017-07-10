@@ -127,7 +127,7 @@ public class CallBackHandler {
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
 
-			try {
+			//try {
 				switch (messageText.toLowerCase()) {
 
 				case "yo":
@@ -145,19 +145,19 @@ public class CallBackHandler {
 					break;
 
 				default:					
-					sendReadReceipt(senderId);
+					/*sendReadReceipt(senderId);
 					sendTypingOn(senderId);
-					String message = new StringBuilder(messageText).reverse().toString();
-					sendTextMessage(senderId, message);
+					//String message = new StringBuilder(messageText).reverse().toString();
+					//sendTextMessage(senderId, message);
 					sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
-					sendTypingOff(senderId);
+					sendTypingOff(senderId);*/
 				}
-			} catch (MessengerApiException | MessengerIOException e) {
+			/*} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
                 handleIOException(e);
-            }
+            }*/
 		};
 	}
 
@@ -176,14 +176,13 @@ public class CallBackHandler {
 		List<SearchResult> searchResults = new ArrayList<>();
 		SearchResult searchResult = new SearchResult("Title1", "google.com", "Subtitle1", "Summary");
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
+		/*searchResult = new SearchResult("Title2", "Link2", "Subtitle2", "Summary2");
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title3", "Link3", "Subtitle3", "Summary3");
 		searchResults.add(searchResult);
 		searchResult = new SearchResult("Title4", "Link4", "Subtitle4", "Summary4");
-		searchResults.add(searchResult);
+		searchResults.add(searchResult);*/
 		searchResults.stream().limit(3).collect(Collectors.toList());
-		sendTextMessage(recipientId, searchResults.toString());
 		final List<Button> firstLink = Button.newListBuilder().addUrlButton("Open Link", searchResults.get(0).getLink())
 				.toList().build();
 		sendTextMessage(recipientId, firstLink.toString());
