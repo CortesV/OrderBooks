@@ -127,7 +127,7 @@ public class CallBackHandler {
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
 
-			//try {
+			try {
 				switch (messageText.toLowerCase()) {
 
 				case "yo":
@@ -145,19 +145,19 @@ public class CallBackHandler {
 					break;
 
 				default:					
-					/*sendReadReceipt(senderId);
+					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					//String message = new StringBuilder(messageText).reverse().toString();
 					//sendTextMessage(senderId, message);
 					sendSpringDoc(senderId, messageText);
 					sendQuickReply(senderId);
-					sendTypingOff(senderId);*/
+					sendTypingOff(senderId);
 				}
-			/*} catch (MessengerApiException | MessengerIOException e) {
+			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
                 handleIOException(e);
-            }*/
+            }
 		};
 	}
 
