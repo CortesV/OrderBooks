@@ -75,13 +75,28 @@ public class TemplateService {
 	}
 
 	public void showBook(String recipientId) throws MessengerApiException, MessengerIOException, IOException {
-		final ReceiptTemplate genericTemplate3 = ReceiptTemplate.newBuilder("Stephane Crozatier", "", "USD", "")
+		/*final ReceiptTemplate genericTemplate3 = ReceiptTemplate.newBuilder("Stephane Crozatier", "", "USD", "")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
 				.currency("USD").imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
 				.toList().done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done()
 				.addAdjustments().addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
+				.name("$10 Off Coupon").amount(10.00F).toList().done().build();*/
+		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
+				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
+				.orderUrl(
+						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
+				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+				.quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
+				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
+				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
+				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
 				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate3);

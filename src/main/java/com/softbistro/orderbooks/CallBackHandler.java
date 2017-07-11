@@ -173,8 +173,6 @@ public class CallBackHandler {
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
-
-					sendQuickReply(senderId);
 					templateService.sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
@@ -220,11 +218,14 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					/*
-					 * try { templateService.showBook(senderId); } catch
-					 * (IOException e) { logger.info(e.getMessage()); }
-					 */
-					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+
+					try {
+						//templateService.showBook(senderId);
+						sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+					} catch (IOException e) {
+						handleIOException(e);
+					}
+					
 
 				} else
 					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
