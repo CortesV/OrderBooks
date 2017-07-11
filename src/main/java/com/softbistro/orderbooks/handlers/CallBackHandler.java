@@ -120,9 +120,7 @@ public class CallBackHandler {
 					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					templateService.saveCheckedBook(event.getText());
-					OrderCart.choosePrice = event.getText();
-					OrderCart.booksInCard.add(OrderCart.chooseBook);
+					templateService.saveOrderedBook(event.getText());
 					sendTemplate(senderId, templateService.showChooseBooks());
 				}
 

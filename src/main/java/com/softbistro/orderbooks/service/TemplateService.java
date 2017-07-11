@@ -87,13 +87,13 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException {
-		List<String> prices = new ArrayList<>();		
-		prices.add("111");
-		prices.add("222");
-		prices.add("333");
+		OrderCart.prices = new ArrayList<>();		
+		OrderCart.prices.add("111");
+		OrderCart.prices.add("222");
+		OrderCart.prices.add("333");
 		
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
-		for (String price : prices) {
+		for (String price : OrderCart.prices) {
 			builder = builder.addTextQuickReply(price, CallBackHandler.GOOD_ACTION_PRICE).toList();
 		}
 		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
@@ -105,6 +105,15 @@ public class TemplateService {
 				OrderCart.chooseBook = book;
 			}
 		}
+	}
+	
+	public void saveOrderedBook(String title) {
+		for(String price : OrderCart.prices){
+			if(title.equals(price)){
+				OrderCart.choosePrice = price;
+			}
+		}
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
 	}
 	
 	public void saveCardBooks(String price) {
