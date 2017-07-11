@@ -95,7 +95,7 @@ public class TemplateService {
 	}
 
 	public void saveCheckedBook(String title) {
-		Book checkedBook = null;
+		/*Book checkedBook = null;
 		String first = OrderCart.searchBooks.get(0).getTitle();
 		String second = OrderCart.searchBooks.get(1).getTitle();
 		String third = OrderCart.searchBooks.get(2).getTitle();
@@ -109,7 +109,12 @@ public class TemplateService {
 		} else if (title.equals(fourth)) {
 			checkedBook = OrderCart.searchBooks.get(3);
 		}
-		OrderCart.chooseBook = checkedBook;
+		OrderCart.chooseBook = checkedBook;*/
+		for(Book book : OrderCart.searchBooks){
+			if(title.equals(book.getTitle())){
+				OrderCart.chooseBook = book;
+			}
+		}
 	}
 	
 	public void saveCardBooks(String price) {
