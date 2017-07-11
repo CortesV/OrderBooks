@@ -76,6 +76,8 @@ public class TemplateService {
 		searchResult = new Book("4", "Biology4", "7987806", "ean",
 				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
 		searchResults.add(searchResult);
+		
+		CardBooks.searchResults = search;
 
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
