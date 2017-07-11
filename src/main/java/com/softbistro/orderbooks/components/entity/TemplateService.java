@@ -18,9 +18,6 @@ import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 @Service
 public class TemplateService {
 
-	public static final String GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION";
-	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
-
 	@Autowired
 	private CallBackHandler callBackHandler;
 
@@ -92,10 +89,10 @@ public class TemplateService {
 
 	public void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
-				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
-				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
-				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
-				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList().build();
+				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
 	}
 }

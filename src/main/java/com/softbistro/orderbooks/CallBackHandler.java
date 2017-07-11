@@ -173,7 +173,7 @@ public class CallBackHandler {
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
-					
+
 					sendQuickReply(senderId);
 					templateService.sendQuickReply(senderId);
 					sendTypingOff(senderId);
@@ -192,10 +192,7 @@ public class CallBackHandler {
 
 	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList()
-				.addTextQuickReply("Looks good", GOOD_ACTION).toList().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().build();
-
+				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().build();
 		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
 	}
 
@@ -223,12 +220,14 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					try {
-						templateService.showBook(senderId);
-					} catch (IOException e) {
-						logger.info(e.getMessage());
-					}
-				}
+					/*
+					 * try { templateService.showBook(senderId); } catch
+					 * (IOException e) { logger.info(e.getMessage()); }
+					 */
+					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+
+				} else
+					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
 			} catch (MessengerApiException e) {
 				handleSendException(e);
 			} catch (MessengerIOException e) {
@@ -373,6 +372,14 @@ public class CallBackHandler {
 
 	public MessengerSendClient getSendClient() {
 		return sendClient;
+	}
+
+	public static String getGoodAction() {
+		return GOOD_ACTION;
+	}
+
+	public static String getNotGoodAction() {
+		return NOT_GOOD_ACTION;
 	}
 
 	private void sendSpringDoc(String recipientId, String keyword)
