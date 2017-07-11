@@ -172,8 +172,6 @@ public class CallBackHandler {
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					templateService.sendListBooks(senderId, messageText);
-					// this.sendClient.sendTemplate(senderId,
-					// readAll("http://192.168.128.242:19098/template"));
 					templateService.sendQuickReplyListBooks(senderId);
 					sendTypingOff(senderId);
 				}

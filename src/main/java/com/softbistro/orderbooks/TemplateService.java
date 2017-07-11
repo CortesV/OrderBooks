@@ -68,7 +68,6 @@ public class TemplateService {
 		}
 		
 		final ListTemplate genericTemplate2 = builder.done().build();*/
-		callBackHandler.sendTextMessage(callBackHandler.getSendClient().toString(), "Can you teach me it?");
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
 				.subtitle("Author " + searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())

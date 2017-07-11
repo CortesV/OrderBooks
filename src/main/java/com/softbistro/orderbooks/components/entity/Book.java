@@ -1,22 +1,35 @@
 package com.softbistro.orderbooks.components.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
 	private String id;
 	private String title;
 	private String isbn;
+	private String ean;
 	private String imageUrl;
-	private static List<String> authors;
-	private static List<Book> searchResults;
+	private String price;
+	private List<String> authors;
 
-	public Book(String id, String title, String isbn, String imageUrl, List<String> authors) {
+	public Book(String id, String title, String isbn, String ean, String imageUrl, List<String> authors) {
+
 		this.id = id;
 		this.title = title;
 		this.isbn = isbn;
 		this.imageUrl = imageUrl;
 		this.authors = authors;
+		this.ean = ean;
+	}
+
+	public Book() {
+	}
+
+	public String getEan() {
+		return ean;
+	}
+
+	public void setEan(String ean) {
+		this.ean = ean;
 	}
 
 	public String getImageUrl() {
@@ -57,14 +70,6 @@ public class Book {
 
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
-	}
-
-	public static List<Book> getSearchResults() {
-		return searchResults;
-	}
-
-	public static void setSearchResults(List<Book> searchResults) {
-		Book.searchResults = searchResults;
 	}
 
 }
