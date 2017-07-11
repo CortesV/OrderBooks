@@ -122,15 +122,18 @@ public class TemplateService {
 				OrderCart.choosePrice = price;
 			}
 		}
+		OrderCart.chooseBook.setPrice(OrderCart.choosePrice);
 		OrderCart.booksInCard.add(OrderCart.chooseBook);
+		OrderCart.choosePrice = null;
+		OrderCart.chooseBook = null;
 	}
 
-	public void saveCardBooks(String price) {
+	/*public void saveCardBooks(String price) {
 		Book checkedBook = OrderCart.chooseBook;
 		OrderCart.booksInCard.add(checkedBook);
 		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = price;
-	}
+	}*/
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
