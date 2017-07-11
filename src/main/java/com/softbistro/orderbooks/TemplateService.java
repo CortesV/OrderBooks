@@ -43,7 +43,7 @@ public class TemplateService {
 		/*List<Book> searchResults = templateController.getCatalog();
 		ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
-				builder.addElement(book.getTitle())
+				builder = builder.addElement(book.getTitle())
 				.subtitle("Author " + book.getAuthors().get(0) + "\n" + "ISBN " + book.getIsbn()).imageUrl(book.getImageUrl()).toList();
 		}
 		
@@ -129,7 +129,7 @@ public class TemplateService {
 	public void sendQuickReplyListBooks(String recipientId) throws MessengerApiException, MessengerIOException {
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
 		for (Book book : CardBooks.searchResults) {
-			builder.addTextQuickReply(book.getTitle(), callBackHandler.getGoodAction()).toList();
+			builder = builder.addTextQuickReply(book.getTitle(), callBackHandler.getGoodAction()).toList();
 		}
 		final List<QuickReply> quickReplies = builder.build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "You can watch details each of books",
