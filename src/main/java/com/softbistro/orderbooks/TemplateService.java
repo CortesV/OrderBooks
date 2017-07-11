@@ -35,8 +35,7 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		List<Book> searchResults = readAll();
-		searchResults = new ArrayList<>();
+		List<Book> searchResults = readAll();		
 
 		List<String> authors = new ArrayList<>();
 		authors.add("Author1");
