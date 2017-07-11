@@ -223,13 +223,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
-					for (Book book : Book.getSearchResults()){
-						if(book.getTitle().equals(event.getText())){
-							CardBooks.setChooseBook(book);
-							CardBooks.getBooksInCard().add(book);
-						}
-					}
-					sendTextMessage(senderId, "" + CardBooks.getBooksInCard().size());
+					
 				} else {
 					watchBook = false;
 				}
