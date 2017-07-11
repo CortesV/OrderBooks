@@ -173,6 +173,8 @@ public class CallBackHandler {
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
+					
+					sendQuickReply(senderId);
 					templateService.sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
