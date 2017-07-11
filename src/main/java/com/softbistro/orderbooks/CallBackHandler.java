@@ -169,7 +169,6 @@ public class CallBackHandler {
 					break;
 
 				default:
-					sendTextMessage(senderId, "Can you teach me it?");
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					templateService.sendListBooks(senderId, messageText);
