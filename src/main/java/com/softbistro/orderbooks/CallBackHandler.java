@@ -216,22 +216,20 @@ public class CallBackHandler {
 			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
 
 			Boolean watchBook = true;
-			try {
-				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					templateService.showBook(senderId);
-				} else {
-					watchBook = false;
-				}
-				sendTextMessage(senderId, "Let's try another one :D!");
-				if (watchBook) {
+			while (watchBook) {
+				try {
+					if (quickReplyPayload.equals(GOOD_ACTION)) {
+						templateService.showBook(senderId);
+					}
+					sendTextMessage(senderId, "Let's try another one :D!");
 					templateService.sendQuickReply(senderId);
+				} catch (MessengerApiException e) {
+					handleSendException(e);
+				} catch (MessengerIOException e) {
+					handleIOException(e);
+				} catch (IOException e) {
+					handleIOException(e);
 				}
-			} catch (MessengerApiException e) {
-				handleSendException(e);
-			} catch (MessengerIOException e) {
-				handleIOException(e);
-			} catch (IOException e) {
-				handleIOException(e);
 			}
 		};
 	}
