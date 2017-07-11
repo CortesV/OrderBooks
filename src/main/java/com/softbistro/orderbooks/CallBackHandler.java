@@ -300,7 +300,9 @@ public class CallBackHandler {
 
 	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().build();
+				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().addTextQuickReply("Looks good", GOOD_ACTION)
+				.toList().addTextQuickReply("Looks good", GOOD_ACTION)
+				.toList().build();
 
 		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
 	}
