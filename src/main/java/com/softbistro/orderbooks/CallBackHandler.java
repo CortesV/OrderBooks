@@ -151,9 +151,8 @@ public class CallBackHandler {
 
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
-			sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
-			//try {
-				/*switch (messageText.toLowerCase()) {
+			try {
+				switch (messageText.toLowerCase()) {
 
 				case "yo":
 					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
@@ -170,20 +169,20 @@ public class CallBackHandler {
 					break;
 
 				default:
-					/*sendTextMessage(senderId, "Can you teach me it?");
+					sendTextMessage(senderId, "Can you teach me it?");
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
 					templateService.sendQuickReplyListBooks(senderId);
-					sendTypingOff(senderId);*/
-				//}
-			/*} catch (MessengerApiException | MessengerIOException e) {
+					sendTypingOff(senderId);
+				}
+			} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
 				handleIOException(e);
-			}*/
+			}
 		};
 	}
 
