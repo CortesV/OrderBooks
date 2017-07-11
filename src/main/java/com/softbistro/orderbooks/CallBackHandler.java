@@ -221,11 +221,7 @@ public class CallBackHandler {
 					templateService.showBook(senderId);
 				} else {
 					watchBook = false;
-				}
-				if (watchBook) {
-					sendTextMessage(senderId, "Let's try another one :D!");
-					templateService.sendQuickReply(senderId);
-				}
+				}				
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);

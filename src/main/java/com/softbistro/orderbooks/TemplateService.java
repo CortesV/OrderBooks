@@ -92,10 +92,10 @@ public class TemplateService {
 
 	public void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
-				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology1", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology3", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology4", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("No, thank's", callBackHandler.getNotGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
 	}
