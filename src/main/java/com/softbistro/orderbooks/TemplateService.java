@@ -41,27 +41,29 @@ public class TemplateService {
 
 				
 
-		/*List<String> authors = new ArrayList<>();
+		List<String> authors = new ArrayList<>();
 		authors.add("Author1");
 		authors.add("Author2");
 		authors.add("Author3");
-		authors.add("Author4");*/
+		authors.add("Author4");
 
-		/*Book searchResult = new Book("1", "Biology1", "akfdgdygaihfsd",
+		List<Book> searchResults = new ArrayList<>();
+		
+		Book searchResult = new Book("1", "Biology1", "akfdgdygaihfsd","ean",
 				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
 		searchResults.add(searchResult);
 
-		searchResult = new Book("2", "Biology2", "11111213123123",
+		searchResult = new Book("2", "Biology2", "11111213123123","ean",
 				"http://cs.cheggcdn.com/covers2/42040000/42044766_1388990605.jpg", authors);
 		searchResults.add(searchResult);
 
-		searchResult = new Book("3", "Biolog3", "456985746",
+		searchResult = new Book("3", "Biolog3", "456985746","ean",
 				"http://cs.cheggcdn.com/covers2/21660000/21660265_1467822671.jpg", authors);
 		searchResults.add(searchResult);
 
-		searchResult = new Book("4", "Biology4", "7987806",
+		searchResult = new Book("4", "Biology4", "7987806","ean",
 				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
-		searchResults.add(searchResult);*/
+		searchResults.add(searchResult);
 
 		
 		/*
@@ -75,33 +77,16 @@ public class TemplateService {
 		
 		
 		
-		List<Book> searchResults = new ArrayList<>();
-		Book  book = new Book("id", "title", "isbn", "ean", "image", Arrays.asList("url"));
-		searchResults.add(book);
 //				templateController.getCatalog();
 		
-		CardBooks.searchResults = searchResults;
+//		CardBooks.searchResults = searchResults;
 		
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
-				.subtitle("Author " + searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
-				.imageUrl(searchResults.get(0).getImageUrl()).toList().done().build();
+				.subtitle("Author " + searchResults.get(0).getAuthors().get(0).toString() + "\nISBN " + searchResults.get(0).getIsbn())
+				.imageUrl(searchResults.get(0).getImageUrl()).
+				toList().done().build();
 		
-		
-		
-		
-		
-		
-		
-		
-		/*.addElement(searchResults.get(1).getTitle())
-				.subtitle("Author " + searchResults.get(1).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
-				.imageUrl(searchResults.get(1).getImageUrl()).toList().addElement(searchResults.get(2).getTitle())
-				.subtitle("Author " + searchResults.get(2).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
-				.imageUrl(searchResults.get(2).getImageUrl()).toList().addElement(searchResults.get(3).getTitle())
-				.subtitle("Chegg search " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
-				.imageUrl(searchResults.get(3).getImageUrl()).toList()*/
-
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
 	}
