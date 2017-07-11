@@ -148,7 +148,7 @@ public class CallBackHandler {
 
 				case "yo":
 					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
-					List<Book> searchResults = templateService.readAll();
+					List<Book> searchResults = templateService.readAll(messageText.toLowerCase());
 					sendTextMessage(senderId, searchResults.size() + "");
 					break;
 
