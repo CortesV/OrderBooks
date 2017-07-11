@@ -223,6 +223,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {					
 					templateService.sendQuickReplyPrice(senderId);
 					templateService.saveCheckedBook(event.getText());
+					sendTextMessage(senderId, CardBooks.getChooseBook().getTitle());
 					templateService.showBook(senderId);
 				} else {
 					watchBook = false;
@@ -230,6 +231,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					CardBooks.setChoosePrice(event.getText());
 					sendTextMessage(senderId, CardBooks.getChoosePrice());
+					
 					//templateService.showChooseBooks(senderId);			
 				} 
 
