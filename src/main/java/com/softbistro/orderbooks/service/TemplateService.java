@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -32,17 +34,20 @@ import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
 @Service
 public class TemplateService {
 
-	public Template sendListBooks(String keyword) throws MessengerApiException, MessengerIOException, IOException {
-
-		List<Book> searchResults = readAll(keyword);
-
-		OrderCart.searchBooks = searchResults;
-
+	@PostConstruct
+	public void setup() {
 		OrderCart.booksInCard = new ArrayList<>();
 		OrderCart.prices = new ArrayList<>();
 		OrderCart.prices.add("111");
 		OrderCart.prices.add("222");
 		OrderCart.prices.add("333");
+	}
+
+	public Template sendListBooks(String keyword) throws MessengerApiException, MessengerIOException, IOException {
+
+		List<Book> searchResults = readAll(keyword);
+
+		OrderCart.searchBooks = searchResults;
 
 		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate
 				.newBuilder(TopElementStyle.LARGE).addElements();
