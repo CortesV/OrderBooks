@@ -75,13 +75,13 @@ public class TemplateService {
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
-		/*final List<QuickReply> quickReplies = QuickReply.newListBuilder()
+		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList().build();
 
-		callBackHandler.getSendClient().sendTextMessage(recipientId, "", quickReplies);*/
+		callBackHandler.getSendClient().sendTextMessage(recipientId, "", quickReplies);
 	}
 
 	public void showBook(String recipientId) throws MessengerApiException, MessengerIOException, IOException {
