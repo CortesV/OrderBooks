@@ -151,9 +151,9 @@ public class CallBackHandler {
 
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
-
+			sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
 			//try {
-				switch (messageText.toLowerCase()) {
+				/*switch (messageText.toLowerCase()) {
 
 				case "yo":
 					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
