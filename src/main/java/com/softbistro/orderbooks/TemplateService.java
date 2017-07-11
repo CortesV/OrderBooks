@@ -40,7 +40,8 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 		
-		/*List<Book> searchResults = templateController.getCatalog();
+		List<Book> searchResults = templateController.getCatalog();
+		CardBooks.searchResults = searchResults;
 		ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
 				builder = builder.addElement(book.getTitle())
@@ -48,11 +49,11 @@ public class TemplateService {
 		}
 		
 		final ListTemplate genericTemplate2 = builder.done().build();
-		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);*/
+		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 		
-		List<Book> search = templateController.getCatalog();
+		//List<Book> search = templateController.getCatalog();
 		
-		List<Book> searchResults = new ArrayList<>();
+		/*List<Book> searchResults = new ArrayList<>();
 		searchResults = new ArrayList<>();
 
 		List<String> authors = new ArrayList<>();
@@ -88,7 +89,7 @@ public class TemplateService {
 				.subtitle("Author " + authors.get(2) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
 				.imageUrl(searchResults.get(2).getImageUrl()).toList().addElement(searchResults.get(3).getTitle())
 				.subtitle("Author " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
-				.imageUrl(searchResults.get(3).getImageUrl()).toList().done().build();
+				.imageUrl(searchResults.get(3).getImageUrl()).toList().done().build();*/
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
