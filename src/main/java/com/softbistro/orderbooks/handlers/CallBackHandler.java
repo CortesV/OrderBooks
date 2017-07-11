@@ -1,4 +1,4 @@
-package com.softbistro.orderbooks;
+package com.softbistro.orderbooks.handlers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -37,10 +37,10 @@ import com.github.messenger4j.send.NotificationType;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.Recipient;
 import com.github.messenger4j.send.SenderAction;
-import com.github.messenger4j.send.templates.GenericTemplate;
+import com.github.messenger4j.send.templates.Template;
 import com.softbistro.orderbooks.components.entity.Book;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
+import com.softbistro.orderbooks.controllers.TemplateController;
+import com.softbistro.orderbooks.service.TemplateService;
 
 @RestController
 @RequestMapping("/callback")
@@ -48,7 +48,6 @@ public class CallBackHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(CallBackHandler.class);
 
-	private static final String RESOURCE_URL = "https://raw.githubusercontent.com/fbsamples/messenger-platform-samples/master/node/public";
 	public static final String GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION";
 	public static final String GOOD_ACTION_PRICE = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_PRICE";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
@@ -58,9 +57,100 @@ public class CallBackHandler {
 
 	@Autowired
 	private TemplateService templateService;
-	
+
 	@Autowired
 	private TemplateController templateController;
+	private TextMessageEventHandler newTextMessageEventHandler() throws MessengerIOException, IOException {
+		return event -> {
+			logger.debug("Received TextMessageEvent: {}", event);
+
+			final String messageId = event.getMid();
+			final String messageText = event.getText();
+			final String senderId = event.getSender().getId();
+			final Date timestamp = event.getTimestamp();
+
+			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
+					timestamp);
+			try {
+				switch (messageText.toLowerCase()) {
+
+				case "yo":
+					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
+					break;
+
+				case "y":
+					List<Book> searchResults = templateController.getCatalog();
+					sendTextMessage(senderId,
+							searchResults.get(0).getAuthors().get(0) + " " + searchResults.get(1).getAuthors().get(0)
+									+ " " + searchResults.get(2).getAuthors().get(0));
+					break;
+
+				default:
+					sendAction(senderId, SenderAction.MARK_SEEN);
+					sendAction(senderId, SenderAction.TYPING_ON);
+					sendTemplate(senderId, templateService.sendListBooks(messageText));
+					sendQuickReply(senderId, "You can watch details each of books",
+							templateService.sendQuickReplyListBooks());
+					sendAction(senderId, SenderAction.TYPING_OFF);
+				}
+			} catch (MessengerApiException | MessengerIOException e) {
+				handleSendException(e);
+			} catch (IOException e) {
+				handleIOException(e);
+			}
+		};
+	}
+
+	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendImageAttachment(recipientId, gif);
+	}
+
+	private void sendQuickReply(String recipientId, String message, List<QuickReply> quickReplies)
+			throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendTextMessage(recipientId, message, quickReplies);
+	}
+
+	private void sendAction(String recipientId, SenderAction action) throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendSenderAction(recipientId, action);
+	}
+
+	private void sendTemplate(String recipientId, Template template)
+			throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendTemplate(recipientId, template);
+	}
+
+	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
+		return event -> {
+			logger.debug("Received QuickReplyMessageEvent: {}", event);
+
+			final String senderId = event.getSender().getId();
+			final String messageId = event.getMid();
+			final String quickReplyPayload = event.getQuickReply().getPayload();
+
+			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
+
+			try {
+				if (quickReplyPayload.equals(GOOD_ACTION)) {
+					templateService.saveCheckedBook(event.getText());
+					sendTemplate(senderId, templateService.showBook());
+					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
+					// CardBooks.setChoosePrice(event.getText());
+					// sendTextMessage(senderId, CardBooks.getChoosePrice());
+					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
+					sendTemplate(senderId, templateService.showChooseBooks());
+				}
+
+			} catch (MessengerApiException e) {
+				handleSendException(e);
+			} catch (MessengerIOException e) {
+				handleIOException(e);
+			} catch (IOException e) {
+				handleIOException(e);
+			}
+		};
+	}
 
 	/**
 	 * Constructs the {@code CallBackHandler} and initializes the
@@ -80,7 +170,7 @@ public class CallBackHandler {
 	@Autowired
 	public CallBackHandler(@Value("${messenger4j.appSecret}") final String appSecret,
 			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient)
-			throws MessengerIOException, IOException {
+					throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
@@ -133,102 +223,6 @@ public class CallBackHandler {
 			logger.warn("Processing of callback payload failed: {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-	}
-
-	private TextMessageEventHandler newTextMessageEventHandler() throws MessengerIOException, IOException {
-		return event -> {
-			logger.debug("Received TextMessageEvent: {}", event);
-
-			final String messageId = event.getMid();
-			final String messageText = event.getText();
-			final String senderId = event.getSender().getId();
-			final Date timestamp = event.getTimestamp();
-
-			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
-					timestamp);
-			try {
-				switch (messageText.toLowerCase()) {
-
-				case "yo":
-					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");					
-					break;
-					
-				case "y":
-					List<Book> searchResults = templateController.getCatalog();
-					sendTextMessage(senderId, searchResults.get(0).getAuthors().get(0) + " " + searchResults.get(1).getAuthors().get(0)+ " "+ searchResults.get(2).getAuthors().get(0));
-					break;
-
-				default:
-					sendReadReceipt(senderId);
-					sendTypingOn(senderId);
-					templateService.sendListBooks(senderId, messageText);
-					templateService.sendQuickReplyListBooks(senderId);
-					sendTypingOff(senderId);
-				}
-			} catch (MessengerApiException | MessengerIOException e) {
-				handleSendException(e);
-			} catch (IOException e) {
-				handleIOException(e);
-			}
-		};
-	}
-
-	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendImageAttachment(recipientId, gif);
-	}
-
-	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
-		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().build();
-		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
-	}
-
-	private void sendReadReceipt(String recipientId) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendSenderAction(recipientId, SenderAction.MARK_SEEN);
-	}
-
-	private void sendTypingOn(String recipientId) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendSenderAction(recipientId, SenderAction.TYPING_ON);
-	}
-
-	private void sendTypingOff(String recipientId) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendSenderAction(recipientId, SenderAction.TYPING_OFF);
-	}
-
-	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
-		return event -> {
-			logger.debug("Received QuickReplyMessageEvent: {}", event);
-
-			final String senderId = event.getSender().getId();
-			final String messageId = event.getMid();
-			final String quickReplyPayload = event.getQuickReply().getPayload();
-
-			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
-
-			Boolean watchBook = true;
-			try {
-				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					templateService.saveCheckedBook(event.getText());
-					templateService.showBook(senderId);
-					templateService.sendQuickReplyPrice(senderId);
-				} else {
-					watchBook = false;
-				}
-				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					// CardBooks.setChoosePrice(event.getText());
-					// sendTextMessage(senderId, CardBooks.getChoosePrice());
-					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					templateService.showChooseBooks(senderId);
-				}
-
-			} catch (MessengerApiException e) {
-				handleSendException(e);
-			} catch (MessengerIOException e) {
-				handleIOException(e);
-			} catch (IOException e) {
-				handleIOException(e);
-			}
-		};
 	}
 
 	private PostbackEventHandler newPostbackEventHandler() {
@@ -354,28 +348,4 @@ public class CallBackHandler {
 		logger.error("Could not open Spring.io page. An unexpected error occurred.", e);
 	}
 
-	private GenericTemplate readAll(String url) {
-		return Client.create().resource(url).get(new GenericType<GenericTemplate>() {
-		});
-	}
-
-	public MessengerReceiveClient getReceiveClient() {
-		return receiveClient;
-	}
-
-	public MessengerSendClient getSendClient() {
-		return sendClient;
-	}
-
-	public static String getGoodAction() {
-		return GOOD_ACTION;
-	}
-
-	public static String getNotGoodAction() {
-		return NOT_GOOD_ACTION;
-	}
-
-	public static String getGoodActionPrice() {
-		return GOOD_ACTION_PRICE;
-	}
 }
