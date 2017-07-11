@@ -221,7 +221,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
-					sendTextMessage(senderId, event.getText();
+					sendTextMessage(senderId, event.getText());
 				} else {
 					watchBook = false;
 				}
