@@ -82,20 +82,31 @@ public class TemplateService {
 		
 		CardBooks.searchResults = searchResults;
 		
-		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement(CardBooks.searchResults.get(0).getTitle().substring(0, 5))
-				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
-				.imageUrl(CardBooks.searchResults.get(0).getImageUrl())
-				.toList()
-				.addElement(CardBooks.searchResults.get(1).getTitle().substring(0, 5))
-				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
-				.imageUrl(CardBooks.searchResults.get(1).getImageUrl())
-				.toList()
-				.addElement(CardBooks.searchResults.get(2).getTitle().substring(0, 5))
-				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
-				.imageUrl(CardBooks.searchResults.get(2).getImageUrl())
-				.toList()
-				.done().build();
+		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
+		for(Book book : searchResults){
+				builder = builder
+						.addElement(book.getTitle())
+						.subtitle("Author " + book.getAuthors().get(0) + "\nISBN " + book.getIsbn())
+						.imageUrl(book.getImageUrl())
+						.toList();
+		}
+		
+		final ListTemplate genericTemplate2 = builder.done().build();
+		
+//		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
+//				.addElement(CardBooks.searchResults.get(0).getTitle().substring(0, 5))
+//				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
+//				.imageUrl(CardBooks.searchResults.get(0).getImageUrl())
+//				.toList()
+//				.addElement(CardBooks.searchResults.get(1).getTitle().substring(0, 5))
+//				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
+//				.imageUrl(CardBooks.searchResults.get(1).getImageUrl())
+//				.toList()
+//				.addElement(CardBooks.searchResults.get(2).getTitle().substring(0, 5))
+//				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
+//				.imageUrl(CardBooks.searchResults.get(2).getImageUrl())
+//				.toList()
+//				.done().build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
