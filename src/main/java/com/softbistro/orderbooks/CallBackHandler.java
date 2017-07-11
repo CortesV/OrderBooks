@@ -58,6 +58,9 @@ public class CallBackHandler {
 
 	@Autowired
 	private TemplateService templateService;
+	
+	@Autowired
+	private TemplateController templateController;
 
 	/**
 	 * Constructs the {@code CallBackHandler} and initializes the
@@ -151,7 +154,7 @@ public class CallBackHandler {
 					break;
 					
 				case "y":
-					List<Book> searchResults = templateService.readAll(messageText);
+					List<Book> searchResults = templateController.getCatalog();
 					sendTextMessage(senderId, searchResults.size() + "");
 					break;
 
