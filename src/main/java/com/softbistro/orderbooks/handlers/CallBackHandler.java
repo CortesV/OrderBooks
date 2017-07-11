@@ -81,10 +81,9 @@ public class CallBackHandler {
 					break;
 
 				case "y":
-					List<Book> searchResults = templateController.getCatalog();
+					List<Book> searchResults = OrderCart.booksInCard;
 					sendTextMessage(senderId,
-							searchResults.get(0).getAuthors().get(0) + " " + searchResults.get(1).getAuthors().get(0)
-									+ " " + searchResults.get(2).getAuthors().get(0));
+							searchResults.get(0).getIsbn() + " " + searchResults.get(1).getIsbn());
 					break;
 
 				default:
@@ -115,7 +114,7 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					templateService.saveCheckedBook(event.getText());					
+					templateService.saveCheckedBook(event.getText());
 					sendTemplate(senderId, templateService.showBook());
 					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
@@ -133,7 +132,7 @@ public class CallBackHandler {
 			}
 		};
 	}
-	
+
 	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendImageAttachment(recipientId, gif);
 	}
