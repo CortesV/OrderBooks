@@ -128,7 +128,7 @@ public class TemplateService {
 	public void saveCardBooks(String price) {
 		Book checkedBook = OrderCart.chooseBook;
 		OrderCart.booksInCard.add(checkedBook);
-		OrderCart.chooseBook = checkedBook;
+		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = price;
 	}
 
