@@ -79,7 +79,7 @@ public class TemplateService {
 		
 //				templateController.getCatalog();
 		
-//		CardBooks.searchResults = searchResults;
+		CardBooks.searchResults = searchResults;
 		
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
