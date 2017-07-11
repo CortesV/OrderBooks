@@ -126,7 +126,7 @@ public class TemplateService {
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
 		//TODO rewrite keyword
-		WebResource wr = client.resource("http://demo2668900.mockable.io/catalog/biology");
+		WebResource wr = client.resource("http://demo2668900.mockable.io/catalog/" + keyword);
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
 		jsonText = response.getEntity(String.class);
