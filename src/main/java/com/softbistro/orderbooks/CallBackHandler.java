@@ -1,10 +1,8 @@
 package com.softbistro.orderbooks;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +37,8 @@ import com.github.messenger4j.send.NotificationType;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.Recipient;
 import com.github.messenger4j.send.SenderAction;
-import com.github.messenger4j.send.buttons.Button;
 import com.github.messenger4j.send.templates.GenericTemplate;
-import com.github.messenger4j.send.templates.ListTemplate;
-import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
-import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.Book;
-import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 
@@ -199,7 +192,7 @@ public class CallBackHandler {
 	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
 		return event -> {
 			logger.debug("Received QuickReplyMessageEvent: {}", event);
-			
+
 			final String senderId = event.getSender().getId();
 			final String messageId = event.getMid();
 			final String quickReplyPayload = event.getQuickReply().getPayload();
@@ -208,7 +201,7 @@ public class CallBackHandler {
 
 			Boolean watchBook = true;
 			try {
-				if (quickReplyPayload.equals(GOOD_ACTION)) {			
+				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.saveCheckedBook(event.getText());
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
@@ -216,11 +209,11 @@ public class CallBackHandler {
 					watchBook = false;
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					//CardBooks.setChoosePrice(event.getText());
-					//sendTextMessage(senderId, CardBooks.getChoosePrice());
-					//CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					templateService.showChooseBooks(senderId);			
-				} 
+					// CardBooks.setChoosePrice(event.getText());
+					// sendTextMessage(senderId, CardBooks.getChoosePrice());
+					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
+					templateService.showChooseBooks(senderId);
+				}
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
@@ -379,118 +372,4 @@ public class CallBackHandler {
 	public static String getGoodActionPrice() {
 		return GOOD_ACTION_PRICE;
 	}
-
-	private void sendSpringDoc(String recipientId, String keyword)
-			throws MessengerApiException, MessengerIOException, IOException {
-
-		List<SearchResult> searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResults.stream().limit(4).collect(Collectors.toList());
-
-		List<Button> firstLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		List<Button> secondLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		List<Button> thirdLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-
-		final GenericTemplate genericTemplate = GenericTemplate.newBuilder().addElements()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49").itemUrl("http://www.chegg.com/books")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
-				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.itemUrl("http://www.chegg.com/books")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.itemUrl("http://www.chegg.com/books")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().done().build();
-
-		searchResults = new ArrayList<>();
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-
-		firstLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
-				.toList().build();
-		secondLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
-				.toList().build();
-		thirdLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
-				.toList().build();
-
-		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
-				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().done().build();
-
-		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
-				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
-				.orderUrl(
-						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
-				.quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
-				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
-				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
-				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
-				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
-				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
-				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
-
-		this.sendClient.sendTemplate(recipientId, genericTemplate);
-		this.sendClient.sendTemplate(recipientId, genericTemplate2);
-		this.sendClient.sendTemplate(recipientId, genericTemplate3);
-	}
-
 }

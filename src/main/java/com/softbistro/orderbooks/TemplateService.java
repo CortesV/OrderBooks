@@ -70,7 +70,7 @@ public class TemplateService {
 		
 		
 		
-		List<Book> searchResults = readAll();
+		List<Book> searchResults = readAll(keyword);
 		
 		CardBooks.searchResults = searchResults;
 		
@@ -177,13 +177,13 @@ public class TemplateService {
 		CardBooks.choosePrice = price;
 	}
 	
-	public List<Book> readAll() throws JsonParseException, JsonMappingException, IOException {
+	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
-		WebResource wr = client.resource("http://80.91.191.79:19200/catalog");
+		WebResource wr = client.resource("http://80.91.191.79:19200/catalog/" + keyword);
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
 		jsonText = response.getEntity(String.class);
