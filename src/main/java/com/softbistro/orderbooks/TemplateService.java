@@ -15,8 +15,8 @@ import com.github.messenger4j.receive.handlers.QuickReplyMessageEventHandler;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
+import com.softbistro.orderbooks.components.entity.Book;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
-import com.softbistro.orderbooks.components.entity.SearchResult;
 
 @Service
 public class TemplateService {
@@ -29,50 +29,44 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		List<SearchResult> searchResults = new ArrayList<>();
+		List<Book> searchResults = new ArrayList<>();
 		searchResults = new ArrayList<>();
-		SearchResult searchResult = new SearchResult("Biology",
+
+		List<String> authors = new ArrayList<>();
+		authors.add("Author1");
+		authors.add("Author2");
+		authors.add("Author3");
+		authors.add("Author4");
+
+		Book searchResult = new Book("1", "Biology", "akfdgdygaihfsd",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
+				authors);
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
+		
+		searchResult = new Book("2", "Biology2", "11111213123123",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
+				authors);
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
+		
+		searchResult = new Book("3", "Biolog3", "456985746",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
+				authors);
 		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
+		
+		searchResult = new Book("4", "Biology4", "7987806",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
-		searchResults.add(searchResult);
-		searchResult = new SearchResult("Biology",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				"12th edition", "$19.49");
+				authors);
 		searchResults.add(searchResult);
 
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
-				.addElement("Biology 12th edition").subtitle("Rent $19.49")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
+				.addElement(searchResults.get(0).getTitle()).subtitle("Author " + authors.get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
+				.imageUrl(searchResults.get(0).getImageUrl()).toList()
+				.addElement(searchResults.get(1).getTitle()).subtitle("Author " + authors.get(1) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
+				.imageUrl(searchResults.get(1).getImageUrl()).toList()
+				.addElement(searchResults.get(2).getTitle()).subtitle("Author " + authors.get(2) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
+				.imageUrl(searchResults.get(2).getImageUrl()).toList()
+				.addElement(searchResults.get(3).getTitle()).subtitle("Author " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
+				.imageUrl(searchResults.get(3).getImageUrl()).toList().done()
 				.build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
