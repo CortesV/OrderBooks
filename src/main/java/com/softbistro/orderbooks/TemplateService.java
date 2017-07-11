@@ -30,6 +30,9 @@ public class TemplateService {
 
 	@Autowired
 	private CallBackHandler callBackHandler;
+	
+	@Autowired
+	private TemplateController templateController;
 
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
@@ -70,7 +73,7 @@ public class TemplateService {
 		
 		
 		
-		List<Book> searchResults = readAll(keyword);
+		List<Book> searchResults = templateController.getCatalog();
 		
 		CardBooks.searchResults = searchResults;
 		
