@@ -117,13 +117,14 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.saveCheckedBook(event.getText());					
 					sendTemplate(senderId, templateService.showBook());
-					//sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
+					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
+					templateService.saveCheckedBook(event.getText());
 					// CardBooks.setChoosePrice(event.getText());
 					// sendTextMessage(senderId, CardBooks.getChoosePrice());
 					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					sendTemplate(senderId, templateService.showChooseBooks());
+					//sendTemplate(senderId, templateService.showChooseBooks());
 				}
 
 			} catch (MessengerApiException e) {

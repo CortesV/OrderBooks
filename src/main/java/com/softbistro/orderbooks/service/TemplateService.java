@@ -90,8 +90,7 @@ public class TemplateService {
 				.addTextQuickReply("111", CallBackHandler.GOOD_ACTION_PRICE).toList()
 				.addTextQuickReply("222", CallBackHandler.GOOD_ACTION_PRICE).toList()
 				.addTextQuickReply("333", CallBackHandler.GOOD_ACTION_PRICE).toList()
-				.addTextQuickReply("444", CallBackHandler.GOOD_ACTION_PRICE).toList()
-				.addTextQuickReply("No, thank's", CallBackHandler.GOOD_ACTION).toList().build();
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
 	public void saveCheckedBook(String title) {
