@@ -53,7 +53,7 @@ public class TemplateService {
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement(OrderCart.chooseBook.getTitle(), 50F).subtitle("Rent $19.49")
+				.timestamp(1428444852L).addElements().addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 50F).subtitle("Rent $19.49")
 				.quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()

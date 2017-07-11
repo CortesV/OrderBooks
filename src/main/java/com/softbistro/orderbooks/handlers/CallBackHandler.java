@@ -116,7 +116,7 @@ public class CallBackHandler {
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.saveCheckedBook(event.getText());					
-					//sendTemplate(senderId, templateService.showBook());
+					sendTemplate(senderId, templateService.showBook());
 					//sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
