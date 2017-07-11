@@ -10,6 +10,7 @@ public class Book {
 	private String imageUrl;
 	private String price;
 	private List<String> authors;
+	private static List<Book> searchResults;
 
 	public Book(String id, String title, String isbn, String ean, String imageUrl, List<String> authors) {
 
@@ -70,6 +71,14 @@ public class Book {
 
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
+	}
+
+	public static List<Book> getSearchResults() {
+		return searchResults;
+	}
+
+	public static void setSearchResults(List<Book> searchResults) {
+		Book.searchResults = searchResults;
 	}
 
 }
