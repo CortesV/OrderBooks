@@ -45,7 +45,6 @@ import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.Book;
-import com.softbistro.orderbooks.components.entity.CardBooks;
 import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
@@ -159,7 +158,8 @@ public class CallBackHandler {
 					break;
 
 				case "great":
-					sendTextMessage(senderId, "You're welcome :) keep rocking");
+					List<Book> searchResults = templateService.readAll();
+					sendTextMessage(senderId, searchResults.size() + "");
 					break;
 
 				case "java":
