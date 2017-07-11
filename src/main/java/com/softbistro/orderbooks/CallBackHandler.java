@@ -218,17 +218,12 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
-
 					try {
 						templateService.showBook(senderId);
-						sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					} catch (IOException e) {
 						handleIOException(e);
 					}
-					
-
-				} else
-					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
+				}
 			} catch (MessengerApiException e) {
 				handleSendException(e);
 			} catch (MessengerIOException e) {
