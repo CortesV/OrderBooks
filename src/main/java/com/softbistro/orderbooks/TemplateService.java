@@ -149,10 +149,10 @@ public class TemplateService {
 
 	public void sendQuickReplyPrice(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
-				.addTextQuickReply("Price1", callBackHandler.getGoodActionPrice()).toList()
-				.addTextQuickReply("Price2", callBackHandler.getGoodActionPrice()).toList()
-				.addTextQuickReply("Price3", callBackHandler.getGoodActionPrice()).toList()
-				.addTextQuickReply("Price4", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("111", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("222", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("333", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("444", callBackHandler.getGoodActionPrice()).toList()
 				.addTextQuickReply("No, thank's", callBackHandler.getNotGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "Choose price of books", quickReplies);
 	}

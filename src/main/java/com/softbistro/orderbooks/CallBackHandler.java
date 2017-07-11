@@ -232,7 +232,7 @@ public class CallBackHandler {
 					CardBooks.setChoosePrice(event.getText());
 					sendTextMessage(senderId, CardBooks.getChoosePrice());
 					CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					//templateService.showChooseBooks(senderId);			
+					templateService.showChooseBooks(senderId);			
 				} 
 
 			} catch (MessengerApiException e) {
