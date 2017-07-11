@@ -73,12 +73,4 @@ public class Book {
 		this.authors = authors;
 	}
 
-	public static List<Book> getSearchResults() {
-		return searchResults;
-	}
-
-	public static void setSearchResults(List<Book> searchResults) {
-		Book.searchResults = searchResults;
-	}
-
 }

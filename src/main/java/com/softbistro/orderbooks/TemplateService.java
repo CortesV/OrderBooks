@@ -134,10 +134,10 @@ public class TemplateService {
 
 	public void sendQuickReplyListBooks(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
-				.addTextQuickReply(Book.getSearchResults().get(0).getTitle(), callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply(Book.getSearchResults().get(1).getTitle(), callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply(Book.getSearchResults().get(2).getTitle(), callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply(Book.getSearchResults().get(3).getTitle(), callBackHandler.getGoodAction()).toList().build();
+				.addTextQuickReply(CardBooks.searchResults.get(0).getTitle(), callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply(CardBooks.searchResults.get(1).getTitle(), callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply(CardBooks.searchResults.get(2).getTitle(), callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply(CardBooks.searchResults.get(3).getTitle(), callBackHandler.getGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "You can watch details each of books",
 				quickReplies);
 	}
@@ -154,18 +154,18 @@ public class TemplateService {
 
 	public void saveCheckedBook(String title) {
 		Book checkedBook = null;
-		String first = Book.getSearchResults().get(0).getTitle();
-		String second = Book.getSearchResults().get(1).getTitle();
-		String third = Book.getSearchResults().get(2).getTitle();
-		String fourth = Book.getSearchResults().get(3).getTitle();
+		String first = CardBooks.searchResults.get(0).getTitle();
+		String second = CardBooks.searchResults.get(1).getTitle();
+		String third = CardBooks.searchResults.get(2).getTitle();
+		String fourth = CardBooks.searchResults.get(3).getTitle();
 		if (title.equals(first)) {
-			checkedBook = Book.getSearchResults().get(0);
+			checkedBook = CardBooks.searchResults.get(0);
 		} else if (title.equals(second)) {
-			checkedBook = Book.getSearchResults().get(1);
+			checkedBook = CardBooks.searchResults.get(1);
 		} else if (title.equals(third)) {
-			checkedBook = Book.getSearchResults().get(2);
+			checkedBook = CardBooks.searchResults.get(2);
 		} else if (title.equals(fourth)) {
-			checkedBook = Book.getSearchResults().get(3);
+			checkedBook = CardBooks.searchResults.get(3);
 		}
 		CardBooks.chooseBook = checkedBook;
 	}
