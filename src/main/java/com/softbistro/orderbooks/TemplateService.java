@@ -55,30 +55,30 @@ public class TemplateService {
 //		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);		
 //		List<Book> search = templateController.getCatalog();
 		
-		List<Book> searchResults = new ArrayList<>();
-		searchResults = new ArrayList<>();
-
-		List<String> authors = new ArrayList<>();
-		authors.add("Author1");
-		authors.add("Author2");
-		authors.add("Author3");
-		authors.add("Author4");
-
-		Book searchResult = new Book("1", "Biology", "akfdgdygaihfsd", "ean",
-				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
-		searchResults.add(searchResult);
-
-		searchResult = new Book("2", "Biology2", "11111213123123", "ean",
-				"http://cs.cheggcdn.com/covers2/42040000/42044766_1388990605.jpg", authors);
-		searchResults.add(searchResult);
-
-		searchResult = new Book("3", "Biolog3", "456985746", "ean",
-				"http://cs.cheggcdn.com/covers2/21660000/21660265_1467822671.jpg", authors);
-		searchResults.add(searchResult);
-
-		searchResult = new Book("4", "Biology4", "7987806", "ean",
-				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
-		searchResults.add(searchResult);
+		List<Book> searchResults = templateController.getCatalog();
+//		searchResults = new ArrayList<>();
+//
+//		List<String> authors = new ArrayList<>();
+//		authors.add("Author1");
+//		authors.add("Author2");
+//		authors.add("Author3");
+//		authors.add("Author4");
+//
+//		Book searchResult = new Book("1", "Biology", "akfdgdygaihfsd", "ean",
+//				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
+//		searchResults.add(searchResult);
+//
+//		searchResult = new Book("2", "Biology2", "11111213123123", "ean",
+//				"http://cs.cheggcdn.com/covers2/42040000/42044766_1388990605.jpg", authors);
+//		searchResults.add(searchResult);
+//
+//		searchResult = new Book("3", "Biolog3", "456985746", "ean",
+//				"http://cs.cheggcdn.com/covers2/21660000/21660265_1467822671.jpg", authors);
+//		searchResults.add(searchResult);
+//
+//		searchResult = new Book("4", "Biology4", "7987806", "ean",
+//				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
+//		searchResults.add(searchResult);
 		
 		CardBooks.searchResults = searchResults;
 		
