@@ -209,7 +209,7 @@ public class CallBackHandler {
 	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
 		return event -> {
 			logger.debug("Received QuickReplyMessageEvent: {}", event);
-
+			
 			final String senderId = event.getSender().getId();
 			final String messageId = event.getMid();
 			final String quickReplyPayload = event.getQuickReply().getPayload();
@@ -221,6 +221,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
+					sendTextMessage(senderId, event.getText();
 				} else {
 					watchBook = false;
 				}
