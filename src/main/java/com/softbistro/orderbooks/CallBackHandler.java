@@ -234,8 +234,8 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					CardBooks.setChoosePrice(event.getText());
-					templateService.showChooseBooks(senderId);
 					sendTextMessage(senderId, event.getText());
+					templateService.showChooseBooks(senderId);					
 				} else {
 					watchBook = false;
 				}
