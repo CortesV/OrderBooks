@@ -40,18 +40,20 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 		
-		List<Book> searchResultss = readAll(keyword);
-		/*CardBooks.searchResults = searchResults;
-		ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
+		List<Book> searchResults = templateController.getCatalog();
+		CardBooks.searchResults = searchResults;
+		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
-				builder = builder.addElement(book.getTitle())
-				.subtitle("Author " + book.getAuthors().get(0) + "\n" + "ISBN " + book.getIsbn()).imageUrl(book.getImageUrl()).toList();
+				builder = builder
+						.addElement(book.getTitle())
+						.subtitle("Author " + book.getAuthors().get(0) + "\nISBN " + book.getIsbn())
+						.imageUrl(book.getImageUrl())
+						.toList();
 		}
 		
 		final ListTemplate genericTemplate2 = builder.done().build();
-		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);*/
-		
-		List<Book> search = templateController.getCatalog();
+		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);		
+		/*List<Book> search = templateController.getCatalog();
 		
 		List<Book> searchResults = new ArrayList<>();
 		searchResults = new ArrayList<>();
@@ -90,7 +92,7 @@ public class TemplateService {
 				.imageUrl(searchResults.get(2).getImageUrl()).toList().addElement(searchResults.get(3).getTitle())
 				.subtitle("Author " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
 				.imageUrl(searchResults.get(3).getImageUrl()).toList().done().build();
-
+*/
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
 	}
