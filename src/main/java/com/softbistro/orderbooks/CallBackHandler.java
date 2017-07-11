@@ -45,7 +45,6 @@ import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.SearchResult;
-import com.softbistro.orderbooks.components.entity.TemplateService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 
@@ -86,9 +85,9 @@ public class CallBackHandler {
 			throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
-		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
+		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(aSppSecret, verifyToken)
 				.onTextMessageEvent(newTextMessageEventHandler())
-				.onQuickReplyMessageEvent(newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
+				.onQuickReplyMessageEvent(templateService.newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
 				.onAccountLinkingEvent(newAccountLinkingEventHandler()).onOptInEvent(newOptInEventHandler())
 				.onEchoMessageEvent(newEchoMessageEventHandler())
 				.onMessageDeliveredEvent(newMessageDeliveredEventHandler())
@@ -184,11 +183,11 @@ public class CallBackHandler {
 		};
 	}
 
-	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
+	public void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendImageAttachment(recipientId, gif);
 	}
 
-	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
+	public void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
 				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().build();
 		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
@@ -204,34 +203,6 @@ public class CallBackHandler {
 
 	private void sendTypingOff(String recipientId) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendSenderAction(recipientId, SenderAction.TYPING_OFF);
-	}
-
-	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
-		return event -> {
-			logger.debug("Received QuickReplyMessageEvent: {}", event);
-
-			final String senderId = event.getSender().getId();
-			final String messageId = event.getMid();
-			final String quickReplyPayload = event.getQuickReply().getPayload();
-
-			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
-
-			try {
-				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					try {
-						templateService.showBook(senderId);
-					} catch (IOException e) {
-						handleIOException(e);
-					}
-				}
-			} catch (MessengerApiException e) {
-				handleSendException(e);
-			} catch (MessengerIOException e) {
-				handleIOException(e);
-			}
-
-			sendTextMessage(senderId, "Let's try another one :D!");
-		};
 	}
 
 	private PostbackEventHandler newPostbackEventHandler() {
@@ -337,7 +308,7 @@ public class CallBackHandler {
 		};
 	}
 
-	private void sendTextMessage(String recipientId, String text) {
+	public void sendTextMessage(String recipientId, String text) {
 		try {
 			final Recipient recipient = Recipient.newBuilder().recipientId(recipientId).build();
 			final NotificationType notificationType = NotificationType.REGULAR;
@@ -349,11 +320,11 @@ public class CallBackHandler {
 		}
 	}
 
-	private void handleSendException(Exception e) {
+	public void handleSendException(Exception e) {
 		logger.error("Message could not be sent. An unexpected error occurred.", e);
 	}
 
-	private void handleIOException(Exception e) {
+	public void handleIOException(Exception e) {
 		logger.error("Could not open Spring.io page. An unexpected error occurred.", e);
 	}
 

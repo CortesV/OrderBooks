@@ -1,22 +1,27 @@
-package com.softbistro.orderbooks.components.entity;
+package com.softbistro.orderbooks;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.messenger4j.exceptions.MessengerApiException;
 import com.github.messenger4j.exceptions.MessengerIOException;
+import com.github.messenger4j.receive.handlers.QuickReplyMessageEventHandler;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
-import com.softbistro.orderbooks.CallBackHandler;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
+import com.softbistro.orderbooks.components.entity.SearchResult;
 
 @Service
 public class TemplateService {
+
+	private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
 
 	@Autowired
 	private CallBackHandler callBackHandler;
@@ -98,5 +103,36 @@ public class TemplateService {
 				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
+	}
+
+	public QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
+		return event -> {
+			logger.debug("Received QuickReplyMessageEvent: {}", event);
+
+			final String senderId = event.getSender().getId();
+			final String messageId = event.getMid();
+			final String quickReplyPayload = event.getQuickReply().getPayload();
+
+			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
+
+			Boolean watchBook = true;
+			while (watchBook) {
+				try {
+					if (quickReplyPayload.equals(callBackHandler.getGoodAction())) {
+						showBook(senderId);
+						callBackHandler.sendTextMessage(senderId, "Let's try another one :D!");
+						sendQuickReply(senderId);
+					} else {
+						watchBook = false;
+					}
+				} catch (MessengerApiException e) {
+					callBackHandler.handleSendException(e);
+				} catch (MessengerIOException e) {
+					callBackHandler.handleIOException(e);
+				} catch (IOException e) {
+					callBackHandler.handleIOException(e);
+				}
+			}
+		};
 	}
 }
