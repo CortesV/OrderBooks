@@ -1,13 +1,44 @@
 package com.softbistro.orderbooks;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.messenger4j.MessengerPlatform;
 import com.github.messenger4j.exceptions.MessengerApiException;
 import com.github.messenger4j.exceptions.MessengerIOException;
 import com.github.messenger4j.exceptions.MessengerVerificationException;
 import com.github.messenger4j.receive.MessengerReceiveClient;
 import com.github.messenger4j.receive.events.AccountLinkingEvent;
-import com.github.messenger4j.receive.handlers.*;
-import com.github.messenger4j.send.*;
+import com.github.messenger4j.receive.handlers.AccountLinkingEventHandler;
+import com.github.messenger4j.receive.handlers.EchoMessageEventHandler;
+import com.github.messenger4j.receive.handlers.FallbackEventHandler;
+import com.github.messenger4j.receive.handlers.MessageDeliveredEventHandler;
+import com.github.messenger4j.receive.handlers.MessageReadEventHandler;
+import com.github.messenger4j.receive.handlers.OptInEventHandler;
+import com.github.messenger4j.receive.handlers.PostbackEventHandler;
+import com.github.messenger4j.receive.handlers.QuickReplyMessageEventHandler;
+import com.github.messenger4j.receive.handlers.TextMessageEventHandler;
+import com.github.messenger4j.send.MessengerSendClient;
+import com.github.messenger4j.send.NotificationType;
+import com.github.messenger4j.send.QuickReply;
+import com.github.messenger4j.send.Recipient;
+import com.github.messenger4j.send.SenderAction;
 import com.github.messenger4j.send.buttons.Button;
 import com.github.messenger4j.send.templates.GenericTemplate;
 import com.github.messenger4j.send.templates.ListTemplate;
@@ -15,29 +46,7 @@ import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/callback")
@@ -51,6 +60,7 @@ public class CallBackHandler {
 
 	private final MessengerReceiveClient receiveClient;
 	private final MessengerSendClient sendClient;
+	private String message;
 
 	/**
 	 * Constructs the {@code CallBackHandler} and initializes the
@@ -157,11 +167,9 @@ public class CallBackHandler {
 				default:
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
-					// String message = new
-					// StringBuilder(messageText).reverse().toString();
-					// sendTextMessage(senderId, message);
-					sendSpringDoc(senderId, messageText);
-					//this.sendClient.sendTemplate(senderId, readAll("http://192.168.128.242:19098/template"));
+					sendListBooks(senderId, messageText);
+					// this.sendClient.sendTemplate(senderId,
+					// readAll("http://192.168.128.242:19098/template"));
 					sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
@@ -212,8 +220,7 @@ public class CallBackHandler {
 				.itemUrl("http://www.chegg.com/books")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
-		
-		
+
 		searchResults = new ArrayList<>();
 		searchResult = new SearchResult("Biology",
 				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
@@ -248,47 +255,40 @@ public class CallBackHandler {
 				"12th edition", "$19.49");
 		searchResults.add(searchResult);
 
-		firstLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		secondLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
-		thirdLink = Button.newListBuilder()
-				.addUrlButton("Biology 12th edition", searchResults.get(0).getLink()).toList().build();
+		firstLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
+				.toList().build();
+		secondLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
+				.toList().build();
+		thirdLink = Button.newListBuilder().addUrlButton("Biology 12th edition", searchResults.get(0).getLink())
+				.toList().build();
 
-		
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(firstLink)
-				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.buttons(secondLink).toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
-				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")				
+				.toList().addElement("Biology 12th edition").subtitle("Rent $19.49")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").buttons(thirdLink)
 				.toList().done().build();
-		
-		
-		final ReceiptTemplate genericTemplate3 = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345").orderUrl("http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1").timestamp(1428444852L).addElements()
+
+		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
+				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
+				.orderUrl(
+						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
+				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+				.quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
 				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.toList().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
-				.toList().done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
-				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done()
-				.addAdjustments()
-	            .addAdjustment()
-	                .name("New Customer Discount")
-	                .amount(20.00F)
-	                .toList()
-	            .addAdjustment()
-	                .name("$10 Off Coupon")
-	                .amount(10.00F)
-	            .toList()
-	        .done()
-	        .build();
-			
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition", 50F).subtitle("Rent $19.49").quantity(2).currency("USD")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
+				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
+				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
+				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
+				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
+
 		this.sendClient.sendTemplate(recipientId, genericTemplate);
 		this.sendClient.sendTemplate(recipientId, genericTemplate2);
 		this.sendClient.sendTemplate(recipientId, genericTemplate3);
@@ -300,8 +300,8 @@ public class CallBackHandler {
 
 	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().addTextQuickReply("Looks good", GOOD_ACTION)
-				.toList().addTextQuickReply("Looks good", GOOD_ACTION)
+				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList()
+				.addTextQuickReply("Looks good", GOOD_ACTION).toList().addTextQuickReply("Looks good", GOOD_ACTION)
 				.toList().build();
 
 		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
@@ -331,7 +331,12 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION))
-					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+					/*
+					 * sendGifMessage(senderId,
+					 * "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif"
+					 * );
+					 */
+					showBook(senderId);
 				else
 					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
 			} catch (MessengerApiException e) {
@@ -468,8 +473,90 @@ public class CallBackHandler {
 	}
 
 	private GenericTemplate readAll(String url) {
-		return Client.create().resource(url)
-				.get(new GenericType<GenericTemplate>() {
-				});
+		return Client.create().resource(url).get(new GenericType<GenericTemplate>() {
+		});
 	}
+
+	public void sendListBooks(String recipientId, String keyword)
+			throws MessengerApiException, MessengerIOException, IOException {
+
+		List<SearchResult> searchResults = new ArrayList<>();
+		searchResults = new ArrayList<>();
+		SearchResult searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+		searchResult = new SearchResult("Biology",
+				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
+				"12th edition", "$19.49");
+		searchResults.add(searchResult);
+
+		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
+				.addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList()
+				.addElement("Biology 12th edition").subtitle("Rent $19.49")
+				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
+				.build();
+
+		this.sendClient.sendTemplate(recipientId, genericTemplate2);
+
+		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
+				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
+				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
+				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
+				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList().build();
+
+		this.sendClient.sendTextMessage(recipientId, "", quickReplies);
+	}
+
+	public void showBook(String recipientId) throws MessengerApiException, MessengerIOException, IOException {
+		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
+				.newBuilder("Stephane Crozatier", "", "USD", "")
+				.orderUrl(
+						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
+				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+				.currency("USD").imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg")
+				.toList().done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
+				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
+				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
+
+		this.sendClient.sendTemplate(recipientId, genericTemplate3);
+	}
+
+	public MessengerReceiveClient getReceiveClient() {
+		return receiveClient;
+	}
+
+	public MessengerSendClient getSendClient() {
+		return sendClient;
+	}
+
 }
