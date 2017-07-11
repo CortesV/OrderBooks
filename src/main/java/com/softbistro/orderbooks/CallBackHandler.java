@@ -172,7 +172,7 @@ public class CallBackHandler {
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
-					templateService.sendQuickReply(senderId);
+					templateService.sendQuickReplyListBooks(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
@@ -219,6 +219,7 @@ public class CallBackHandler {
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.showBook(senderId);
+					templateService.sendQuickReplyPrice(senderId);
 				} else {
 					watchBook = false;
 				}				

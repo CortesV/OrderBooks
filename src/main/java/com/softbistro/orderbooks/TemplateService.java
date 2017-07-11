@@ -11,17 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.github.messenger4j.exceptions.MessengerApiException;
 import com.github.messenger4j.exceptions.MessengerIOException;
-import com.github.messenger4j.receive.handlers.QuickReplyMessageEventHandler;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.templates.ListTemplate;
+import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.Book;
-import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 
 @Service
 public class TemplateService {
-
-	private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
 
 	@Autowired
 	private CallBackHandler callBackHandler;
@@ -39,35 +36,40 @@ public class TemplateService {
 		authors.add("Author4");
 
 		Book searchResult = new Book("1", "Biology", "akfdgdygaihfsd",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				authors);
+				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
 		searchResults.add(searchResult);
-		
+
 		searchResult = new Book("2", "Biology2", "11111213123123",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				authors);
+				"http://cs.cheggcdn.com/covers2/42040000/42044766_1388990605.jpg", authors);
 		searchResults.add(searchResult);
-		
+
 		searchResult = new Book("3", "Biolog3", "456985746",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				authors);
+				"http://cs.cheggcdn.com/covers2/21660000/21660265_1467822671.jpg", authors);
 		searchResults.add(searchResult);
-		
+
 		searchResult = new Book("4", "Biology4", "7987806",
-				"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=1f854400&strackid=4a41bf08&ii=1",
-				authors);
+				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
 		searchResults.add(searchResult);
 
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement(searchResults.get(0).getTitle()).subtitle("Author " + authors.get(0)/* + "\n" + "ISBN " + searchResults.get(0).getIsbn()*/)
-				.imageUrl(searchResults.get(0).getImageUrl()).toList()
-				.addElement(searchResults.get(1).getTitle()).subtitle("Author " + authors.get(1)/* + "\n" + "ISBN " + searchResults.get(1).getIsbn()*/)
-				.imageUrl(searchResults.get(1).getImageUrl()).toList()
-				.addElement(searchResults.get(2).getTitle()).subtitle("Author " + authors.get(2) /*+ "\n" + "ISBN " + searchResults.get(2).getIsbn()*/)
-				.imageUrl(searchResults.get(2).getImageUrl()).toList()
-				.addElement(searchResults.get(3).getTitle()).subtitle("Author " + authors.get(3) /*+ "\n" + "ISBN " + searchResults.get(3).getIsbn()*/)
-				.imageUrl(searchResults.get(3).getImageUrl()).toList().done()
-				.build();
+				.addElement(searchResults.get(0).getTitle())
+				.subtitle("Author " + authors.get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
+				.imageUrl(searchResults.get(0).getImageUrl()).toList().addElement(searchResults.get(1).getTitle())
+				.subtitle("Author " + authors.get(
+						1)/*
+							 * + "\n" + "ISBN " + searchResults.get(1).getIsbn()
+							 */)
+				.imageUrl(searchResults.get(1).getImageUrl()).toList().addElement(searchResults.get(2).getTitle())
+				.subtitle("Author " + authors.get(
+						2) /*
+							 * + "\n" + "ISBN " + searchResults.get(2).getIsbn()
+							 */)
+				.imageUrl(searchResults.get(2).getImageUrl()).toList().addElement(searchResults.get(3).getTitle())
+				.subtitle("Author " + authors.get(
+						3) /*
+							 * + "\n" + "ISBN " + searchResults.get(3).getIsbn()
+							 */)
+				.imageUrl(searchResults.get(3).getImageUrl()).toList().done().build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
@@ -90,7 +92,16 @@ public class TemplateService {
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate3);
 	}
 
-	public void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
+	public void sendQuickReplyListBooks(String recipientId) throws MessengerApiException, MessengerIOException {
+		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
+				.addTextQuickReply("Biology1", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology3", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Biology4", callBackHandler.getGoodAction()).toList().build();
+		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
+	}
+
+	public void sendQuickReplyPrice(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
 				.addTextQuickReply("Biology1", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
