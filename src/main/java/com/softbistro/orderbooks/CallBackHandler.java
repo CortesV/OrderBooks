@@ -155,7 +155,7 @@ public class CallBackHandler {
 					
 				case "y":
 					List<Book> searchResults = templateController.getCatalog();
-					sendTextMessage(senderId, searchResults.get(0).getEan() + " " + searchResults.get(1).getEan()+ " "+ searchResults.get(2).getEan());
+					sendTextMessage(senderId, searchResults.get(0).getAuthors().get(0) + " " + searchResults.get(1).getAuthors().get(0)+ " "+ searchResults.get(2).getAuthors().get(0));
 					break;
 
 				default:
