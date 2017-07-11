@@ -137,6 +137,7 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_BUY)) {
 					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+					sendTextMessage(senderId, "Let's try another one :D!");
 				}
 				
 
