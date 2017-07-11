@@ -40,8 +40,8 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 		
-		List<Book> searchResults = templateController.getCatalog();
-		CardBooks.searchResults = searchResults;
+//		List<Book> searchResults = templateController.getCatalog();
+//		CardBooks.searchResults = searchResults;
 //		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 //		for(Book book : searchResults){
 //				builder = builder
@@ -53,7 +53,7 @@ public class TemplateService {
 //		
 //		final ListTemplate genericTemplate2 = builder.done().build();
 //		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);		
-		/*List<Book> search = templateController.getCatalog();
+//		List<Book> search = templateController.getCatalog();
 		
 		List<Book> searchResults = new ArrayList<>();
 		searchResults = new ArrayList<>();
@@ -80,8 +80,8 @@ public class TemplateService {
 				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
 		searchResults.add(searchResult);
 		
-		CardBooks.searchResults = search;
-*/
+		CardBooks.searchResults = searchResults;
+		
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(CardBooks.searchResults.get(0).getTitle().substring(0, 5))
 				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0))
