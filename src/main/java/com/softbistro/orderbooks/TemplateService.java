@@ -1,5 +1,7 @@
 package com.softbistro.orderbooks;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,7 @@ public class TemplateService {
 		searchResult = new Book("4", "Biology4", "7987806",
 				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
 		searchResults.add(searchResult);
-		
+
 		Book.setSearchResults(searchResults);
 
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
@@ -69,23 +71,29 @@ public class TemplateService {
 
 	public void showBook(String recipientId) throws MessengerApiException, MessengerIOException, IOException {
 
-		/*final ReceiptTemplate genericTemplate3 = ReceiptTemplate
-				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
-				.orderUrl(
-						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
-				.quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
-				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
-				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
-				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
-				.name("$10 Off Coupon").amount(10.00F).toList().done().build();*/
-		
+		/*
+		 * final ReceiptTemplate genericTemplate3 = ReceiptTemplate
+		 * .newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
+		 * .orderUrl(
+		 * "http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
+		 * .timestamp(1428444852L).addElements().
+		 * addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+		 * .quantity(2).currency("USD") .imageUrl(
+		 * "http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg"
+		 * ).toList().done() .addAddress("1 Hacker Way", "Menlo Park", "94025",
+		 * "CA", "US").street2("Central Park").done()
+		 * .addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.
+		 * 19F).done().addAdjustments()
+		 * .addAdjustment().name("New Customer Discount").amount(20.00F).toList(
+		 * ).addAdjustment()
+		 * .name("$10 Off Coupon").amount(10.00F).toList().done().build();
+		 */
+
 		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+				.timestamp(1428444852L).addElements().addElement(CardBooks.getChooseBook().getTitle(), 50F).subtitle("Rent $19.49")
 				.quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
@@ -95,27 +103,33 @@ public class TemplateService {
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate3);
 	}
-	
+
 	public void showChooseBooks(String recipientId) throws MessengerApiException, MessengerIOException, IOException {
 
-		/*final ReceiptTemplate genericTemplate3 = ReceiptTemplate
-				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
-				.orderUrl(
-						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
-				.quantity(2).currency("USD")
-				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
-				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
-				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
-				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
-				.name("$10 Off Coupon").amount(10.00F).toList().done().build();*/
-		
+		/*
+		 * final ReceiptTemplate genericTemplate3 = ReceiptTemplate
+		 * .newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
+		 * .orderUrl(
+		 * "http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
+		 * .timestamp(1428444852L).addElements().
+		 * addElement("Biology 12th edition", 50F).subtitle("Rent $19.49")
+		 * .quantity(2).currency("USD") .imageUrl(
+		 * "http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg"
+		 * ).toList().done() .addAddress("1 Hacker Way", "Menlo Park", "94025",
+		 * "CA", "US").street2("Central Park").done()
+		 * .addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.
+		 * 19F).done().addAdjustments()
+		 * .addAdjustment().name("New Customer Discount").amount(20.00F).toList(
+		 * ).addAdjustment()
+		 * .name("$10 Off Coupon").amount(10.00F).toList().done().build();
+		 */
+
 		final ReceiptTemplate genericTemplate3 = ReceiptTemplate
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement(CardBooks.getBooksInCard().get(0).getTitle(), 50F).subtitle(CardBooks.getChoosePrice())
-				.quantity(2).currency("USD")
+				.timestamp(1428444852L).addElements().addElement(CardBooks.getBooksInCard().get(0).getTitle(), 50F)
+				.subtitle(CardBooks.getChoosePrice()).quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
 				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
@@ -131,7 +145,8 @@ public class TemplateService {
 				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology3", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology4", callBackHandler.getGoodAction()).toList().build();
-		callBackHandler.getSendClient().sendTextMessage(recipientId, "You can watch details each of books", quickReplies);
+		callBackHandler.getSendClient().sendTextMessage(recipientId, "You can watch details each of books",
+				quickReplies);
 	}
 
 	public void sendQuickReplyPrice(String recipientId) throws MessengerApiException, MessengerIOException {
@@ -142,6 +157,24 @@ public class TemplateService {
 				.addTextQuickReply("Price4", callBackHandler.getGoodActionPrice()).toList()
 				.addTextQuickReply("No, thank's", callBackHandler.getNotGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "Choose price of books", quickReplies);
+	}
+
+	public void getCheckedBook(String title) {
+		Book checkedBook = null;
+		String first = Book.getSearchResults().get(0).getTitle();
+		String second = Book.getSearchResults().get(1).getTitle();
+		String third = Book.getSearchResults().get(2).getTitle();
+		String fourth = Book.getSearchResults().get(3).getTitle();
+		if (title.equals(first)) {
+			checkedBook = Book.getSearchResults().get(0);
+		} else if (title.equals(second)) {
+			checkedBook = Book.getSearchResults().get(1);
+		} else if (title.equals(third)) {
+			checkedBook = Book.getSearchResults().get(2);
+		} else if (title.equals(fourth)) {
+			checkedBook = Book.getSearchResults().get(3);
+		}
+		CardBooks.setChooseBook(checkedBook);
 	}
 
 }

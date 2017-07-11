@@ -220,10 +220,10 @@ public class CallBackHandler {
 
 			Boolean watchBook = true;
 			try {
-				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					templateService.showBook(senderId);
+				if (quickReplyPayload.equals(GOOD_ACTION)) {					
 					templateService.sendQuickReplyPrice(senderId);
-					
+					templateService.getCheckedBook(event.getText());
+					templateService.showBook(senderId);
 				} else {
 					watchBook = false;
 				}
