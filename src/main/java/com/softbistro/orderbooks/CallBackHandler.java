@@ -222,7 +222,7 @@ public class CallBackHandler {
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {					
 					templateService.sendQuickReplyPrice(senderId);
-					templateService.getCheckedBook(event.getText());
+					templateService.saveCheckedBook(event.getText());
 					templateService.showBook(senderId);
 				} else {
 					watchBook = false;

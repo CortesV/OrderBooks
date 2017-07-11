@@ -159,7 +159,7 @@ public class TemplateService {
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "Choose price of books", quickReplies);
 	}
 
-	public void getCheckedBook(String title) {
+	public void saveCheckedBook(String title) {
 		Book checkedBook = null;
 		String first = Book.getSearchResults().get(0).getTitle();
 		String second = Book.getSearchResults().get(1).getTitle();
