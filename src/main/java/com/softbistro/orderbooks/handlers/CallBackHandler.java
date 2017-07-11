@@ -115,13 +115,7 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
-					templateService.saveCheckedBook(event.getText());
-					sendTextMessage(senderId, event.getText());
-					sendTextMessage(senderId, event.getMid());
-					sendTextMessage(senderId, event.getQuickReply().toString());
-					sendTextMessage(senderId, event.getRecipient().toString());
-					sendTextMessage(senderId, event.getSender().toString());
-					sendTextMessage(senderId, OrderCart.chooseBook.getIsbn());
+					templateService.saveCheckedBook(event.getText());					
 					//sendTemplate(senderId, templateService.showBook());
 					//sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}

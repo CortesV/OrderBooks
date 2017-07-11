@@ -80,7 +80,7 @@ public class TemplateService {
 	public List<QuickReply> sendQuickReplyListBooks() throws MessengerApiException, MessengerIOException {
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
 		for (Book book : OrderCart.searchBooks) {
-			builder = builder.addTextQuickReply(book.getTitle(), CallBackHandler.GOOD_ACTION).toList();
+			builder = builder.addTextQuickReply(book.getTitle() + " " + book.getIsbn(), CallBackHandler.GOOD_ACTION).toList();
 		}
 		return builder.build();
 	}
@@ -95,23 +95,8 @@ public class TemplateService {
 	}
 
 	public void saveCheckedBook(String title) {
-		/*Book checkedBook = null;
-		String first = OrderCart.searchBooks.get(0).getTitle();
-		String second = OrderCart.searchBooks.get(1).getTitle();
-		String third = OrderCart.searchBooks.get(2).getTitle();
-		String fourth = OrderCart.searchBooks.get(3).getTitle();
-		if (title.equals(first)) {
-			checkedBook = OrderCart.searchBooks.get(0);
-		} else if (title.equals(second)) {
-			checkedBook = OrderCart.searchBooks.get(1);
-		} else if (title.equals(third)) {
-			checkedBook = OrderCart.searchBooks.get(2);
-		} else if (title.equals(fourth)) {
-			checkedBook = OrderCart.searchBooks.get(3);
-		}
-		OrderCart.chooseBook = checkedBook;*/
 		for(Book book : OrderCart.searchBooks){
-			if(title.equals(book.getTitle())){
+			if(title.equals(book.getTitle() + " " + book.getIsbn())){
 				OrderCart.chooseBook = book;
 			}
 		}
