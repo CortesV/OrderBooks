@@ -1,5 +1,6 @@
 package com.softbistro.orderbooks.components.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardBooks {
@@ -8,6 +9,10 @@ public class CardBooks {
 	private static Book chooseBook;
 	private static String choosePrice;
 
+	public CardBooks(){
+		booksInCard = new ArrayList<>();
+	}
+	
 	public static List<Book> getBooksInCard() {
 		return booksInCard;
 	}
