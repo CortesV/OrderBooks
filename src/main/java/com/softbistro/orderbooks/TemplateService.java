@@ -37,11 +37,11 @@ public class TemplateService {
 
 		List<Book> searchResults = readAll();		
 
-		List<String> authors = new ArrayList<>();
+		/*List<String> authors = new ArrayList<>();
 		authors.add("Author1");
 		authors.add("Author2");
 		authors.add("Author3");
-		authors.add("Author4");
+		authors.add("Author4");*/
 
 		/*Book searchResult = new Book("1", "Biology1", "akfdgdygaihfsd",
 				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
@@ -68,7 +68,7 @@ public class TemplateService {
 		}
 		
 		final ListTemplate genericTemplate2 = builder.done().build();*/
-
+		callBackHandler.sendTextMessage(callBackHandler.getSendClient().toString(), "Can you teach me it?");
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
 				.subtitle("Author " + searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())

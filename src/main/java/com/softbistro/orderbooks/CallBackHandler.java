@@ -346,7 +346,7 @@ public class CallBackHandler {
 		};
 	}
 
-	private void sendTextMessage(String recipientId, String text) {
+	public void sendTextMessage(String recipientId, String text) {
 		try {
 			final Recipient recipient = Recipient.newBuilder().recipientId(recipientId).build();
 			final NotificationType notificationType = NotificationType.REGULAR;
