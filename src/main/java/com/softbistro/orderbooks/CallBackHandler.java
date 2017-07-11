@@ -230,7 +230,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					CardBooks.setChoosePrice(event.getText());
 					sendTextMessage(senderId, CardBooks.getChoosePrice());
-					templateService.showChooseBooks(senderId);			
+					//templateService.showChooseBooks(senderId);			
 				} 
 
 			} catch (MessengerApiException e) {
