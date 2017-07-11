@@ -40,7 +40,7 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 		
-		List<Book> searchResult = readAll(keyword);
+		List<Book> searchResultss = readAll(keyword);
 		/*CardBooks.searchResults = searchResults;
 		ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
