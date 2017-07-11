@@ -59,13 +59,13 @@ public class TemplateService {
 		searchResults.add(searchResult);
 
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement(searchResults.get(0).getTitle()).subtitle("Author " + authors.get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
+				.addElement(searchResults.get(0).getTitle()).subtitle("Author " + authors.get(0)/* + "\n" + "ISBN " + searchResults.get(0).getIsbn()*/)
 				.imageUrl(searchResults.get(0).getImageUrl()).toList()
-				.addElement(searchResults.get(1).getTitle()).subtitle("Author " + authors.get(1) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
+				.addElement(searchResults.get(1).getTitle()).subtitle("Author " + authors.get(1)/* + "\n" + "ISBN " + searchResults.get(1).getIsbn()*/)
 				.imageUrl(searchResults.get(1).getImageUrl()).toList()
-				.addElement(searchResults.get(2).getTitle()).subtitle("Author " + authors.get(2) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
+				.addElement(searchResults.get(2).getTitle()).subtitle("Author " + authors.get(2) /*+ "\n" + "ISBN " + searchResults.get(2).getIsbn()*/)
 				.imageUrl(searchResults.get(2).getImageUrl()).toList()
-				.addElement(searchResults.get(3).getTitle()).subtitle("Author " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
+				.addElement(searchResults.get(3).getTitle()).subtitle("Author " + authors.get(3) /*+ "\n" + "ISBN " + searchResults.get(3).getIsbn()*/)
 				.imageUrl(searchResults.get(3).getImageUrl()).toList().done()
 				.build();
 
