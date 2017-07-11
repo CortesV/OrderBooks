@@ -105,34 +105,4 @@ public class TemplateService {
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
 	}
 
-	public QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
-		return event -> {
-			logger.debug("Received QuickReplyMessageEvent: {}", event);
-
-			final String senderId = event.getSender().getId();
-			final String messageId = event.getMid();
-			final String quickReplyPayload = event.getQuickReply().getPayload();
-
-			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
-
-			Boolean watchBook = true;
-			while (watchBook) {
-				try {
-					if (quickReplyPayload.equals(callBackHandler.getGoodAction())) {
-						showBook(senderId);
-						callBackHandler.sendTextMessage(senderId, "Let's try another one :D!");
-						sendQuickReply(senderId);
-					} else {
-						watchBook = false;
-					}
-				} catch (MessengerApiException e) {
-					callBackHandler.handleSendException(e);
-				} catch (MessengerIOException e) {
-					callBackHandler.handleIOException(e);
-				} catch (IOException e) {
-					callBackHandler.handleIOException(e);
-				}
-			}
-		};
-	}
 }

@@ -87,7 +87,7 @@ public class CallBackHandler {
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
 				.onTextMessageEvent(newTextMessageEventHandler())
-				.onQuickReplyMessageEvent(templateService.newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
+				.onQuickReplyMessageEvent(newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
 				.onAccountLinkingEvent(newAccountLinkingEventHandler()).onOptInEvent(newOptInEventHandler())
 				.onEchoMessageEvent(newEchoMessageEventHandler())
 				.onMessageDeliveredEvent(newMessageDeliveredEventHandler())
@@ -183,11 +183,11 @@ public class CallBackHandler {
 		};
 	}
 
-	public void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
+	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendImageAttachment(recipientId, gif);
 	}
 
-	public void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
+	private void sendQuickReply(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder().addTextQuickReply("Looks good", GOOD_ACTION)
 				.toList().addTextQuickReply("Nope!", NOT_GOOD_ACTION).toList().build();
 		this.sendClient.sendTextMessage(recipientId, "Was this helpful?!", quickReplies);
@@ -203,6 +203,35 @@ public class CallBackHandler {
 
 	private void sendTypingOff(String recipientId) throws MessengerApiException, MessengerIOException {
 		this.sendClient.sendSenderAction(recipientId, SenderAction.TYPING_OFF);
+	}
+
+	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
+		return event -> {
+			logger.debug("Received QuickReplyMessageEvent: {}", event);
+
+			final String senderId = event.getSender().getId();
+			final String messageId = event.getMid();
+			final String quickReplyPayload = event.getQuickReply().getPayload();
+
+			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
+
+			Boolean watchBook = true;
+			while (watchBook) {
+				try {
+					if (quickReplyPayload.equals(GOOD_ACTION)) {
+						templateService.showBook(senderId);
+					}
+					sendTextMessage(senderId, "Let's try another one :D!");
+					templateService.sendQuickReply(senderId);
+				} catch (MessengerApiException e) {
+					handleSendException(e);
+				} catch (MessengerIOException e) {
+					handleIOException(e);
+				} catch (IOException e) {
+					handleIOException(e);
+				}
+			}
+		};
 	}
 
 	private PostbackEventHandler newPostbackEventHandler() {
@@ -308,7 +337,7 @@ public class CallBackHandler {
 		};
 	}
 
-	public void sendTextMessage(String recipientId, String text) {
+	private void sendTextMessage(String recipientId, String text) {
 		try {
 			final Recipient recipient = Recipient.newBuilder().recipientId(recipientId).build();
 			final NotificationType notificationType = NotificationType.REGULAR;
@@ -320,11 +349,11 @@ public class CallBackHandler {
 		}
 	}
 
-	public void handleSendException(Exception e) {
+	private void handleSendException(Exception e) {
 		logger.error("Message could not be sent. An unexpected error occurred.", e);
 	}
 
-	public void handleIOException(Exception e) {
+	private void handleIOException(Exception e) {
 		logger.error("Could not open Spring.io page. An unexpected error occurred.", e);
 	}
 
