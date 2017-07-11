@@ -113,7 +113,7 @@ public class TemplateService {
 				OrderCart.choosePrice = price;
 			}
 		}
-		//OrderCart.booksInCard.add(OrderCart.chooseBook);
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
 	}
 	
 	public void saveCardBooks(String price) {
