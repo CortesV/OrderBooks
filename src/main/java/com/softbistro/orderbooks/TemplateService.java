@@ -85,7 +85,7 @@ public class TemplateService {
 		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
 				builder = builder
-						.addElement(book.getTitle())
+						.addElement(book.getTitle())	
 						.subtitle("Author " + book.getAuthors().get(0) + "\nISBN " + book.getIsbn())
 						.imageUrl(book.getImageUrl())
 						.toList();
@@ -197,7 +197,7 @@ public class TemplateService {
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
-		WebResource wr = client.resource("http://80.91.191.79:19200/catalog/" + keyword);
+		WebResource wr = client.resource("http://demo2668900.mockable.io/catalog/biology");
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
 		jsonText = response.getEntity(String.class);

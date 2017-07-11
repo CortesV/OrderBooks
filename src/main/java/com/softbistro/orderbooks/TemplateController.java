@@ -31,7 +31,7 @@ public class TemplateController {
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
-		WebResource wr = client.resource("http://80.91.191.79:19200/catalog/" + "biology");
+		WebResource wr = client.resource("http://demo2668900.mockable.io/catalog/biology");
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
 		jsonText = response.getEntity(String.class);
