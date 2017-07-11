@@ -1,7 +1,6 @@
 package com.softbistro.orderbooks;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +72,7 @@ public class TemplateService {
 		
 		List<Book> searchResults = readAll();
 		
-		//Book.setSearchResults(searchResults);
+		CardBooks.searchResults = searchResults;
 		
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
 				.addElement(searchResults.get(0).getTitle())
@@ -105,7 +104,7 @@ public class TemplateService {
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement(CardBooks.getChooseBook().getTitle(), 50F).subtitle("Rent $19.49")
+				.timestamp(1428444852L).addElements().addElement(CardBooks.chooseBook.getTitle(), 50F).subtitle("Rent $19.49")
 				.quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
@@ -122,8 +121,8 @@ public class TemplateService {
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement(CardBooks.getChooseBook().getTitle(), 50F)
-				.subtitle(CardBooks.getChoosePrice()).quantity(2).currency("USD")
+				.timestamp(1428444852L).addElements().addElement(CardBooks.chooseBook.getTitle(), 50F)
+				.subtitle(CardBooks.choosePrice).quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
 				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
@@ -168,14 +167,14 @@ public class TemplateService {
 		} else if (title.equals(fourth)) {
 			checkedBook = Book.getSearchResults().get(3);
 		}
-		CardBooks.setChooseBook(checkedBook);
+		CardBooks.chooseBook = checkedBook;
 	}
 	
 	public void saveCardBooks(String price) {
-		Book checkedBook = CardBooks.getChooseBook();
-		CardBooks.getBooksInCard().add(checkedBook);
-		CardBooks.setChooseBook(checkedBook);
-		CardBooks.setChoosePrice(price);
+		Book checkedBook = CardBooks.chooseBook;
+		CardBooks.booksInCard.add(checkedBook);
+		CardBooks.chooseBook = checkedBook;
+		CardBooks.choosePrice = price;
 	}
 	
 	public List<Book> readAll() throws JsonParseException, JsonMappingException, IOException {

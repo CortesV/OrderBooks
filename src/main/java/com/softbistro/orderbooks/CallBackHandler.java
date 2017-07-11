@@ -155,17 +155,8 @@ public class CallBackHandler {
 
 				case "yo":
 					sendTextMessage(senderId, "Hello, What I can do for you ? Type the word you're looking for");
-					break;
-
-				case "great":
 					List<Book> searchResults = templateService.readAll();
 					sendTextMessage(senderId, searchResults.size() + "");
-					break;
-
-				case "java":
-					sendTextMessage(senderId, "It's cool language");
-					sendTextMessage(senderId, "Respect you");
-					sendTextMessage(senderId, "Can you teach me it?");
 					break;
 
 				default:
