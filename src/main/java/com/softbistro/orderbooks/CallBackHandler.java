@@ -233,13 +233,11 @@ public class CallBackHandler {
 				} else {
 					watchBook = false;
 				}
-				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
+				/*if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					CardBooks.setChoosePrice(event.getText());
 					sendTextMessage(senderId, event.getText());
-					templateService.showChooseBooks(senderId);					
-				} else {
-					watchBook = false;
-				}
+					templateService.showChooseBooks(senderId);	*			
+				} */
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
