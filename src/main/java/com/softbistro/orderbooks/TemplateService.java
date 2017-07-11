@@ -7,6 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.messenger4j.exceptions.MessengerApiException;
 import com.github.messenger4j.exceptions.MessengerIOException;
 import com.github.messenger4j.send.QuickReply;
@@ -15,6 +19,12 @@ import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.Book;
 import com.softbistro.orderbooks.components.entity.CardBooks;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
 
 @Service
 public class TemplateService {
@@ -25,7 +35,7 @@ public class TemplateService {
 	public void sendListBooks(String recipientId, String keyword)
 			throws MessengerApiException, MessengerIOException, IOException {
 
-		List<Book> searchResults = new ArrayList<>();
+		List<Book> searchResults = readAll();
 		searchResults = new ArrayList<>();
 
 		List<String> authors = new ArrayList<>();
@@ -34,7 +44,7 @@ public class TemplateService {
 		authors.add("Author3");
 		authors.add("Author4");
 
-		Book searchResult = new Book("1", "Biology1", "akfdgdygaihfsd",
+		/*Book searchResult = new Book("1", "Biology1", "akfdgdygaihfsd",
 				"http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg", authors);
 		searchResults.add(searchResult);
 
@@ -48,7 +58,7 @@ public class TemplateService {
 
 		searchResult = new Book("4", "Biology4", "7987806",
 				"http://cs.cheggcdn.com/covers2/20210000/20218127_1389004426.jpg", authors);
-		searchResults.add(searchResult);
+		searchResults.add(searchResult);*/
 
 		Book.setSearchResults(searchResults);
 
@@ -137,6 +147,29 @@ public class TemplateService {
 			checkedBook = Book.getSearchResults().get(3);
 		}
 		CardBooks.setChooseBook(checkedBook);
+	}
+	
+	public void saveCardBooks(String price) {
+		Book checkedBook = CardBooks.getChooseBook();
+		CardBooks.getBooksInCard().add(checkedBook);
+		CardBooks.setChooseBook(checkedBook);
+		CardBooks.setChoosePrice(price);
+	}
+	
+	public List<Book> readAll() throws JsonParseException, JsonMappingException, IOException {
+		String jsonText = null;
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		client.addFilter(new GZIPContentEncodingFilter(false));
+
+		WebResource wr = client.resource("http://80.91.191.79:19200/catalog");
+		ClientResponse response = null;
+		response = wr.get(ClientResponse.class);
+		jsonText = response.getEntity(String.class);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		return objectMapper.readValue(jsonText, TypeFactory.defaultInstance().constructCollectionType(List.class, Book.class));
 	}
 
 }
