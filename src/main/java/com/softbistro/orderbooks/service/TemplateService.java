@@ -37,6 +37,12 @@ public class TemplateService {
 		
 		OrderCart.searchBooks = searchResults;
 		
+		OrderCart.booksInCard = new ArrayList<>();
+		OrderCart.prices = new ArrayList<>();
+		OrderCart.prices.add("111");
+		OrderCart.prices.add("222");
+		OrderCart.prices.add("333");
+		
 		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
 				builder = builder
@@ -87,11 +93,6 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException {
-		OrderCart.prices = new ArrayList<>();		
-		OrderCart.prices.add("111");
-		OrderCart.prices.add("222");
-		OrderCart.prices.add("333");
-		
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
 		for (String price : OrderCart.prices) {
 			builder = builder.addTextQuickReply(price, CallBackHandler.GOOD_ACTION_PRICE).toList();
