@@ -220,7 +220,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 
 					try {
-						//templateService.showBook(senderId);
+						templateService.showBook(senderId);
 						sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					} catch (IOException e) {
 						handleIOException(e);
