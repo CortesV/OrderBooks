@@ -101,7 +101,8 @@ public class TemplateService {
 				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList().build();
+				.addTextQuickReply("Biology 12th edition", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("No, thank's", callBackHandler.getNotGoodAction()).toList().build();
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
 	}
 
