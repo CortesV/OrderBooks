@@ -51,6 +51,8 @@ public class CallBackHandler {
 
 	public static final String GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION";
 	public static final String GOOD_ACTION_PRICE = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_PRICE";
+	public static final String GOOD_ACTION_CHECKOUT = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_CHECKOUT";
+	public static final String GOOD_ACTION_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
 
 	private final MessengerReceiveClient receiveClient;
@@ -121,7 +123,17 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					templateService.saveOrderedBook(event.getText());
 					sendTemplate(senderId, templateService.showChoosedBooks());
+					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
+				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
+					sendTextMessage(senderId,"USER_INFO_HARD_CODING");	
+					sendQuickReply(senderId, "Confirm buy", templateService.sendQuickReplyConfirmBuy());
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_BUY)) {
+					sendTemplate(senderId, templateService.showOrderedBooks());
+					sendQuickReply(senderId, "Confirm buy", templateService.sendQuickReplyConfirmBuy());
+				}
+				
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
