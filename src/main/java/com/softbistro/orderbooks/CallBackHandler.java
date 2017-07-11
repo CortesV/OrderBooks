@@ -85,7 +85,7 @@ public class CallBackHandler {
 			throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
-		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(aSppSecret, verifyToken)
+		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
 				.onTextMessageEvent(newTextMessageEventHandler())
 				.onQuickReplyMessageEvent(templateService.newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
 				.onAccountLinkingEvent(newAccountLinkingEventHandler()).onOptInEvent(newOptInEventHandler())
