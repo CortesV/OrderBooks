@@ -73,4 +73,12 @@ public class Book {
 		this.authors = authors;
 	}
 
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
 }
