@@ -149,7 +149,7 @@ public class CallBackHandler {
 			logger.info("Received message '{}' with text '{}' from user '{}' at '{}'", messageId, messageText, senderId,
 					timestamp);
 
-			try {
+			//try {
 				switch (messageText.toLowerCase()) {
 
 				case "yo":
@@ -167,19 +167,20 @@ public class CallBackHandler {
 					break;
 
 				default:
-					sendReadReceipt(senderId);
+					sendTextMessage(senderId, "It's cool language");
+					/*sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
 					templateService.sendQuickReply(senderId);
-					sendTypingOff(senderId);
+					sendTypingOff(senderId);*/
 				}
-			} catch (MessengerApiException | MessengerIOException e) {
+			/*} /*catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
 				handleIOException(e);
-			}
+			}*/
 		};
 	}
 
@@ -216,13 +217,13 @@ public class CallBackHandler {
 			logger.info("Received quick reply for message '{}' with payload '{}'", messageId, quickReplyPayload);
 
 			Boolean watchBook = true;
-			while (watchBook) {
 				try {
 					if (quickReplyPayload.equals(GOOD_ACTION)) {
 						templateService.showBook(senderId);
+						sendTextMessage(senderId, "Let's try another one :D!");
+						templateService.sendQuickReply(senderId);
 					}
-					sendTextMessage(senderId, "Let's try another one :D!");
-					templateService.sendQuickReply(senderId);
+					
 				} catch (MessengerApiException e) {
 					handleSendException(e);
 				} catch (MessengerIOException e) {
@@ -230,7 +231,6 @@ public class CallBackHandler {
 				} catch (IOException e) {
 					handleIOException(e);
 				}
-			}
 		};
 	}
 
