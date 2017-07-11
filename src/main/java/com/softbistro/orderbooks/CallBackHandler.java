@@ -56,6 +56,7 @@ public class CallBackHandler {
 
 	private static final String RESOURCE_URL = "https://raw.githubusercontent.com/fbsamples/messenger-platform-samples/master/node/public";
 	public static final String GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION";
+	public static final String GOOD_ACTION_PRICE = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_PRICE";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
 
 	private final MessengerReceiveClient receiveClient;
@@ -222,7 +223,12 @@ public class CallBackHandler {
 					templateService.sendQuickReplyPrice(senderId);
 				} else {
 					watchBook = false;
-				}				
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
+					templateService.showBook(senderId);
+				} else {
+					watchBook = false;
+				}
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
@@ -376,6 +382,10 @@ public class CallBackHandler {
 
 	public static String getNotGoodAction() {
 		return NOT_GOOD_ACTION;
+	}
+
+	public static String getGoodActionPrice() {
+		return GOOD_ACTION_PRICE;
 	}
 
 	private void sendSpringDoc(String recipientId, String keyword)

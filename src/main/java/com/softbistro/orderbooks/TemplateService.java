@@ -89,17 +89,17 @@ public class TemplateService {
 				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology3", callBackHandler.getGoodAction()).toList()
 				.addTextQuickReply("Biology4", callBackHandler.getGoodAction()).toList().build();
-		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
+		callBackHandler.getSendClient().sendTextMessage(recipientId, "You can watch details each of books", quickReplies);
 	}
 
 	public void sendQuickReplyPrice(String recipientId) throws MessengerApiException, MessengerIOException {
 		final List<QuickReply> quickReplies = QuickReply.newListBuilder()
-				.addTextQuickReply("Biology1", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology2", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology3", callBackHandler.getGoodAction()).toList()
-				.addTextQuickReply("Biology4", callBackHandler.getGoodAction()).toList()
+				.addTextQuickReply("Price1", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("Price2", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("Price3", callBackHandler.getGoodActionPrice()).toList()
+				.addTextQuickReply("Price4", callBackHandler.getGoodActionPrice()).toList()
 				.addTextQuickReply("No, thank's", callBackHandler.getNotGoodAction()).toList().build();
-		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
+		callBackHandler.getSendClient().sendTextMessage(recipientId, "Choose price of books", quickReplies);
 	}
 
 }
