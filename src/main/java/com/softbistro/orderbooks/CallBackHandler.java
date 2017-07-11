@@ -178,7 +178,7 @@ public class CallBackHandler {
 					// readAll("http://192.168.128.242:19098/template"));
 					templateService.sendQuickReplyListBooks(senderId);
 					sendTypingOff(senderId);*/
-				}
+				//}
 			/*} catch (MessengerApiException | MessengerIOException e) {
 				handleSendException(e);
 			} catch (IOException e) {
