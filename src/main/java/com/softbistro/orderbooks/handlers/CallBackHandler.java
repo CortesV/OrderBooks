@@ -121,10 +121,10 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					templateService.saveCheckedBook(event.getText());
-					// CardBooks.setChoosePrice(event.getText());
-					// sendTextMessage(senderId, CardBooks.getChoosePrice());
-					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					//sendTemplate(senderId, templateService.showChooseBooks());
+					OrderCart.choosePrice = event.getText();
+					sendTextMessage(senderId, OrderCart.choosePrice);
+					OrderCart.booksInCard.add(OrderCart.chooseBook);
+					sendTemplate(senderId, templateService.showChooseBooks());
 				}
 
 			} catch (MessengerApiException e) {

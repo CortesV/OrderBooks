@@ -1,6 +1,7 @@
 package com.softbistro.orderbooks.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class TemplateService {
 				.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements().addElement(OrderCart.chooseBook.getTitle(), 50F)
+				.timestamp(1428444852L).addElements().addElement(OrderCart.booksInCard.get(0).getTitle() + " " + OrderCart.booksInCard.get(0).getIsbn(), 50F)
 				.subtitle(OrderCart.choosePrice).quantity(2).currency("USD")
 				.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList().done()
 				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
@@ -86,11 +87,16 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException {
-		return QuickReply.newListBuilder()
-				.addTextQuickReply("111", CallBackHandler.GOOD_ACTION_PRICE).toList()
-				.addTextQuickReply("222", CallBackHandler.GOOD_ACTION_PRICE).toList()
-				.addTextQuickReply("333", CallBackHandler.GOOD_ACTION_PRICE).toList()
-				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+		List<String> prices = new ArrayList<>();		
+		prices.add("111");
+		prices.add("222");
+		prices.add("333");
+		
+		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
+		for (String price : prices) {
+			builder = builder.addTextQuickReply(price, CallBackHandler.GOOD_ACTION_PRICE).toList();
+		}
+		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
 	public void saveCheckedBook(String title) {
