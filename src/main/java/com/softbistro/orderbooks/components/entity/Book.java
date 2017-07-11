@@ -7,7 +7,8 @@ public class Book {
 	private String title;
 	private String isbn;
 	private String imageUrl;
-	private List<String> authors;
+	private static List<String> authors;
+	private static List<Book> searchResults;
 
 	public Book(String id, String title, String isbn, String imageUrl, List<String> authors) {
 		this.id = id;
@@ -55,6 +56,14 @@ public class Book {
 
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
+	}
+
+	public static List<Book> getSearchResults() {
+		return searchResults;
+	}
+
+	public static void setSearchResults(List<Book> searchResults) {
+		Book.searchResults = searchResults;
 	}
 
 }

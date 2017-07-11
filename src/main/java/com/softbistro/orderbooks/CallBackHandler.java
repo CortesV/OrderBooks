@@ -1,5 +1,7 @@
 package com.softbistro.orderbooks;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +46,8 @@ import com.github.messenger4j.send.templates.GenericTemplate;
 import com.github.messenger4j.send.templates.ListTemplate;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
+import com.softbistro.orderbooks.components.entity.Book;
+import com.softbistro.orderbooks.components.entity.CardBooks;
 import com.softbistro.orderbooks.components.entity.SearchResult;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
@@ -221,12 +225,17 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
-					sendTextMessage(senderId, event.getText());
+					for(Book book:Book.getSearchResults()){
+						if(book.getTitle().equals(event.getText())){
+							CardBooks.setChooseBook(book);
+						}
+					}
 				} else {
 					watchBook = false;
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					templateService.showBook(senderId);
+					CardBooks.setChoosePrice(event.getText());
+					templateService.showChooseBooks(senderId);
 				} else {
 					watchBook = false;
 				}
