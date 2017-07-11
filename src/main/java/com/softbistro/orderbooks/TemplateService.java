@@ -15,8 +15,6 @@ import com.github.messenger4j.exceptions.MessengerApiException;
 import com.github.messenger4j.exceptions.MessengerIOException;
 import com.github.messenger4j.send.QuickReply;
 import com.github.messenger4j.send.templates.ListTemplate;
-import com.github.messenger4j.send.templates.ListTemplate.Builder;
-import com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder;
 import com.github.messenger4j.send.templates.ListTemplate.TopElementStyle;
 import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.softbistro.orderbooks.components.entity.Book;
@@ -63,27 +61,25 @@ public class TemplateService {
 		searchResults.add(searchResult);*/
 
 		Book.setSearchResults(searchResults);
-
+		/*
 		ListBuilder builder = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements();
 		for(Book book : searchResults){
 				builder.addElement(book.getTitle())
 				.subtitle("Author " + authors.get(0) + "\n" + "ISBN " + book.getIsbn()).imageUrl(book.getImageUrl()).toList();
 		}
 		
-		final ListTemplate genericTemplate2 = builder.done().build();
-		/*if(searchResults.get(0) != null){
-			builder.addElements()
-			.addElement(searchResults.get(0).getTitle())
-			.subtitle("Author " + authors.get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn()).imageUrl(searchResults.get(0).getImageUrl()).toList();
-		}
-		final ListTemplate genericTemplate2 = 
-				.addElement(searchResults.get(1).getTitle())
-				.subtitle("Author " + authors.get(1) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
+		final ListTemplate genericTemplate2 = builder.done().build();*/
+
+		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
+				.addElement(searchResults.get(0).getTitle())
+				.subtitle("Author " + searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
+				.imageUrl(searchResults.get(0).getImageUrl()).toList().addElement(searchResults.get(1).getTitle())
+				.subtitle("Author " + searchResults.get(1).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
 				.imageUrl(searchResults.get(1).getImageUrl()).toList().addElement(searchResults.get(2).getTitle())
-				.subtitle("Author " + authors.get(2) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
-				.imageUrl(searchResults.get(2).getImageUrl()).toList().addElement(searchResults.get(3).getTitle())
-				.subtitle("Author " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
-				.imageUrl(searchResults.get(3).getImageUrl()).toList().done().build();*/
+				.subtitle("Author " + searchResults.get(2).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
+				.imageUrl(searchResults.get(2).getImageUrl()).toList()/*.addElement(searchResults.get(3).getTitle())
+				.subtitle("Chegg search " + authors.get(3) + "\n" + "ISBN " + searchResults.get(3).getIsbn())
+				.imageUrl(searchResults.get(3).getImageUrl()).toList()*/.done().build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
