@@ -83,13 +83,13 @@ public class TemplateService {
 		CardBooks.searchResults = search;
 */
 		final ListTemplate genericTemplate2 = ListTemplate.newBuilder(TopElementStyle.LARGE).addElements()
-				.addElement(searchResults.get(0).getTitle())
-				.subtitle("Author " + searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + searchResults.get(0).getIsbn())
-				.imageUrl(searchResults.get(0).getImageUrl()).toList().addElement(searchResults.get(1).getTitle())
-				.subtitle("Author " + searchResults.get(0).getAuthors().get(1) + "\n" + "ISBN " + searchResults.get(1).getIsbn())
-				.imageUrl(searchResults.get(1).getImageUrl()).toList().addElement(searchResults.get(2).getTitle())
-				.subtitle("Author " + searchResults.get(0).getAuthors().get(2) + "\n" + "ISBN " + searchResults.get(2).getIsbn())
-				.imageUrl(searchResults.get(2).getImageUrl()).toList().done().build();
+				.addElement(CardBooks.searchResults.get(0).getTitle())
+				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(0) + "\n" + "ISBN " + CardBooks.searchResults.get(0).getIsbn())
+				.imageUrl(CardBooks.searchResults.get(0).getImageUrl()).toList().addElement(CardBooks.searchResults.get(1).getTitle())
+				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(1) + "\n" + "ISBN " + CardBooks.searchResults.get(1).getIsbn())
+				.imageUrl(CardBooks.searchResults.get(1).getImageUrl()).toList().addElement(CardBooks.searchResults.get(2).getTitle())
+				.subtitle("Author " + CardBooks.searchResults.get(0).getAuthors().get(2) + "\n" + "ISBN " + CardBooks.searchResults.get(2).getIsbn())
+				.imageUrl(CardBooks.searchResults.get(2).getImageUrl()).toList().done().build();
 
 		callBackHandler.getSendClient().sendTemplate(recipientId, genericTemplate2);
 
