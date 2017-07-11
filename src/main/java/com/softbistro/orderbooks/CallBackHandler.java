@@ -162,7 +162,7 @@ public class CallBackHandler {
 					sendReadReceipt(senderId);
 					sendTypingOn(senderId);
 					templateService.sendListBooks(senderId, messageText);
-					//templateService.sendQuickReplyListBooks(senderId);
+					templateService.sendQuickReplyListBooks(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
