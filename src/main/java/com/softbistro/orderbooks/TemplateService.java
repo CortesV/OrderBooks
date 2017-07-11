@@ -1,6 +1,8 @@
 package com.softbistro.orderbooks;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,10 @@ public class TemplateService {
 		
 		
 		
-		List<Book> searchResults = templateController.getCatalog();
+		List<Book> searchResults = new ArrayList<>();
+		Book  book = new Book("id", "title", "isbn", "ean", "image", Arrays.asList("url"));
+		searchResults.add(book);
+//				templateController.getCatalog();
 		
 		CardBooks.searchResults = searchResults;
 		
