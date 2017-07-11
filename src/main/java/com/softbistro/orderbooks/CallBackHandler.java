@@ -174,7 +174,7 @@ public class CallBackHandler {
 					templateService.sendListBooks(senderId, messageText);
 					// this.sendClient.sendTemplate(senderId,
 					// readAll("http://192.168.128.242:19098/template"));
-					//sendQuickReply(senderId);
+					templateService.sendQuickReply(senderId);
 					sendTypingOff(senderId);
 				}
 			} catch (MessengerApiException | MessengerIOException e) {
@@ -338,8 +338,8 @@ public class CallBackHandler {
 					try {
 						templateService.showBook(senderId);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						logger.debug(e.getMessage());
+
 					}
 				else
 					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
