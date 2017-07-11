@@ -121,7 +121,8 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					templateService.saveOrderedBook(event.getText());
-					sendTemplate(senderId, templateService.showChooseBooks());
+					sendTextMessage(senderId, "Hello");
+					//sendTemplate(senderId, templateService.showChooseBooks());
 				}
 
 			} catch (MessengerApiException e) {
