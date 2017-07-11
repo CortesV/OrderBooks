@@ -90,7 +90,7 @@ public class TemplateService {
 				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
 				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
 	}
-	
+
 	public Template showOrderedBooks() throws MessengerApiException, MessengerIOException, IOException {
 
 		ListBuilder builder = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
@@ -124,21 +124,25 @@ public class TemplateService {
 		}
 		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
-	
+
 	public List<QuickReply> sendQuickReplyUser() throws MessengerApiException, MessengerIOException {
-		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
-		for (String price : OrderCart.prices) {
-			builder = builder.addTextQuickReply("Checkout", CallBackHandler.GOOD_ACTION_CHECKOUT).toList();
-		}
-		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+		return QuickReply.newListBuilder().addTextQuickReply("Checkout", CallBackHandler.GOOD_ACTION_CHECKOUT).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+	}
+
+	public List<QuickReply> sendQuickReplyConfirmBuy() throws MessengerApiException, MessengerIOException {
+		return QuickReply.newListBuilder().addTextQuickReply("Confirm buy", CallBackHandler.GOOD_ACTION_CONFIRM_BUY).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+	}
+
+	public List<QuickReply> sendQuickReplyBuy() throws MessengerApiException, MessengerIOException {
+		return QuickReply.newListBuilder().addTextQuickReply("Buy books", CallBackHandler.GOOD_ACTION_BUY).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 	
-	public List<QuickReply> sendQuickReplyConfirmBuy() throws MessengerApiException, MessengerIOException {
-		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
-		for (String price : OrderCart.prices) {
-			builder = builder.addTextQuickReply("Confirm buy", CallBackHandler.GOOD_ACTION_BUY).toList();
-		}
-		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+	public List<QuickReply> sendQuickReplyBuyEnd() throws MessengerApiException, MessengerIOException {
+		return QuickReply.newListBuilder().addTextQuickReply("", CallBackHandler.GOOD_ACTION_BUY_END).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
 	public void saveCheckedBook(String title) {
@@ -161,12 +165,11 @@ public class TemplateService {
 		OrderCart.chooseBook = null;
 	}
 
-	/*public void saveCardBooks(String price) {
-		Book checkedBook = OrderCart.chooseBook;
-		OrderCart.booksInCard.add(checkedBook);
-		OrderCart.chooseBook = null;
-		OrderCart.choosePrice = price;
-	}*/
+	/*
+	 * public void saveCardBooks(String price) { Book checkedBook =
+	 * OrderCart.chooseBook; OrderCart.booksInCard.add(checkedBook);
+	 * OrderCart.chooseBook = null; OrderCart.choosePrice = price; }
+	 */
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
