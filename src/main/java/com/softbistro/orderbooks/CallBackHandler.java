@@ -221,16 +221,15 @@ public class CallBackHandler {
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION)) {			
 					templateService.saveCheckedBook(event.getText());
-					sendTextMessage(senderId, CardBooks.getChooseBook().getTitle());
 					templateService.showBook(senderId);
 					templateService.sendQuickReplyPrice(senderId);
 				} else {
 					watchBook = false;
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					CardBooks.setChoosePrice(event.getText());
-					sendTextMessage(senderId, CardBooks.getChoosePrice());
-					CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
+					//CardBooks.setChoosePrice(event.getText());
+					//sendTextMessage(senderId, CardBooks.getChoosePrice());
+					//CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
 					templateService.showChooseBooks(senderId);			
 				} 
 
