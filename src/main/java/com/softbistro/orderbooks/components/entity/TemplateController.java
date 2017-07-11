@@ -17,7 +17,5 @@ public class TemplateController {
 	@Autowired
 	private CallBackHandler callBackHandler;
 	
-	public ListTemplate getListTemplate(){
-		return 
-	}
+	
 }

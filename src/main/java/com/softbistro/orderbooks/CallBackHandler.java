@@ -331,12 +331,12 @@ public class CallBackHandler {
 
 			try {
 				if (quickReplyPayload.equals(GOOD_ACTION))
-					/*
-					 * sendGifMessage(senderId,
-					 * "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif"
-					 * );
-					 */
-					showBook(senderId);
+					try {
+						showBook(senderId);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				else
 					sendGifMessage(senderId, "https://media.giphy.com/media/26ybx7nkZXtBkEYko/giphy.gif");
 			} catch (MessengerApiException e) {
