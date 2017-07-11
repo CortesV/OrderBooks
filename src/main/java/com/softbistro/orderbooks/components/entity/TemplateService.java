@@ -96,7 +96,6 @@ public class TemplateService {
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList()
 				.addTextQuickReply("Biology 12th edition", GOOD_ACTION).toList().build();
-
 		callBackHandler.getSendClient().sendTextMessage(recipientId, "View each book", quickReplies);
 	}
 }
