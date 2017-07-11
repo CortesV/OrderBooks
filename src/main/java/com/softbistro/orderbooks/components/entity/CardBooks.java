@@ -30,6 +30,5 @@ public class CardBooks {
 
 	public static void setChoosePrice(String choosePrice) {
 		CardBooks.choosePrice = choosePrice;
-	}
-
+	}	
 }

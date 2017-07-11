@@ -228,12 +228,14 @@ public class CallBackHandler {
 							CardBooks.setChooseBook(book);
 						}
 					}
+					sendTextMessage(senderId, "" + CardBooks.getBooksInCard().size());
 				} else {
 					watchBook = false;
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					CardBooks.setChoosePrice(event.getText());
 					templateService.showChooseBooks(senderId);
+					sendTextMessage(senderId, event.getText());
 				} else {
 					watchBook = false;
 				}
