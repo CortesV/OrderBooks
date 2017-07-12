@@ -69,7 +69,7 @@ public class TemplateService {
 	public Template showChoosedBook() throws MessengerApiException, MessengerIOException, IOException {
 		return ReceiptTemplate.newBuilder("Customer", "12345678902", "USD", "Credit card")
 				.orderUrl(OrderCart.chooseBook.getImageUrl()).addElements()
-				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 0F/*Float.valueOf(OrderCart.chooseBook.getPrice()*/))
+				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 0F/*Float.valueOf(OrderCart.chooseBook.getPrice())*/)
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
 				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F/*Float.valueOf(OrderCart.chooseBook.getPrice())*/).done().build();
 	}
