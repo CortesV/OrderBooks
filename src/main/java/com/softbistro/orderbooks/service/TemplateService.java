@@ -203,10 +203,10 @@ public class TemplateService {
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
 		
-		/*webResource = client.resource("http://80.91.191.79:19200/firstEvaluateCheckout");
+		webResource = client.resource("http://80.91.191.79:19200/firstEvaluateCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		OrderCart.shippingChoiceHash = response.getEntity(String.class);*/
+		OrderCart.shippingChoiceHash = response.getEntity(String.class);
 	}
 	
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
