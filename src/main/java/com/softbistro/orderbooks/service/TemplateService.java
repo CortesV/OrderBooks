@@ -138,7 +138,7 @@ public class TemplateService {
 
 	public List<QuickReply> sendQuickReplyUser() throws MessengerApiException, MessengerIOException {
 		return QuickReply.newListBuilder().addTextQuickReply("Checkout", CallBackHandler.GOOD_ACTION_CHECKOUT).toList()
-				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION_CHECKOUT).toList().build();
 	}
 
 	public List<QuickReply> sendQuickReplyConfirmBuy() throws MessengerApiException, MessengerIOException {
@@ -157,7 +157,7 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyUserInfo() throws MessengerApiException, MessengerIOException {
-		return QuickReply.newListBuilder().addTextQuickReply("Checkout", CallBackHandler.GOOD_ACTION_INFO).toList()
+		return QuickReply.newListBuilder().addTextQuickReply("Order", CallBackHandler.GOOD_ACTION_INFO).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 

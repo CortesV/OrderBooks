@@ -65,6 +65,7 @@ public class CallBackHandler {
 	public static final String GOOD_ACTION_BUY_END = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY_END";
 	public static final String GOOD_ACTION_INFO = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_INFO";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
+	public static final String NOT_GOOD_ACTION_CHECKOUT = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_CHECKOUT";
 
 	private final MessengerReceiveClient receiveClient;
 	private final MessengerSendClient sendClient;
@@ -187,10 +188,7 @@ public class CallBackHandler {
 					templateService.checkoutBook();
 					sendTextMessage(senderId,"Checkout this book done");
 					sendTextMessage(senderId,OrderCart.orderKey);
-					//sendTextMessage(senderId,OrderCart.booksInCard.get(0).getTitle());
-					//sendTemplate(senderId, templateService.showOrderedBooks());
-					//sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
-					sendQuickReply(senderId, "Shipping", templateService.sendQuickReplyUserInfo());
+					sendQuickReply(senderId, "User info", templateService.sendQuickReplyUserInfo());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_INFO)) {
 					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
@@ -205,6 +203,10 @@ public class CallBackHandler {
 					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					sendTextMessage(senderId, "Let's try another one :D!");
 				}
+				if (quickReplyPayload.equals(NOT_GOOD_ACTION_CHECKOUT)) {
+					sendTextMessage(senderId, "Let's try another one :D!");
+				}
+				
 				
 
 			} catch (MessengerApiException e) {
