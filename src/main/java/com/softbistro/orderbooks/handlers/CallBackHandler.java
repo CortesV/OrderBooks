@@ -126,7 +126,7 @@ public class CallBackHandler {
 					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
 					templateService.saveOrderedBook(event.getText());
 					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
-					sendTemplate(senderId, templateService.showChoosedBook());
+					//sendTemplate(senderId, templateService.showChoosedBook());
 					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
 					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
