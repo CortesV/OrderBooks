@@ -157,12 +157,7 @@ public class TemplateService {
 	}
 
 	public void savePriceCheckedBook(String title) {
-		for (PriceItem price : OrderCart.prices) {
-			if (title.equals(price)) {
-				OrderCart.choosePrice = price.getPrice().toString();
-			}
-		}
-		OrderCart.chooseBook.setPrice(OrderCart.choosePrice);		
+		OrderCart.chooseBook.setPrice(title);		
 	}
 
 	
