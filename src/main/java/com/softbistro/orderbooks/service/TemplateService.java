@@ -173,9 +173,7 @@ public class TemplateService {
 	}
 	
 	public void checkoutBook(){
-		OrderCart.booksInCard.add(OrderCart.chooseBook);
-		OrderCart.choosePrice = null;
-		OrderCart.chooseBook = null;
+		OrderCart.booksInCard.add(OrderCart.chooseBook);		
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
