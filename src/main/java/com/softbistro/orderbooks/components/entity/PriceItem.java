@@ -5,6 +5,10 @@ public class PriceItem {
 	private Double price;
 	private String logId;
 
+	public PriceItem() {
+
+	}
+
 	public PriceItem(Double price, String logId) {
 		this.price = price;
 		this.logId = logId;
@@ -17,7 +21,6 @@ public class PriceItem {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
 
 	public String getLogId() {
 		return logId;
