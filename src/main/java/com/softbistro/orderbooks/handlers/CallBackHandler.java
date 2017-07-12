@@ -182,8 +182,8 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
 					templateService.checkoutBook();
-					sendTextMessage(senderId,"Checkout this book done");
-					sendTextMessage(senderId,OrderCart.booksInCard.get(0).getTitle());
+					//sendTextMessage(senderId,"Checkout this book done");
+					//sendTextMessage(senderId,OrderCart.booksInCard.get(0).getTitle());
 					//sendTemplate(senderId, templateService.showOrderedBooks());
 					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
 				}

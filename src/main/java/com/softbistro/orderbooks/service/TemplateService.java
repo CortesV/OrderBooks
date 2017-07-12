@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -22,6 +24,7 @@ import com.github.messenger4j.send.templates.ReceiptTemplate;
 import com.github.messenger4j.send.templates.ReceiptTemplate.Element.ListBuilder;
 import com.github.messenger4j.send.templates.Template;
 import com.softbistro.orderbooks.components.entity.Book;
+import com.softbistro.orderbooks.components.entity.BookForOrder;
 import com.softbistro.orderbooks.components.entity.OrderCart;
 import com.softbistro.orderbooks.components.entity.PriceItem;
 import com.softbistro.orderbooks.components.entity.CatalogItem;
@@ -38,7 +41,7 @@ public class TemplateService {
 
 	@PostConstruct
 	public void setup() {
-		OrderCart.booksInCard = new ArrayList<>();		
+		OrderCart.booksInCard = new ArrayList<>();
 	}
 
 	public Template sendListBooks(String keyword) throws MessengerApiException, MessengerIOException, IOException {
@@ -65,13 +68,15 @@ public class TemplateService {
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
 				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F).done().build();
 	}
-	
+
 	public Template showChoosedBook() throws MessengerApiException, MessengerIOException, IOException {
 		return ReceiptTemplate.newBuilder("Customer", "12345678902", "USD", "Credit card")
 				.orderUrl(OrderCart.chooseBook.getImageUrl()).addElements()
-				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), Float.valueOf(OrderCart.chooseBook.getPrice()))
+				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(),
+						Float.valueOf(OrderCart.chooseBook.getPrice()))
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
-				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(Float.valueOf(OrderCart.chooseBook.getPrice())).done().build();
+				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done()
+				.addSummary(Float.valueOf(OrderCart.chooseBook.getPrice())).done().build();
 	}
 
 	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
@@ -82,9 +87,8 @@ public class TemplateService {
 				.timestamp(1428444852L).addElements();
 		Float summary = 0F;
 		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(book.getTitle() + " " + book.getIsbn(),
-					Float.valueOf(book.getPrice())).quantity(1).currency("USD")
-					.imageUrl(book.getImageUrl()).toList();
+			builder.addElement(book.getTitle() + " " + book.getIsbn(), Float.valueOf(book.getPrice())).quantity(1)
+					.currency("USD").imageUrl(book.getImageUrl()).toList();
 			summary += Float.valueOf(book.getPrice());
 		}
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
@@ -100,9 +104,8 @@ public class TemplateService {
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements();
 		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(book.getTitle() + " " + book.getIsbn(),
-					50F).subtitle(OrderCart.choosePrice).quantity(2).currency("USD")
-					.imageUrl(book.getImageUrl()).toList();
+			builder.addElement(book.getTitle() + " " + book.getIsbn(), 50F).subtitle(OrderCart.choosePrice).quantity(2)
+					.currency("USD").imageUrl(book.getImageUrl()).toList();
 		}
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
 				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
@@ -119,11 +122,13 @@ public class TemplateService {
 		return builder.build();
 	}
 
-	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException, JsonParseException, JsonMappingException, IOException {
+	public List<QuickReply> sendQuickReplyPrice()
+			throws MessengerApiException, MessengerIOException, JsonParseException, JsonMappingException, IOException {
 		OrderCart.prices = getPrices(OrderCart.chooseBook.getId()).getPrices();
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
 		for (PriceItem price : OrderCart.prices) {
-			builder = builder.addTextQuickReply(price.getPrice().toString(), CallBackHandler.GOOD_ACTION_PRICE).toList();
+			builder = builder.addTextQuickReply(price.getPrice().toString(), CallBackHandler.GOOD_ACTION_PRICE)
+					.toList();
 		}
 		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
@@ -147,9 +152,10 @@ public class TemplateService {
 		return QuickReply.newListBuilder().addTextQuickReply("", CallBackHandler.GOOD_ACTION_BUY_END).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
-	
+
 	public List<QuickReply> sendQuickReplyUserInfo() throws MessengerApiException, MessengerIOException {
-		return QuickReply.newListBuilder().addTextQuickReply("Custommer information", CallBackHandler.GOOD_ACTION_USER_INFO).toList()
+		return QuickReply.newListBuilder()
+				.addTextQuickReply("Custommer information", CallBackHandler.GOOD_ACTION_USER_INFO).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
@@ -162,18 +168,32 @@ public class TemplateService {
 	}
 
 	public void savePriceCheckedBook(String title) {
-		OrderCart.chooseBook.setPrice(title);		
+		OrderCart.chooseBook.setPrice(title);
 	}
 
-	
 	public void resetStaticData() {
 		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = null;
 		OrderCart.booksInCard = new ArrayList<>();
 	}
-	
-	public void checkoutBook(){
-		OrderCart.booksInCard.add(OrderCart.chooseBook);		
+
+	public void checkoutBook() throws JsonProcessingException {
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
+
+		BookForOrder bookForOrder = null;
+		for (PriceItem price : OrderCart.prices) {
+			if (price.getPrice().equals(Float.valueOf(OrderCart.chooseBook.getPrice()))) {
+				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
+			}
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(bookForOrder);
+		Client client = Client.create();
+		client.addFilter(new GZIPContentEncodingFilter(false));
+		WebResource webResource = client.resource("http://80.91.191.79:19200/createOrder");
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, jsonText);
+		response.getEntity(String.class);
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
@@ -193,7 +213,7 @@ public class TemplateService {
 		return objectMapper.readValue(jsonText,
 				TypeFactory.defaultInstance().constructCollectionType(List.class, Book.class));
 	}
-	
+
 	public CatalogItem getPrices(String id) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
@@ -208,8 +228,7 @@ public class TemplateService {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		return objectMapper.readValue(jsonText,
-				TypeFactory.defaultInstance().constructType(CatalogItem.class));
+		return objectMapper.readValue(jsonText, TypeFactory.defaultInstance().constructType(CatalogItem.class));
 	}
 
 }
