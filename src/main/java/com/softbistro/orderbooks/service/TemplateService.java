@@ -154,8 +154,7 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyUserInfo() throws MessengerApiException, MessengerIOException {
-		return QuickReply.newListBuilder()
-				.addTextQuickReply("Custommer information", CallBackHandler.GOOD_ACTION_USER_INFO).toList()
+		return QuickReply.newListBuilder().addTextQuickReply("Checkout", CallBackHandler.GOOD_ACTION_INFO).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
