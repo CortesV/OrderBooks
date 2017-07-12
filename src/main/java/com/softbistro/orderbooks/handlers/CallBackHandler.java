@@ -39,6 +39,7 @@ import com.github.messenger4j.send.Recipient;
 import com.github.messenger4j.send.SenderAction;
 import com.github.messenger4j.send.templates.Template;
 import com.softbistro.orderbooks.components.entity.Book;
+import com.softbistro.orderbooks.components.entity.OrderCart;
 import com.softbistro.orderbooks.controllers.TemplateController;
 import com.softbistro.orderbooks.service.TemplateService;
 
@@ -50,6 +51,10 @@ public class CallBackHandler {
 
 	public static final String GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION";
 	public static final String GOOD_ACTION_PRICE = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_PRICE";
+	public static final String GOOD_ACTION_CHECKOUT = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_CHECKOUT";
+	public static final String GOOD_ACTION_CONFIRM_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_CONFIRM_BUY";
+	public static final String GOOD_ACTION_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY";
+	public static final String GOOD_ACTION_BUY_END = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY_END";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
 
 	private final MessengerReceiveClient receiveClient;
@@ -60,6 +65,7 @@ public class CallBackHandler {
 
 	@Autowired
 	private TemplateController templateController;
+
 	private TextMessageEventHandler newTextMessageEventHandler() throws MessengerIOException, IOException {
 		return event -> {
 			logger.debug("Received TextMessageEvent: {}", event);
@@ -79,10 +85,9 @@ public class CallBackHandler {
 					break;
 
 				case "y":
-					List<Book> searchResults = templateController.getCatalog();
+					List<Book> searchResults = OrderCart.booksInCard;
 					sendTextMessage(senderId,
-							searchResults.get(0).getAuthors().get(0) + " " + searchResults.get(1).getAuthors().get(0)
-									+ " " + searchResults.get(2).getAuthors().get(0));
+							searchResults.get(0).getIsbn() + " " + searchResults.get(1).getIsbn());
 					break;
 
 				default:
@@ -99,24 +104,6 @@ public class CallBackHandler {
 				handleIOException(e);
 			}
 		};
-	}
-
-	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendImageAttachment(recipientId, gif);
-	}
-
-	private void sendQuickReply(String recipientId, String message, List<QuickReply> quickReplies)
-			throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendTextMessage(recipientId, message, quickReplies);
-	}
-
-	private void sendAction(String recipientId, SenderAction action) throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendSenderAction(recipientId, action);
-	}
-
-	private void sendTemplate(String recipientId, Template template)
-			throws MessengerApiException, MessengerIOException {
-		this.sendClient.sendTemplate(recipientId, template);
 	}
 
 	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
@@ -136,11 +123,23 @@ public class CallBackHandler {
 					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
-					// CardBooks.setChoosePrice(event.getText());
-					// sendTextMessage(senderId, CardBooks.getChoosePrice());
-					// CardBooks.getBooksInCard().add(CardBooks.getChooseBook());
-					sendTemplate(senderId, templateService.showChooseBooks());
+					templateService.saveOrderedBook(event.getText());
+					sendTemplate(senderId, templateService.showChoosedBooks());
+					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
+				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
+					sendTextMessage(senderId,"USER_INFO_HARD_CODING");	
+					sendQuickReply(senderId, "Confirm buy", templateService.sendQuickReplyConfirmBuy());
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
+					sendTemplate(senderId, templateService.showOrderedBooks());
+					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyBuy());
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_BUY)) {
+					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+					sendTextMessage(senderId, "Let's try another one :D!");
+				}
+				
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
@@ -150,6 +149,25 @@ public class CallBackHandler {
 				handleIOException(e);
 			}
 		};
+	}
+
+	private void sendGifMessage(String recipientId, String gif) throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendImageAttachment(recipientId, gif);
+	}
+
+	private void sendQuickReply(String recipientId, String message, List<QuickReply> quickReplies)
+			throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendTextMessage(recipientId, message, quickReplies);
+	}
+
+	private void sendAction(String recipientId, SenderAction action)
+			throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendSenderAction(recipientId, action);
+	}
+
+	private void sendTemplate(String recipientId, Template template)
+			throws MessengerApiException, MessengerIOException {
+		this.sendClient.sendTemplate(recipientId, template);
 	}
 
 	/**
@@ -170,7 +188,7 @@ public class CallBackHandler {
 	@Autowired
 	public CallBackHandler(@Value("${messenger4j.appSecret}") final String appSecret,
 			@Value("${messenger4j.verifyToken}") final String verifyToken, final MessengerSendClient sendClient)
-					throws MessengerIOException, IOException {
+			throws MessengerIOException, IOException {
 
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
