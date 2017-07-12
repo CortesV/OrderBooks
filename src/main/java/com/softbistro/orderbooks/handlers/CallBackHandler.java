@@ -23,7 +23,9 @@ import com.github.messenger4j.exceptions.MessengerIOException;
 import com.github.messenger4j.exceptions.MessengerVerificationException;
 import com.github.messenger4j.receive.MessengerReceiveClient;
 import com.github.messenger4j.receive.events.AccountLinkingEvent;
+import com.github.messenger4j.receive.events.AttachmentMessageEvent.Attachment;
 import com.github.messenger4j.receive.handlers.AccountLinkingEventHandler;
+import com.github.messenger4j.receive.handlers.AttachmentMessageEventHandler;
 import com.github.messenger4j.receive.handlers.EchoMessageEventHandler;
 import com.github.messenger4j.receive.handlers.FallbackEventHandler;
 import com.github.messenger4j.receive.handlers.MessageDeliveredEventHandler;
@@ -42,6 +44,9 @@ import com.softbistro.orderbooks.components.entity.Book;
 import com.softbistro.orderbooks.components.entity.OrderCart;
 import com.softbistro.orderbooks.controllers.TemplateController;
 import com.softbistro.orderbooks.service.TemplateService;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 @RestController
 @RequestMapping("/callback")
@@ -66,6 +71,53 @@ public class CallBackHandler {
 	@Autowired
 	private TemplateController templateController;
 
+ 	private AttachmentMessageEventHandler newAttachmentMessageEventHandler() {
+		return event -> {
+			logger.debug("Received AttachmentMessageEvent: {}", event);
+
+			final String messageId = event.getMid();
+			final List<Attachment> attachment = event.getAttachments();
+			final String senderId = event.getSender().getId();
+			final Date timestamp = event.getTimestamp();
+
+			logger.info("Received attachment '{}' with type '{}' from user '{}' at '{}'", messageId,
+					attachment.get(0).getType().toString(), senderId, timestamp);
+			try {
+				switch (attachment.get(0).getType().toString()) {
+				case "AUDIO":
+					sendTextMessage(senderId, "audiofile was accepted");
+
+					Client client = Client.create();
+					WebResource webResource = client.resource("http://80.91.191.79:19099/");
+
+					String voice = attachment.get(0).getPayload().asBinaryPayload().getUrl();
+
+					ClientResponse response = webResource.type("application/json").header("url", voice)
+							.get(ClientResponse.class);
+
+					String parsedVoice = response.getEntity(String.class);
+
+					sendAction(senderId, SenderAction.MARK_SEEN);
+					sendAction(senderId, SenderAction.TYPING_ON);
+					sendTemplate(senderId, templateService.sendListBooks(parsedVoice));
+					sendQuickReply(senderId, "You can watch details each of books",
+							templateService.sendQuickReplyListBooks());
+					sendAction(senderId, SenderAction.TYPING_OFF);
+					break;
+
+				default:
+					sendTextMessage(senderId, "please send audio");
+				}
+
+			} catch (MessengerApiException | MessengerIOException e) {
+				handleSendException(e);
+			} catch (IOException e) {
+				handleIOException(e);
+			}
+		};
+
+	}
+ 	
 	private TextMessageEventHandler newTextMessageEventHandler() throws MessengerIOException, IOException {
 		return event -> {
 			logger.debug("Received TextMessageEvent: {}", event);
@@ -196,6 +248,7 @@ public class CallBackHandler {
 		logger.debug("Initializing MessengerReceiveClient - appSecret: {} | verifyToken: {}", appSecret, verifyToken);
 		this.receiveClient = MessengerPlatform.newReceiveClientBuilder(appSecret, verifyToken)
 				.onTextMessageEvent(newTextMessageEventHandler())
+				.onAttachmentMessageEvent(newAttachmentMessageEventHandler())
 				.onQuickReplyMessageEvent(newQuickReplyMessageEventHandler()).onPostbackEvent(newPostbackEventHandler())
 				.onAccountLinkingEvent(newAccountLinkingEventHandler()).onOptInEvent(newOptInEventHandler())
 				.onEchoMessageEvent(newEchoMessageEventHandler())
