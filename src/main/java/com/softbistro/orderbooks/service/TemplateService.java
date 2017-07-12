@@ -179,7 +179,8 @@ public class TemplateService {
 		OrderCart.booksInCard = new ArrayList<>();
 	}
 
-	public void checkoutBook() throws JsonProcessingException, ClientHandlerException, UniformInterfaceException, JSONException {
+	public void checkoutBook()
+			throws JsonProcessingException, ClientHandlerException, UniformInterfaceException, JSONException {
 		OrderCart.booksInCard.add(OrderCart.chooseBook);
 
 		BookForOrder bookForOrder = null;
@@ -195,29 +196,28 @@ public class TemplateService {
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
 		OrderCart.orderId = response.getEntity(String.class);
-		
-		
+
 		webResource = client.resource("http://80.91.191.79:19200/zeroCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		
+
 		webResource = client.resource("http://80.91.191.79:19200/firstCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		
+
 		webResource = client.resource("http://80.91.191.79:19200/firstEvaluateCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice").toString();
-		
-		
+		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice")
+				.toString();
+
 		bookForOrder.setShippingChoiceHash(OrderCart.shippingChoiceHash);
+		jsonText = mapper.writeValueAsString(bookForOrder);
 		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, bookForOrder);
-		response.getEntity(String.class);
+				.post(ClientResponse.class, jsonText);
 	}
-	
+
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
