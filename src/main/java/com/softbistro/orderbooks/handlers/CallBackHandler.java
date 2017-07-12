@@ -186,7 +186,8 @@ public class CallBackHandler {
 					sendTextMessage(senderId,OrderCart.orderId.toString());
 					//sendTextMessage(senderId,OrderCart.booksInCard.get(0).getTitle());
 					//sendTemplate(senderId, templateService.showOrderedBooks());
-					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
+					//sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
+					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_USER_INFO)) {
 					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
