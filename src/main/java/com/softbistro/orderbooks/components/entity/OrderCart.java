@@ -10,7 +10,7 @@ public class OrderCart {
 	public static List<Book> searchBooks;
 	public static List<PriceItem> prices;
 	public static String orderId;
-	
+	public static String shippingChoiceHash;
 	
 	
 }

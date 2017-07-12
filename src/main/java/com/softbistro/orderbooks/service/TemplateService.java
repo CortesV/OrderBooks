@@ -178,7 +178,7 @@ public class TemplateService {
 	}
 
 	public void checkoutBook() throws JsonProcessingException {
-		//OrderCart.booksInCard.add(OrderCart.chooseBook);
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
 
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
@@ -193,8 +193,22 @@ public class TemplateService {
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
 		OrderCart.orderId = response.getEntity(String.class);
+		
+		
+		webResource = client.resource("http://80.91.191.79:19200/zeroCheckout");
+		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, Integer.valueOf(OrderCart.orderId));
+		
+		webResource = client.resource("http://80.91.191.79:19200/firstCheckout");
+		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, Integer.valueOf(OrderCart.orderId));
+		
+		webResource = client.resource("http://80.91.191.79:19200/firstEvaluateCheckout");
+		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, Integer.valueOf(OrderCart.orderId));
+		OrderCart.shippingChoiceHash = response.getEntity(String.class);
 	}
-
+	
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
