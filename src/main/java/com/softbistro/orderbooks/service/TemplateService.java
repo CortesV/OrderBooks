@@ -173,6 +173,7 @@ public class TemplateService {
 
 	public void savePriceCheckedBook(String title) {
 		OrderCart.chooseBook.setPrice(title);
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
 	}
 
 	public void resetStaticData() {
@@ -220,7 +221,7 @@ public class TemplateService {
 	}
 	
 	public void addItem() throws JsonProcessingException{
-		OrderCart.booksInCard.add(OrderCart.chooseBook);
+		
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
 			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
