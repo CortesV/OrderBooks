@@ -211,9 +211,11 @@ public class TemplateService {
 				.post(ClientResponse.class, OrderCart.orderId);
 		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice");
 		
+		
+		bookForOrder = new BookForOrder(Integer.valueOf(OrderCart.orderId), OrderCart.shippingChoiceHash);
 		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, OrderCart.shippingChoiceHash);
+				.post(ClientResponse.class, bookForOrder);
 	}
 	
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
