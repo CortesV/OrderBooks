@@ -66,9 +66,8 @@ public class TemplateService {
 						OrderCart.chooseBook.getImageUrl())
 				.timestamp(1428444852L).addElements()
 				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 50F)
-				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(2).currency("USD")
+				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
 				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done()
-				.addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park").done()
 				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
 				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
 				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
