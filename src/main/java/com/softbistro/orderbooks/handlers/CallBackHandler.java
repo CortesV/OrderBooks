@@ -184,11 +184,11 @@ public class CallBackHandler {
 					templateService.checkoutBook();
 					sendTextMessage(senderId,"Checkout this book done");
 					sendTemplate(senderId, templateService.showChoosedBooks());
-					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyConfirmBuy());
+					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_USER_INFO)) {
 					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
-					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyBuy());
+					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyConfirmBuy());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
 					sendTemplate(senderId, templateService.showOrderedBooks());
