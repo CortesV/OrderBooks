@@ -147,6 +147,11 @@ public class TemplateService {
 		return QuickReply.newListBuilder().addTextQuickReply("", CallBackHandler.GOOD_ACTION_BUY_END).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
+	
+	public List<QuickReply> sendQuickReplyUserInfo() throws MessengerApiException, MessengerIOException {
+		return QuickReply.newListBuilder().addTextQuickReply("Custommer information", CallBackHandler.GOOD_ACTION_USER_INFO).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+	}
 
 	public void saveCheckedBook(String title) {
 		for (Book book : OrderCart.searchBooks) {
@@ -177,6 +182,10 @@ public class TemplateService {
 		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = null;
 		OrderCart.booksInCard = new ArrayList<>();
+	}
+	
+	public void checkoutBook(){
+		
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {

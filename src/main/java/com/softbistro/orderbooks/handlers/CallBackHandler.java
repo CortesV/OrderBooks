@@ -60,6 +60,7 @@ public class CallBackHandler {
 	public static final String GOOD_ACTION_CONFIRM_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_CONFIRM_BUY";
 	public static final String GOOD_ACTION_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY";
 	public static final String GOOD_ACTION_BUY_END = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY_END";
+	public static final String GOOD_ACTION_USER_INFO = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_USER_INFO";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
 
 	private final MessengerReceiveClient receiveClient;
@@ -180,9 +181,14 @@ public class CallBackHandler {
 					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
-					//sendTextMessage(senderId,"USER_INFO_HARD_CODING");	
+					templateService.checkoutBook();
+					sendTextMessage(senderId,"Checkout this book done");
 					sendTemplate(senderId, templateService.showChoosedBooks());
-					sendQuickReply(senderId, "Confirm buy", templateService.sendQuickReplyConfirmBuy());
+					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyConfirmBuy());
+				}
+				if (quickReplyPayload.equals(GOOD_ACTION_USER_INFO)) {
+					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
+					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyBuy());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
 					sendTemplate(senderId, templateService.showOrderedBooks());
