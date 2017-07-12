@@ -215,7 +215,6 @@ public class TemplateService {
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
-		// TODO rewrite keyword
 		WebResource wr = client.resource("http://80.91.191.79:19200/catalog/" + keyword);
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
@@ -233,7 +232,6 @@ public class TemplateService {
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
-		// TODO rewrite keyword
 		WebResource wr = client.resource("http://80.91.191.79:19200/prices/" + id);
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
