@@ -195,11 +195,9 @@ public class CallBackHandler {
 					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
 					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyConfirmBuy());
 				}
+				
 				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
 					sendTemplate(senderId, templateService.showOrderedBooks());
-					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyBuy());
-				}
-				if (quickReplyPayload.equals(GOOD_ACTION_BUY)) {
 					templateService.resetStaticData();
 					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					sendTextMessage(senderId, "Let's try another one :D!");
