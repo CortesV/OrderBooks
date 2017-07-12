@@ -62,12 +62,15 @@ public class TemplateService {
 
 	public Template showBook() throws MessengerApiException, MessengerIOException, IOException {
 		return ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Credit card")
-				.orderUrl(OrderCart.chooseBook.getImageUrl()).timestamp(1428444852L).addElements()
+				.orderUrl(
+						OrderCart.chooseBook.getImageUrl())
+				.timestamp(1428444852L).addElements()
 				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 50F)
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
-				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addAdjustments().addAdjustment()
-				.name("New Customer Discount").amount(20.00F).toList().addAdjustment().name("$10 Off Coupon")
-				.amount(10.00F).toList().done().build();
+				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done()
+				.addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
+				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
+				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
 	}
 
 	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
@@ -127,15 +130,15 @@ public class TemplateService {
 	}
 
 	public List<QuickReply> sendQuickReplyConfirmBuy() throws MessengerApiException, MessengerIOException {
-		return QuickReply.newListBuilder().addTextQuickReply("Confirm buy", CallBackHandler.GOOD_ACTION_CONFIRM_BUY)
-				.toList().addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+		return QuickReply.newListBuilder().addTextQuickReply("Confirm buy", CallBackHandler.GOOD_ACTION_CONFIRM_BUY).toList()
+				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
 	public List<QuickReply> sendQuickReplyBuy() throws MessengerApiException, MessengerIOException {
 		return QuickReply.newListBuilder().addTextQuickReply("Buy books", CallBackHandler.GOOD_ACTION_BUY).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
-
+	
 	public List<QuickReply> sendQuickReplyBuyEnd() throws MessengerApiException, MessengerIOException {
 		return QuickReply.newListBuilder().addTextQuickReply("", CallBackHandler.GOOD_ACTION_BUY_END).toList()
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
@@ -161,12 +164,12 @@ public class TemplateService {
 		OrderCart.chooseBook = null;
 	}
 
-	public void resetStaticData() {
+	public void resetStaticData(){
 		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = null;
 		OrderCart.booksInCard = new ArrayList<>();
 	}
-
+	
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
