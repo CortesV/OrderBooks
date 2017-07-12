@@ -188,6 +188,7 @@ public class CallBackHandler {
 					sendTextMessage(senderId, "Order key " + OrderCart.orderKey);
 					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					sendTextMessage(senderId, "Let's try another one :D!");
+					templateService.resetStaticData();
 				}
 				/*if (quickReplyPayload.equals(GOOD_ACTION_INFO)) {
 					sendTextMessage(senderId, "USER_INFO_HARD_CODING");
