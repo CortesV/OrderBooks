@@ -146,7 +146,7 @@ public class CallBackHandler {
 
 					sendTextMessage(senderId, parsedVoice);
 
-					sendQuickReply(senderId, "blabla", templateService.sendQuickReplyForVoiceMessage());
+					sendQuickReply(senderId, "", templateService.sendQuickReplyForVoiceMessage());
 					break;
 
 				default:
@@ -185,24 +185,25 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
 					templateService.checkoutBook();
 					sendTextMessage(senderId, "Checkout this book done");
-					sendTextMessage(senderId, OrderCart.orderKey);
-					sendQuickReply(senderId, "User info", templateService.sendQuickReplyUserInfo());
+					sendTextMessage(senderId, "Order key " + OrderCart.orderKey);
+					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
+					sendTextMessage(senderId, "Let's try another one :D!");
 				}
-				if (quickReplyPayload.equals(GOOD_ACTION_INFO)) {
+				/*if (quickReplyPayload.equals(GOOD_ACTION_INFO)) {
 					sendTextMessage(senderId, "USER_INFO_HARD_CODING");
 					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyConfirmBuy());
-				}
+				}*/
 
-				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
+				/*if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
 					sendTemplate(senderId, templateService.showOrderedBooks());
 					templateService.resetStaticData();
 					sendGifMessage(senderId, "https://media.giphy.com/media/3oz8xPxTUeebQ8pL1e/giphy.gif");
 					sendTextMessage(senderId, "Let's try another one :D!");
-				}
-				if (quickReplyPayload.equals(NOT_GOOD_ACTION_CHECKOUT)) {
+				}*/
+				/*if (quickReplyPayload.equals(NOT_GOOD_ACTION_CHECKOUT)) {
 					templateService.addItem();
 					sendTextMessage(senderId, "Let's try another one :D!");
-				}
+				}*/
 				if (quickReplyPayload.equals(GOOD_AUDIO_ACTION)) {
 					templateService.resetStaticData();
 					sendAction(senderId, SenderAction.MARK_SEEN);
