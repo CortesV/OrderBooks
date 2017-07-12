@@ -123,8 +123,11 @@ public class CallBackHandler {
 					sendQuickReply(senderId, "Choose price of books", templateService.sendQuickReplyPrice());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
+					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
 					templateService.saveOrderedBook(event.getText());
+					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
 					sendTemplate(senderId, templateService.showChoosedBook());
+					sendTextMessage(senderId,"UUUUUUUUUUUUUUU");
 					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
