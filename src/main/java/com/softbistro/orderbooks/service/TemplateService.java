@@ -211,7 +211,7 @@ public class TemplateService {
 		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice").toString();
 		
 		
-		bookForOrder = new BookForOrder(OrderCart.orderId, OrderCart.shippingChoiceHash);
+		bookForOrder.setShippingChoiceHash(OrderCart.shippingChoiceHash);
 		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, bookForOrder);
