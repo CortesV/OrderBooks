@@ -64,10 +64,6 @@ public class TemplateService {
 				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 0F)
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
 				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F).done().build();
-			/*return ListTemplate
-					.newBuilder(TopElementStyle.LARGE).addElements().addElement(OrderCart.chooseBook.getTitle())
-					.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0) + "\nISBN " + OrderCart.chooseBook.getIsbn())
-					.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().build();*/
 	}
 
 	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
@@ -85,16 +81,6 @@ public class TemplateService {
 				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
 				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
 				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
-		
-		/*com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate
-				.newBuilder(TopElementStyle.LARGE).addElements();
-		for (Book book : OrderCart.booksInCard) {
-			builder = builder.addElement(book.getTitle())
-					.subtitle("Author " + book.getAuthors().get(0) + "\nISBN " + book.getIsbn())
-					.imageUrl(book.getImageUrl()).toList();
-		}
-
-		return builder.done().build();*/
 	}
 
 	public Template showOrderedBooks() throws MessengerApiException, MessengerIOException, IOException {

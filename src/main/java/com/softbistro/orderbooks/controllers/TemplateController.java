@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.softbistro.orderbooks.components.entity.Book;
+import com.softbistro.orderbooks.components.entity.OrderCart;
+import com.softbistro.orderbooks.components.entity.PriceItem;
+import com.softbistro.orderbooks.service.TemplateService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -23,6 +27,9 @@ import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
 
 @RestController
 public class TemplateController {
+	
+	@Autowired
+	private TemplateService templateService;
 
 	@RequestMapping(value = "/catalog", method = RequestMethod.GET, produces = "application/json")
 	public List<Book> getCatalog() throws JsonParseException, JsonMappingException, IOException {
@@ -41,5 +48,12 @@ public class TemplateController {
 		return objectMapper.readValue(jsonText,
 				TypeFactory.defaultInstance().constructCollectionType(List.class, Book.class));
 	}
+	
+	@RequestMapping(value = "/price", method = RequestMethod.GET, produces = "application/json")
+	public List<PriceItem> getPrice() throws JsonParseException, JsonMappingException, IOException {
+		OrderCart.prices = templateService.getPrices(OrderCart.chooseBook.getId()).getPrices();
+		return OrderCart.prices;
+	}
 
+	
 }
