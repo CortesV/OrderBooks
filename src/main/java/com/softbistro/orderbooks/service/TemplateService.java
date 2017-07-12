@@ -217,10 +217,10 @@ public class TemplateService {
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
 		
-		webResource = client.resource("http://80.91.191.79:19200/lastCheckout");
+		/*webResource = client.resource("http://80.91.191.79:19200/lastCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		OrderCart.orderKey = new JSONObject(response.getEntity(String.class)).getString("order_key").toString();
+		OrderCart.orderKey = new JSONObject(response.getEntity(String.class)).getString("order_key").toString();*/
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
