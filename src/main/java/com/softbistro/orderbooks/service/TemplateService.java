@@ -166,18 +166,6 @@ public class TemplateService {
 	}
 
 	
-	public void saveOrderedBook(String title) {
-		for (PriceItem price : OrderCart.prices) {
-			if (title.equals(price)) {
-				OrderCart.choosePrice = price.getPrice().toString();
-			}
-		}
-		OrderCart.chooseBook.setPrice(OrderCart.choosePrice);
-		OrderCart.booksInCard.add(OrderCart.chooseBook);
-		OrderCart.choosePrice = null;
-		OrderCart.chooseBook = null;
-	}
-
 	public void resetStaticData() {
 		OrderCart.chooseBook = null;
 		OrderCart.choosePrice = null;
@@ -185,7 +173,9 @@ public class TemplateService {
 	}
 	
 	public void checkoutBook(){
-		
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
+		OrderCart.choosePrice = null;
+		OrderCart.chooseBook = null;
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
