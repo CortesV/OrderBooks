@@ -59,16 +59,23 @@ public class TemplateService {
 	}
 
 	public Template showBook() throws MessengerApiException, MessengerIOException, IOException {
-		return ReceiptTemplate.newBuilder("Customer", "12345678902", "USD", "Credit card")
+		/*return ReceiptTemplate.newBuilder("Customer", "12345678902", "USD", "Credit card")
 				.orderUrl(OrderCart.chooseBook.getImageUrl()).addElements()
 				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), 0F)
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
-				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F).done().build();
+				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F).done().build();*/
+		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate
+				.newBuilder(TopElementStyle.LARGE).addElements();
+			builder = builder.addElement(OrderCart.chooseBook.getTitle())
+					.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0) + "\nISBN " + OrderCart.chooseBook.getIsbn())
+					.imageUrl(OrderCart.chooseBook.getImageUrl()).toList();
+
+		return builder.done().build();
 	}
 
 	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
 
-		ListBuilder builder = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
+		/*ListBuilder builder = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements();
@@ -80,7 +87,17 @@ public class TemplateService {
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
 				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
 				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
-				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
+				.name("$10 Off Coupon").amount(10.00F).toList().done().build();*/
+		
+		com.github.messenger4j.send.templates.ListTemplate.Element.ListBuilder builder = ListTemplate
+				.newBuilder(TopElementStyle.LARGE).addElements();
+		for (Book book : OrderCart.booksInCard) {
+			builder = builder.addElement(book.getTitle())
+					.subtitle("Author " + book.getAuthors().get(0) + "\nISBN " + book.getIsbn())
+					.imageUrl(book.getImageUrl()).toList();
+		}
+
+		return builder.done().build();
 	}
 
 	public Template showOrderedBooks() throws MessengerApiException, MessengerIOException, IOException {
