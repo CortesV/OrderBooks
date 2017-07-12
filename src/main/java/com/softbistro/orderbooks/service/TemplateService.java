@@ -182,14 +182,13 @@ public class TemplateService {
 
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
-			if (price.getPrice().equals(Float.valueOf(OrderCart.chooseBook.getPrice()))) {
+			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
 				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
 			}
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonText = mapper.writeValueAsString(bookForOrder);
 		Client client = Client.create();
-		client.addFilter(new GZIPContentEncodingFilter(false));
 		WebResource webResource = client.resource("http://80.91.191.79:19200/createOrder");
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);

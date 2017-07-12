@@ -182,10 +182,10 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
 					templateService.checkoutBook();
-					//sendTextMessage(senderId,"Checkout this book done");
+					sendTextMessage(senderId,"Checkout this book done");
 					//sendTextMessage(senderId,OrderCart.booksInCard.get(0).getTitle());
 					//sendTemplate(senderId, templateService.showOrderedBooks());
-					sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
+					//sendQuickReply(senderId, "Continue order", templateService.sendQuickReplyUserInfo());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_USER_INFO)) {
 					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
