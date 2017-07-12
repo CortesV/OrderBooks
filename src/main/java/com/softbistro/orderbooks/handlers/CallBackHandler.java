@@ -182,6 +182,7 @@ public class CallBackHandler {
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					templateService.savePriceCheckedBook(event.getText());
 					sendTemplate(senderId, templateService.showChoosedBook());
+					templateService.createOrder();
 					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {

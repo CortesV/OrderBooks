@@ -182,22 +182,9 @@ public class TemplateService {
 	public void checkoutBook()
 			throws JsonProcessingException, ClientHandlerException, UniformInterfaceException, JSONException {
 
-		BookForOrder bookForOrder = null;
-		for (PriceItem price : OrderCart.prices) {
-			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
-				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
-			}
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonText = mapper.writeValueAsString(bookForOrder);
 		Client client = Client.create();
-		WebResource webResource = client.resource("http://80.91.191.79:19200/createOrder");
+		WebResource webResource = client.resource("http://80.91.191.79:19200/zeroCheckout");
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, jsonText);
-		OrderCart.orderId = response.getEntity(String.class);
-
-		webResource = client.resource("http://80.91.191.79:19200/zeroCheckout");
-		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
 
 		webResource = client.resource("http://80.91.191.79:19200/firstCheckout");
@@ -210,9 +197,12 @@ public class TemplateService {
 		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice")
 				.toString();
 
+		
+		BookForOrder bookForOrder = new BookForOrder();
 		bookForOrder.setShippingChoiceHash(OrderCart.shippingChoiceHash);
 		bookForOrder.setOrderId(Integer.valueOf(OrderCart.orderId));
-		jsonText = mapper.writeValueAsString(bookForOrder);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(bookForOrder);
 		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
@@ -240,6 +230,22 @@ public class TemplateService {
 		WebResource webResource = client.resource("http://80.91.191.79:19200/addItem");
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
+	}
+	
+	public void createOrder() throws JsonProcessingException{
+		BookForOrder bookForOrder = null;
+		for (PriceItem price : OrderCart.prices) {
+			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
+				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
+			}
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(bookForOrder);
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://80.91.191.79:19200/createOrder");
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, jsonText);
+		OrderCart.orderId = response.getEntity(String.class);
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {
