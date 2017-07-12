@@ -83,7 +83,7 @@ public class TemplateService {
 		Float summary = 0F;
 		for (Book book : OrderCart.booksInCard) {
 			builder.addElement(book.getTitle() + " " + book.getIsbn(),
-					Float.valueOf(book.getPrice())).subtitle(OrderCart.choosePrice).quantity(1).currency("USD")
+					Float.valueOf(book.getPrice())).quantity(1).currency("USD")
 					.imageUrl(book.getImageUrl()).toList();
 			summary += Float.valueOf(book.getPrice());
 		}
