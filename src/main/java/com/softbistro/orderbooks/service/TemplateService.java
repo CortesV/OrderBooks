@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -30,7 +32,9 @@ import com.softbistro.orderbooks.components.entity.PriceItem;
 import com.softbistro.orderbooks.components.entity.CatalogItem;
 import com.softbistro.orderbooks.handlers.CallBackHandler;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -176,7 +180,7 @@ public class TemplateService {
 		OrderCart.booksInCard = new ArrayList<>();
 	}
 
-	public void checkoutBook() throws JsonProcessingException {
+	public void checkoutBook() throws JsonProcessingException, ClientHandlerException, UniformInterfaceException, JSONException {
 		OrderCart.booksInCard.add(OrderCart.chooseBook);
 
 		BookForOrder bookForOrder = null;
@@ -205,7 +209,11 @@ public class TemplateService {
 		webResource = client.resource("http://80.91.191.79:19200/firstEvaluateCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
-		OrderCart.shippingChoiceHash = response.getEntity(String.class);
+		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice");
+		
+		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
+		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, OrderCart.shippingChoiceHash);
 	}
 	
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {

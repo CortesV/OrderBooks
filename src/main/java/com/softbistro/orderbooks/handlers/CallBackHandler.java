@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,9 @@ import com.softbistro.orderbooks.components.entity.OrderCart;
 import com.softbistro.orderbooks.controllers.TemplateController;
 import com.softbistro.orderbooks.service.TemplateService;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 @RestController
@@ -210,6 +213,15 @@ public class CallBackHandler {
 				handleIOException(e);
 			} catch (IOException e) {
 				handleIOException(e);
+			} catch (ClientHandlerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UniformInterfaceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		};
 	}
