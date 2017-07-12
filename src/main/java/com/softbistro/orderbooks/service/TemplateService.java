@@ -65,6 +65,14 @@ public class TemplateService {
 				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
 				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(0F).done().build();
 	}
+	
+	public Template showChoosedBook() throws MessengerApiException, MessengerIOException, IOException {
+		return ReceiptTemplate.newBuilder("Customer", "12345678902", "USD", "Credit card")
+				.orderUrl(OrderCart.chooseBook.getImageUrl()).addElements()
+				.addElement(OrderCart.chooseBook.getTitle() + " " + OrderCart.chooseBook.getIsbn(), Float.valueOf(OrderCart.chooseBook.getPrice()))
+				.subtitle("Author " + OrderCart.chooseBook.getAuthors().get(0)).quantity(1).currency("USD")
+				.imageUrl(OrderCart.chooseBook.getImageUrl()).toList().done().addSummary(Float.valueOf(OrderCart.chooseBook.getPrice())).done().build();
+	}
 
 	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
 
@@ -72,13 +80,15 @@ public class TemplateService {
 				.orderUrl(
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements();
+		Float summary = 0F;
 		for (Book book : OrderCart.booksInCard) {
 			builder.addElement(book.getTitle() + " " + book.getIsbn(),
-					50F).subtitle(OrderCart.choosePrice).quantity(2).currency("USD")
+					Float.valueOf(book.getPrice())).subtitle(OrderCart.choosePrice).quantity(1).currency("USD")
 					.imageUrl(book.getImageUrl()).toList();
+			summary += Float.valueOf(book.getPrice());
 		}
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
-				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
+				.done().addSummary(summary).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
 				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
 				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
 	}
