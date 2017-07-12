@@ -11,7 +11,5 @@ public class OrderCart {
 	public static List<PriceItem> prices;
 	public static String orderId;
 	public static String shippingChoiceHash;
-	
-	
-	
+	public static String orderKey;	
 }
