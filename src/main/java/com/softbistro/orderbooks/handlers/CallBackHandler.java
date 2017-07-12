@@ -209,7 +209,7 @@ public class CallBackHandler {
 					templateService.resetStaticData();
 					sendAction(senderId, SenderAction.MARK_SEEN);
 					sendAction(senderId, SenderAction.TYPING_ON);
-					sendTemplate(senderId, templateService.sendListBooks(parsedVoice));
+					sendTemplate(senderId, templateService.sendListBooks(parsedVoice.toString()));
 					sendQuickReply(senderId, "You can watch details each of books",
 							templateService.sendQuickReplyListBooks());
 					sendAction(senderId, SenderAction.TYPING_OFF);
