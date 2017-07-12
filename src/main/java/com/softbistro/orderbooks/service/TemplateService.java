@@ -178,7 +178,7 @@ public class TemplateService {
 	}
 
 	public void checkoutBook() throws JsonProcessingException {
-		OrderCart.booksInCard.add(OrderCart.chooseBook);
+		//OrderCart.booksInCard.add(OrderCart.chooseBook);
 
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
