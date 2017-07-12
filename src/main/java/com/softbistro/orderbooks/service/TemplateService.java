@@ -82,24 +82,6 @@ public class TemplateService {
 				.addSummary(Float.valueOf(OrderCart.chooseBook.getPrice())).done().build();
 	}
 
-	public Template showChoosedBooks() throws MessengerApiException, MessengerIOException, IOException {
-
-		ListBuilder builder = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
-				.orderUrl(
-						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
-				.timestamp(1428444852L).addElements();
-		Float summary = 0F;
-		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(book.getTitle() + " " + book.getIsbn(), Float.valueOf(book.getPrice())).quantity(1)
-					.currency("USD").imageUrl(book.getImageUrl()).toList();
-			summary += Float.valueOf(book.getPrice());
-		}
-		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
-				.done().addSummary(summary).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
-				.addAdjustment().name("New Customer Discount").amount(20.00F).toList().addAdjustment()
-				.name("$10 Off Coupon").amount(10.00F).toList().done().build();
-	}
-
 	public Template showOrderedBooks() throws MessengerApiException, MessengerIOException, IOException {
 
 		ListBuilder builder = ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Visa 2345")
@@ -108,7 +90,7 @@ public class TemplateService {
 				.addElements();
 		Float summary = 0F;
 		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(book.getTitle() + " " + book.getIsbn(), 50F).subtitle(OrderCart.choosePrice).quantity(2)
+			builder.addElement(book.getTitle() + " " + book.getIsbn(), 50F).subtitle(OrderCart.choosePrice).quantity(1)
 					.currency("USD").imageUrl(book.getImageUrl()).toList();
 			summary += Float.valueOf(book.getPrice());
 		}
@@ -163,6 +145,12 @@ public class TemplateService {
 				.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
 
+	public List<QuickReply> sendQuickReplyForVoiceMessage() throws MessengerApiException, MessengerIOException {
+		return QuickReply.newListBuilder().addTextQuickReply("Yes, let's search", CallBackHandler.GOOD_AUDIO_ACTION)
+				.toList().addTextQuickReply("No, repeat", CallBackHandler.NOT_GOOD_ACTION).toList()
+				.addTextQuickReply("Write message", CallBackHandler.NOT_GOOD_ACTION).toList().build();
+	}
+
 	public void saveCheckedBook(String title) {
 		for (Book book : OrderCart.searchBooks) {
 			if (title.equals(book.getTitle() + " " + book.getIsbn())) {
@@ -204,7 +192,6 @@ public class TemplateService {
 		OrderCart.shippingChoiceHash = new JSONObject(response.getEntity(String.class)).getString("shipping_choice")
 				.toString();
 
-		
 		BookForOrder bookForOrder = new BookForOrder();
 		bookForOrder.setShippingChoiceHash(OrderCart.shippingChoiceHash);
 		bookForOrder.setOrderId(Integer.valueOf(OrderCart.orderId));
@@ -213,22 +200,22 @@ public class TemplateService {
 		webResource = client.resource("http://80.91.191.79:19200/setShippingOpt");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
-		
+
 		webResource = client.resource("http://80.91.191.79:19200/lastCheckout");
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
 		OrderCart.orderKey = new JSONObject(response.getEntity(String.class)).getString("order_key").toString();
 	}
-	
-	public void addItem() throws JsonProcessingException{
-		
+
+	public void addItem() throws JsonProcessingException {
+
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
 			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
 				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
 			}
 		}
-		
+
 		bookForOrder.setOrderId(Integer.valueOf(OrderCart.orderId));
 		bookForOrder.setQuantity(1);
 		ObjectMapper mapper = new ObjectMapper();
@@ -238,8 +225,8 @@ public class TemplateService {
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
 	}
-	
-	public void createOrder() throws JsonProcessingException{
+
+	public void createOrder() throws JsonProcessingException {
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
 			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {

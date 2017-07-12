@@ -64,6 +64,7 @@ public class CallBackHandler {
 	public static final String GOOD_ACTION_BUY = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY";
 	public static final String GOOD_ACTION_BUY_END = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_BUY_END";
 	public static final String GOOD_ACTION_INFO = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_ACTION_INFO";
+	public static final String GOOD_AUDIO_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_GOOD_AUDIO_ACTION";
 	public static final String NOT_GOOD_ACTION = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_ACTION";
 	public static final String NOT_GOOD_ACTION_CHECKOUT = "DEVELOPER_DEFINED_PAYLOAD_FOR_NOT_GOOD_CHECKOUT";
 
@@ -76,53 +77,8 @@ public class CallBackHandler {
 	@Autowired
 	private TemplateController templateController;
 
- 	private AttachmentMessageEventHandler newAttachmentMessageEventHandler() {
-		return event -> {
-			logger.debug("Received AttachmentMessageEvent: {}", event);
-
-			final String messageId = event.getMid();
-			final List<Attachment> attachment = event.getAttachments();
-			final String senderId = event.getSender().getId();
-			final Date timestamp = event.getTimestamp();
-
-			logger.info("Received attachment '{}' with type '{}' from user '{}' at '{}'", messageId,
-					attachment.get(0).getType().toString(), senderId, timestamp);
-			try {
-				switch (attachment.get(0).getType().toString()) {
-				case "AUDIO":
-					sendTextMessage(senderId, "audiofile was accepted");
-
-					Client client = Client.create();
-					WebResource webResource = client.resource("http://80.91.191.79:19099/");
-
-					String voice = attachment.get(0).getPayload().asBinaryPayload().getUrl();
-
-					ClientResponse response = webResource.type("application/json").header("url", voice)
-							.get(ClientResponse.class);
-
-					String parsedVoice = response.getEntity(String.class);
-
-					sendAction(senderId, SenderAction.MARK_SEEN);
-					sendAction(senderId, SenderAction.TYPING_ON);
-					sendTemplate(senderId, templateService.sendListBooks(parsedVoice));
-					sendQuickReply(senderId, "You can watch details each of books",
-							templateService.sendQuickReplyListBooks());
-					sendAction(senderId, SenderAction.TYPING_OFF);
-					break;
-
-				default:
-					sendTextMessage(senderId, "please send audio");
-				}
-
-			} catch (MessengerApiException | MessengerIOException e) {
-				handleSendException(e);
-			} catch (IOException e) {
-				handleIOException(e);
-			}
-		};
-
-	}
- 	
+	private String parsedVoice;
+	
 	private TextMessageEventHandler newTextMessageEventHandler() throws MessengerIOException, IOException {
 		return event -> {
 			logger.debug("Received TextMessageEvent: {}", event);
@@ -143,8 +99,7 @@ public class CallBackHandler {
 
 				case "y":
 					List<Book> searchResults = OrderCart.booksInCard;
-					sendTextMessage(senderId,
-							searchResults.get(0).getIsbn() + " " + searchResults.get(1).getIsbn());
+					sendTextMessage(senderId, searchResults.get(0).getIsbn() + " " + searchResults.get(1).getIsbn());
 					break;
 
 				default:
@@ -161,6 +116,48 @@ public class CallBackHandler {
 				handleIOException(e);
 			}
 		};
+	}
+
+	private AttachmentMessageEventHandler newAttachmentMessageEventHandler() {
+		return event -> {
+			logger.debug("Received AttachmentMessageEvent: {}", event);
+
+			final String messageId = event.getMid();
+			final List<Attachment> attachment = event.getAttachments();
+			final String senderId = event.getSender().getId();
+			final Date timestamp = event.getTimestamp();
+
+			logger.info("Received attachment '{}' with type '{}' from user '{}' at '{}'", messageId,
+					attachment.get(0).getType().toString(), senderId, timestamp);
+			try {
+				switch (attachment.get(0).getType().toString()) {
+				case "AUDIO":
+					sendTextMessage(senderId, "audiofile was accepted");
+
+					Client client = Client.create();
+					WebResource webResource = client.resource("http://80.91.191.79:19099/transcript");
+
+					String voice = attachment.get(0).getPayload().asBinaryPayload().getUrl();
+
+					ClientResponse response = webResource.type("application/json").header("urlForFile", voice)
+							.get(ClientResponse.class);
+
+					parsedVoice = response.getEntity(String.class).replaceAll("\"", "");
+
+					sendTextMessage(senderId, parsedVoice);
+
+					sendQuickReply(senderId, "blabla", templateService.sendQuickReplyForVoiceMessage());
+					break;
+
+				default:
+					sendTextMessage(senderId, "please send audio");
+				}
+
+			} catch (MessengerApiException | MessengerIOException e) {
+				handleSendException(e);
+			}
+		};
+
 	}
 
 	private QuickReplyMessageEventHandler newQuickReplyMessageEventHandler() {
@@ -181,21 +178,21 @@ public class CallBackHandler {
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_PRICE)) {
 					templateService.savePriceCheckedBook(event.getText());
-					sendTemplate(senderId, templateService.showChoosedBook());
+					sendTemplate(senderId, templateService.showOrderedBooks());
 					templateService.createOrder();
 					sendQuickReply(senderId, "Checkout", templateService.sendQuickReplyUser());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_CHECKOUT)) {
 					templateService.checkoutBook();
-					sendTextMessage(senderId,"Checkout this book done");
-					sendTextMessage(senderId,OrderCart.orderKey);
+					sendTextMessage(senderId, "Checkout this book done");
+					sendTextMessage(senderId, OrderCart.orderKey);
 					sendQuickReply(senderId, "User info", templateService.sendQuickReplyUserInfo());
 				}
 				if (quickReplyPayload.equals(GOOD_ACTION_INFO)) {
-					sendTextMessage(senderId,"USER_INFO_HARD_CODING");
+					sendTextMessage(senderId, "USER_INFO_HARD_CODING");
 					sendQuickReply(senderId, "Buy", templateService.sendQuickReplyConfirmBuy());
 				}
-				
+
 				if (quickReplyPayload.equals(GOOD_ACTION_CONFIRM_BUY)) {
 					sendTemplate(senderId, templateService.showOrderedBooks());
 					templateService.resetStaticData();
@@ -206,8 +203,15 @@ public class CallBackHandler {
 					templateService.addItem();
 					sendTextMessage(senderId, "Let's try another one :D!");
 				}
-				
-				
+				if (quickReplyPayload.equals(GOOD_AUDIO_ACTION)) {
+					templateService.resetStaticData();
+					sendAction(senderId, SenderAction.MARK_SEEN);
+					sendAction(senderId, SenderAction.TYPING_ON);
+					sendTemplate(senderId, templateService.sendListBooks(parsedVoice));
+					sendQuickReply(senderId, "You can watch details each of books",
+							templateService.sendQuickReplyListBooks());
+					sendAction(senderId, SenderAction.TYPING_OFF);
+				}
 
 			} catch (MessengerApiException e) {
 				handleSendException(e);
