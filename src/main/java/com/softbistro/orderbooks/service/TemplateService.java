@@ -192,7 +192,7 @@ public class TemplateService {
 		WebResource webResource = client.resource("http://80.91.191.79:19200/createOrder");
 		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, jsonText);
-		OrderCart.orderId = response.getEntity(Integer.class);
+		OrderCart.orderId = response.getEntity(String.class);
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {

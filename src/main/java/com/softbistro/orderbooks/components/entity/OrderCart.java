@@ -9,7 +9,7 @@ public class OrderCart {
 	public static String choosePrice;
 	public static List<Book> searchBooks;
 	public static List<PriceItem> prices;
-	public static Integer orderId;
+	public static String orderId;
 	
 	
 	
