@@ -61,7 +61,7 @@ public class TemplateService {
 	}
 
 	public Template showBook() throws MessengerApiException, MessengerIOException, IOException {
-		return ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "Credit card")
+		return ReceiptTemplate.newBuilder("Stephane Crozatier", "12345678902", "USD", "")
 				.orderUrl(
 						OrderCart.chooseBook.getImageUrl())
 				.timestamp(1428444852L).addElements()
@@ -177,7 +177,7 @@ public class TemplateService {
 		client.addFilter(new GZIPContentEncodingFilter(false));
 
 		// TODO rewrite keyword
-		WebResource wr = client.resource("http://demo2668900.mockable.io/catalog/" + keyword);
+		WebResource wr = client.resource("http://80.91.191.79:19200/catalog" + keyword);
 		ClientResponse response = null;
 		response = wr.get(ClientResponse.class);
 		jsonText = response.getEntity(String.class);
