@@ -73,9 +73,9 @@ public class TemplateService {
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements();
 		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(OrderCart.booksInCard.get(0).getTitle() + " " + OrderCart.booksInCard.get(0).getIsbn(),
+			builder.addElement(book.getTitle() + " " + book.getIsbn(),
 					50F).subtitle(OrderCart.choosePrice).quantity(2).currency("USD")
-					.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList();
+					.imageUrl(book.getImageUrl()).toList();
 		}
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
 				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
@@ -90,9 +90,9 @@ public class TemplateService {
 						"http://www.chegg.com/textbooks/biology-12th-edition-9780078024269-0078024269?trackid=0a17c4c9&strackid=3bac7b84&ii=1")
 				.timestamp(1428444852L).addElements();
 		for (Book book : OrderCart.booksInCard) {
-			builder.addElement(OrderCart.booksInCard.get(0).getTitle() + " " + OrderCart.booksInCard.get(0).getIsbn(),
+			builder.addElement(book.getTitle() + " " + book.getIsbn(),
 					50F).subtitle(OrderCart.choosePrice).quantity(2).currency("USD")
-					.imageUrl("http://cs.cheggcdn.com/covers2/50310000/50318001_1484290068_Width288.jpg").toList();
+					.imageUrl(book.getImageUrl()).toList();
 		}
 		return builder.done().addAddress("1 Hacker Way", "Menlo Park", "94025", "CA", "US").street2("Central Park")
 				.done().addSummary(56.14F).subtotal(75.00F).shippingCost(4.95F).totalTax(6.19F).done().addAdjustments()
