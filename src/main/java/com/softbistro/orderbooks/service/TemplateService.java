@@ -38,11 +38,7 @@ public class TemplateService {
 
 	@PostConstruct
 	public void setup() {
-		OrderCart.booksInCard = new ArrayList<>();
-		OrderCart.prices = new ArrayList<>();
-		OrderCart.prices.add("111");
-		OrderCart.prices.add("222");
-		OrderCart.prices.add("333");
+		OrderCart.booksInCard = new ArrayList<>();		
 	}
 
 	public Template sendListBooks(String keyword) throws MessengerApiException, MessengerIOException, IOException {
@@ -165,9 +161,9 @@ public class TemplateService {
 	}
 
 	public void saveOrderedBook(String title) {
-		for (String price : OrderCart.prices) {
+		for (PriceItem price : OrderCart.prices) {
 			if (title.equals(price)) {
-				OrderCart.choosePrice = price;
+				OrderCart.choosePrice = price.getPrice().toString();
 			}
 		}
 		OrderCart.chooseBook.setPrice(OrderCart.choosePrice);
