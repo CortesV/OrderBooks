@@ -181,7 +181,6 @@ public class TemplateService {
 
 	public void checkoutBook()
 			throws JsonProcessingException, ClientHandlerException, UniformInterfaceException, JSONException {
-		OrderCart.booksInCard.add(OrderCart.chooseBook);
 
 		BookForOrder bookForOrder = null;
 		for (PriceItem price : OrderCart.prices) {
@@ -222,6 +221,25 @@ public class TemplateService {
 		response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
 				.post(ClientResponse.class, OrderCart.orderId);
 		OrderCart.orderKey = new JSONObject(response.getEntity(String.class)).getString("order_key").toString();
+	}
+	
+	public void addItem() throws JsonProcessingException{
+		OrderCart.booksInCard.add(OrderCart.chooseBook);
+		BookForOrder bookForOrder = null;
+		for (PriceItem price : OrderCart.prices) {
+			if (price.getPrice().equals(Double.valueOf(OrderCart.chooseBook.getPrice()))) {
+				bookForOrder = new BookForOrder(OrderCart.chooseBook.getId(), price.getLogId());
+			}
+		}
+		
+		bookForOrder.setOrderId(Integer.valueOf(OrderCart.orderId));
+		bookForOrder.setQuantity(1);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(bookForOrder);
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://80.91.191.79:19200/addItem");
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON)
+				.post(ClientResponse.class, jsonText);
 	}
 
 	public List<Book> readAll(String keyword) throws JsonParseException, JsonMappingException, IOException {

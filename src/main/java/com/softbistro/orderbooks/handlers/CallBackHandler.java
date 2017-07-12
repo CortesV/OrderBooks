@@ -204,6 +204,7 @@ public class CallBackHandler {
 					sendTextMessage(senderId, "Let's try another one :D!");
 				}
 				if (quickReplyPayload.equals(NOT_GOOD_ACTION_CHECKOUT)) {
+					templateService.addItem();
 					sendTextMessage(senderId, "Let's try another one :D!");
 				}
 				
