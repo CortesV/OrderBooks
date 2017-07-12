@@ -8,7 +8,7 @@ public class OrderCart {
 	public static Book chooseBook;
 	public static String choosePrice;
 	public static List<Book> searchBooks;
-	public static List<String> prices;
+	public static List<PriceItem> prices;
 	
 	
 	

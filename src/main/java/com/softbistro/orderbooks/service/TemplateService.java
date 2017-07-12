@@ -23,6 +23,7 @@ import com.github.messenger4j.send.templates.ReceiptTemplate.Element.ListBuilder
 import com.github.messenger4j.send.templates.Template;
 import com.softbistro.orderbooks.components.entity.Book;
 import com.softbistro.orderbooks.components.entity.OrderCart;
+import com.softbistro.orderbooks.components.entity.PriceItem;
 import com.softbistro.orderbooks.components.entity.CatalogItem;
 import com.softbistro.orderbooks.handlers.CallBackHandler;
 import com.sun.jersey.api.client.Client;
@@ -126,10 +127,11 @@ public class TemplateService {
 		return builder.build();
 	}
 
-	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException {
+	public List<QuickReply> sendQuickReplyPrice() throws MessengerApiException, MessengerIOException, JsonParseException, JsonMappingException, IOException {
+		OrderCart.prices = getPrices(OrderCart.chooseBook.getId()).getPrices();
 		com.github.messenger4j.send.QuickReply.ListBuilder builder = QuickReply.newListBuilder();
-		for (String price : OrderCart.prices) {
-			builder = builder.addTextQuickReply(price, CallBackHandler.GOOD_ACTION_PRICE).toList();
+		for (PriceItem price : OrderCart.prices) {
+			builder = builder.addTextQuickReply(price.getPrice().toString(), CallBackHandler.GOOD_ACTION_PRICE).toList();
 		}
 		return builder.addTextQuickReply("No, thank's", CallBackHandler.NOT_GOOD_ACTION).toList().build();
 	}
@@ -198,7 +200,7 @@ public class TemplateService {
 				TypeFactory.defaultInstance().constructCollectionType(List.class, Book.class));
 	}
 	
-	public List<CatalogItem> getPrices(String id) throws JsonParseException, JsonMappingException, IOException {
+	public CatalogItem getPrices(String id) throws JsonParseException, JsonMappingException, IOException {
 		String jsonText = null;
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
@@ -213,7 +215,7 @@ public class TemplateService {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		return objectMapper.readValue(jsonText,
-				TypeFactory.defaultInstance().constructCollectionType(List.class, CatalogItem.class));
+				TypeFactory.defaultInstance().constructType(CatalogItem.class));
 	}
 
 }
